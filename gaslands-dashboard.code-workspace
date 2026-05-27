@@ -1,0 +1,18 @@
+{
+    "folders": [
+        {
+            "path": "./"
+        }
+    ],
+    "settings": {
+        "html.format.wrapLineLength": 240,
+        "prettier.printWidth": 240,
+        "prettier.trailingComma": "es5",
+        "prettier.bracketSameLine": true,
+        "prettier.objectWrap": "collapse",
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "[javascript]": {
+            "editor.defaultFormatter": "esbenp.prettier-vscode"
+        }
+    }
+}
