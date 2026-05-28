@@ -415,7 +415,7 @@ button,
 }
 
 #printDiv .teamVehicles {
-  display: flex;
+  display: grid;
   overflow: visible;
 }
 
@@ -437,6 +437,22 @@ button,
   font-size: xx-large;
 }
 
+#printDiv .hullPoints {
+  display: grid;
+  grid-template-rows: repeat(2, auto);
+  grid-auto-flow: column;
+  grid-auto-columns: 10px;
+  gap: 4px;
+}
+
+#printDiv .hullPoint {
+  background-color: white;
+  border: 1px solid black;
+  width: 5px;
+  height: 5px;
+  display: inline-flex;
+}
+
 .noprint {
   display: block;
 }
@@ -444,17 +460,6 @@ button,
 @media print {
   .noprint {
     display: none !important;
-  }
-
-  body {
-    background: white;
-    color: black;
-  }
-
-  .teamCard,
-  .vehicleCard {
-    border: none;
-    background: white;
   }
 }
 

@@ -175,7 +175,11 @@ function createPrintVehicleCard(team, ti, v, vi) {
 
   container.appendChild(
     el("div", { class: "vehicleStats" }, [
-      el("div", { text: `Hull: ${stats.hull}` }),
+      el("div", { class: "hullPoints" }, [
+        ...Array.from({ length: stats.hull }, () =>
+          el("div", { class: "hullPoint" }),
+        ),
+      ]),
       el("div", { text: `Handling: ${stats.handling}` }),
       el("div", { text: `Max gear: ${stats.maxGear}` }),
       el("div", { text: `Crew: ${stats.crew}` }),
