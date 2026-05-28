@@ -83,6 +83,11 @@ textarea {
 /* ==========================================================================
    Author's custom styles
    ========================================================================== */
+.rubik-dirt-regular {
+  font-family: "Rubik Dirt", system-ui;
+  font-weight: 400;
+  font-style: normal;
+}
 
 body {
   background: #111;
@@ -400,6 +405,10 @@ button,
    Print
    ========================================================================== */
 
+#printDiv {
+  font-size: x-small;
+}
+
 #printDiv .teamHeader {
   display: flex;
 }
@@ -411,11 +420,12 @@ button,
 
 #printDiv .teamHeader .teamName {
   font-weight: bold;
-  font-size: x-large;
+  font-size: larger;
 }
 
 #printDiv .teamVehicles {
   display: grid;
+  grid-template-columns: 500px 500px;
   overflow: visible;
 }
 
@@ -423,18 +433,29 @@ button,
   border: 4px solid #111;
   margin: 10px;
   padding: 6px;
-  display: flex;
 }
 
 #printDiv .vehicleHeader {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr auto; /* left + right */
+  grid-template-rows: auto auto auto;
+  gap: 2px 8px;
 }
 
 #printDiv .vehicleName {
-  display: block;
-  flex: 100%;
+  grid-column: 1 / -1; /* full width */
   font-weight: bold;
-  font-size: xx-large;
+  font-size: large;
+}
+
+#printDiv .vehicleType {
+  grid-column: 1;
+  grid-row: 2;
+}
+
+#printDiv .vehicleWeight {
+  grid-column: 2;
+  grid-row: 2;
 }
 
 #printDiv .hullPoints {
