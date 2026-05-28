@@ -1,35 +1,39 @@
 import { state } from "./state.js";
 import { allSponsors, allVehicles, allTrailers, allCargos } from "./data.js";
 import {
-  teamCost,
-  removeTeam,
+  addPerk,
+  addUpgrade,
   addVehicle,
-  vehicleCost,
-  computeStats,
-  totalSlots,
-  usedSlots,
-  allowedLocations,
-  allowedPerks,
   addWeapon,
   allowedFacings,
+  allowedLocations,
+  allowedPerks,
+  allowedUpgradesFull,
   allowedWeaponsFull,
+  changePerk,
+  changeUpgrade,
+  changeVehicle,
+  changeWeapon,
+  computeStats,
+  openPrintPreview,
+  removePerk,
+  removeTeam,
+  removeUpgrade,
+  removeVehicle,
+  removeWeapon,
+  setCargo,
+  setSponsor,
+  setTrailer,
+  setWeaponFacing,
+  teamCost,
+  totalSlots,
+  usedSlots,
+  vehicleCost,
   weaponAttack,
+  weaponCost,
   weaponRange,
   weaponRules,
   weaponSlots,
-  weaponCost,
-  changeWeapon,
-  changeVehicle,
-  setSponsor,
-  removeWeapon,
-  addUpgrade,
-  allowedUpgradesFull,
-  changeUpgrade,
-  removeUpgrade,
-  removeVehicle,
-  setTrailer,
-  setCargo,
-  addPerk,changePerk,removePerk,setWeaponFacing,openPrintPreview
 } from "./app.js";
 
 function el(tag, props = {}, children = []) {
@@ -90,7 +94,11 @@ function createTeamCard(team, ti) {
       el("button", { onclick: () => openPrintPreview(ti) }, ["Print"]),
     ]),
 
-    el("td", {}, [el("button", { onclick: () => removeTeam(ti) }, ["X"])]),
+    el("td", {}, [
+      el("button", { onclick: () => removeTeam(ti), class: "removeButton" }, [
+        "X",
+      ]),
+    ]),
   ]);
 
   container.appendChild(el("table", { class: "teamHeader" }, [headerRow]));

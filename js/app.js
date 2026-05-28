@@ -433,7 +433,7 @@ function addTeam() {
 
 export function removeTeam(i) {
   state.teams.splice(i, 1);
-  state.currentTeamIndex = Math.max(0, currentTeamIndex - 1);
+  state.currentTeamIndex = Math.max(0, state.currentTeamIndex - 1);
   render();
 }
 
