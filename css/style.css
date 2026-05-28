@@ -84,7 +84,6 @@ textarea {
    Author's custom styles
    ========================================================================== */
 
-/* ===== GLOBAL ===== */
 body {
   background: #111;
   color: #eee;
@@ -93,7 +92,6 @@ body {
   margin: 0;
 }
 
-/* ===== HEADER ===== */
 .header {
   padding: 8px;
   background: #1a1a1a;
@@ -113,221 +111,218 @@ button:hover {
   background: #3a3a3a;
 }
 
-/* ===== TEAM CARD ===== */
-.teamCard {
+#editDiv .teamCard {
   margin: 10px;
   border: 1px solid #333;
   background: #181818;
 }
 
-.teamHeader {
+#editDiv .teamHeader {
   width: 100%;
   border-collapse: collapse;
   background: linear-gradient(#222, #111);
 }
 
-.teamHeader td {
+#editDiv .teamHeader td {
   padding: 6px;
 }
 
-.teamHeader input,
-.teamHeader select {
+#editDiv .teamHeader input,
+#editDiv .teamHeader select {
   background: #111;
   color: white;
   border: 1px solid #555;
   padding: 2px 6px;
 }
 
-.teamHeader td:nth-child(1) {
+#editDiv .teamHeader td:nth-child(1) {
   width: 170px;
 }
 
-.teamHeader td:nth-child(3) {
+#editDiv .teamHeader td:nth-child(3) {
   color: #ff4444;
   font-weight: bold;
   text-align: right;
   width: 100px;
 }
 
-.teamHeader td:nth-child(4) {
+#editDiv .teamHeader td:nth-child(4) {
   width: 40px;
 }
 
-.teamHeader td:nth-child(4) input {
+#editDiv .teamHeader td:nth-child(4) input {
   width: 40px;
 }
 
-.teamHeader td:nth-child(5) {
+#editDiv .teamHeader td:nth-child(5) {
   width: 40px;
 }
 
-.teamHeader td:nth-child(6) {
+#editDiv .teamHeader td:nth-child(6) {
   width: 0px;
 }
 
-.teamHeader td:nth-child(7) {
+#editDiv .teamHeader td:nth-child(7) {
   width: 0px;
 }
 
-.addVehicle {
+#editDiv .addVehicle {
   margin: 6px;
 }
 
-/* ===== VEHICLE CARD ===== */
-.vehicleHeader td:nth-child(1) {
+#editDiv .vehicleHeader td:nth-child(1) {
   width: 170px;
 }
 
-.vehicleHeader td:nth-child(3) {
+#editDiv .vehicleHeader td:nth-child(3) {
   width: 50px;
 }
 
-.vehicleHeader td:nth-child(4) {
+#editDiv .vehicleHeader td:nth-child(4) {
   width: 0px;
 }
 
-.trailerTable td:nth-child(1) {
+#editDiv .trailerTable td:nth-child(1) {
   width: 150px;
 }
 
-.trailerTable td:nth-child(2) {
+#editDiv .trailerTable td:nth-child(2) {
   width: 150px;
 }
 
-.trailerTable td:nth-child(3) {
+#editDiv .trailerTable td:nth-child(3) {
   text-align: right;
 }
 
-.trailerTable td:last-child {
+#editDiv .trailerTable td:last-child {
   width: 150px;
 }
 
-.trailerTable td:last-child select {
+#editDiv .trailerTable td:last-child select {
   width: 150px;
 }
 
-.weaponsTable td:nth-child(1) {
+#editDiv .weaponsTable td:nth-child(1) {
   width: 150px;
 }
 
-.weaponsTable td:nth-child(2) {
+#editDiv .weaponsTable td:nth-child(2) {
   width: 70px;
 }
 
-.weaponsTable td:nth-child(3) {
+#editDiv .weaponsTable td:nth-child(3) {
   width: 70px;
 }
 
-.weaponsTable td:nth-last-child(7) {
+#editDiv .weaponsTable td:nth-last-child(7) {
   width: 70px;
 }
 
-.weaponsTable td:nth-last-child(6) {
+#editDiv .weaponsTable td:nth-last-child(6) {
   width: 50px;
 }
 
-.weaponsTable td:nth-last-child(5) {
+#editDiv .weaponsTable td:nth-last-child(5) {
   width: 150px;
 }
 
-.weaponsTable td:nth-last-child(3) {
+#editDiv .weaponsTable td:nth-last-child(3) {
   width: 30px;
   text-align: center;
 }
 
-.weaponsTable td:nth-last-child(2) {
+#editDiv .weaponsTable td:nth-last-child(2) {
   width: 30px;
   text-align: center;
 }
 
-.weaponsTable td:last-child {
+#editDiv .weaponsTable td:last-child {
   width: 0px;
   text-align: center;
 }
 
-.upgradesTable th:nth-child(1),
-.upgradesTable td:nth-child(1) {
+#editDiv .upgradesTable th:nth-child(1),
+#editDiv .upgradesTable td:nth-child(1) {
   width: 170px;
 }
 
-.upgradesTable th:nth-child(2),
-.upgradesTable td:nth-child(2) {
+#editDiv .upgradesTable th:nth-child(2),
+#editDiv .upgradesTable td:nth-child(2) {
   width: 30px;
   text-align: center;
 }
 
-.upgradesTable th:nth-child(3),
-.upgradesTable td:nth-child(3) {
+#editDiv .upgradesTable th:nth-child(3),
+#editDiv .upgradesTable td:nth-child(3) {
   width: 30px;
   text-align: center;
 }
 
-.upgradesTable th:nth-last-child(2),
-.upgradesTable td:nth-last-child(2) {
+#editDiv .upgradesTable th:nth-last-child(2),
+#editDiv .upgradesTable td:nth-last-child(2) {
   width: 30px;
   text-align: center;
 }
 
-.upgradesTable th:last-child,
-.upgradesTable td:last-child {
+#editDiv .upgradesTable th:last-child,
+#editDiv .upgradesTable td:last-child {
   width: 0px;
   text-align: center;
 }
 
-.perksTable th:nth-child(1),
-.perksTable td:nth-child(1) {
+#editDiv .perksTable th:nth-child(1),
+#editDiv .perksTable td:nth-child(1) {
   width: 170px;
 }
 
-.perksTable th:nth-last-child(2),
-.perksTable td:nth-last-child(2) {
+#editDiv .perksTable th:nth-last-child(2),
+#editDiv .perksTable td:nth-last-child(2) {
   width: 30px;
   text-align: center;
 }
 
-.perksTable th:last-child,
-.perksTable td:last-child {
+#editDiv .perksTable th:last-child,
+#editDiv .perksTable td:last-child {
   width: 0px;
 }
 
-.vehicleCard {
+#editDiv .vehicleCard {
   margin: 8px;
   padding: 8px;
   border: 1px solid #444;
   background: #202020;
 }
 
-.vehicleCard input,
-.vehicleCard select {
+#editDiv .vehicleCard input,
+#editDiv .vehicleCard select {
   background: #111;
   color: #fff;
   border: 1px solid #666;
   padding: 3px 6px;
 }
 
-.vehicleCard table {
+#editDiv .vehicleCard table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 6px;
   margin-bottom: 6px;
 }
 
-.vehicleCard td {
+#editDiv .vehicleCard td {
   padding: 4px 6px;
   font-size: 12px;
 }
 
-.vehicleStats {
+#editDiv .vehicleStats {
   text-align: center;
 }
 
-/* ===== TABLES ===== */
-table {
+#editDiv table {
   width: 100%;
   border-collapse: collapse;
 }
 
-th {
+#editDiv th {
   background: #2a2a2a;
   color: #ddd;
   border-bottom: 1px solid #555;
@@ -336,77 +331,67 @@ th {
   font-weight: normal;
 }
 
-td {
+#editDiv td {
   border-bottom: 1px solid #333;
   padding: 4px;
 }
 
-/* alternating subtle row background */
-tr:nth-child(even) td {
+#editDiv tr:nth-child(even) td {
   background: #1b1b1b;
 }
 
-/* ===== WEAPONS / UPGRADES ===== */
-.vehicleCard table tr:first-child th:last-child {
+#editDiv .vehicleCard table tr:first-child th:last-child {
   text-align: right;
 }
 
-.vehicleCard table button {
+#editDiv .vehicleCard table button {
   padding: 2px 6px;
 }
 
-/* remove button */
-.removeButton {
+#editDiv .removeButton {
   color: white;
   background: #500;
   border: 1px solid #a00;
 }
 
-.removeButton:hover {
+#editDiv .removeButton:hover {
   background: #700;
 }
 
-/* add button */
-.addButton {
+#editDiv .addButton {
   color: #0f0;
   border: 1px solid #080;
 }
 
-/* ===== LINKS ===== */
-a,
+#editDiv a,
 .add-link {
   color: #59a6ff;
   cursor: pointer;
   font-size: 12px;
 }
 
-.add-link:hover {
+#editDiv .add-link:hover {
   text-decoration: underline;
 }
 
-/* ===== SMALL TEXT ===== */
-.vehicleCard td,
-.vehicleCard th {
+#editDiv .vehicleCard td,
+#editDiv .vehicleCard th {
   font-size: 12px;
 }
 
-/* free slots / stats highlight */
-.vehicleCard td strong {
+#editDiv .vehicleCard td strong {
   color: #6fcf97;
 }
 
-/* blue link like "add vehicle" */
-button,
+#editDiv button,
 .add-link {
   color: #4da3ff;
 }
 
-/* dropdown compact look */
-select {
+#editDiv select {
   font-size: 12px;
 }
 
-/* ===== PRINT ===== */
 .noprint {
   display: block;
 }
