@@ -84,65 +84,347 @@ textarea {
    Author's custom styles
    ========================================================================== */
 
+/* ===== GLOBAL ===== */
 body {
-  background: #0f1115;
-  color: #ddd;
-  font-family: Arial;
-  padding: 20px;
+  background: #111;
+  color: #eee;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 14px;
+  margin: 0;
 }
 
-.panel {
-  background: #1b1f27;
-  padding: 10px;
-  margin-bottom: 10px;
-  border: 1px solid #333;
-}
-
-.vehicle {
-  border: 1px solid #444;
-  padding: 10px;
-  margin-top: 10px;
-}
-
+/* ===== HEADER ===== */
 .header {
-  display: flex;
-  justify-content: space-between;
+  padding: 8px;
+  background: #1a1a1a;
   border-bottom: 1px solid #333;
 }
 
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 6px;
-}
-
-th,
-td {
-  border: 1px solid #333;
-  padding: 4px;
+button {
+  background: #2a2a2a;
+  color: #eee;
+  border: 1px solid #555;
+  padding: 4px 8px;
+  cursor: pointer;
   font-size: 12px;
 }
 
-select,
-button,
-input {
-  background: #222;
-  color: #eee;
+button:hover {
+  background: #3a3a3a;
+}
+
+/* ===== TEAM CARD ===== */
+.teamCard {
+  margin: 10px;
+  border: 1px solid #333;
+  background: #181818;
+}
+
+.teamHeader {
+  width: 100%;
+  border-collapse: collapse;
+  background: linear-gradient(#222, #111);
+}
+
+.teamHeader td {
+  padding: 6px;
+}
+
+.teamHeader input,
+.teamHeader select {
+  background: #111;
+  color: white;
+  border: 1px solid #555;
+  padding: 2px 6px;
+}
+
+.teamHeader td:nth-child(1) {
+  width: 170px;
+}
+
+.teamHeader td:nth-child(3) {
+  color: #ff4444;
+  font-weight: bold;
+  text-align: right;
+  width: 100px;
+}
+
+.teamHeader td:nth-child(4) {
+  width: 40px;
+}
+
+.teamHeader td:nth-child(4) input {
+  width: 40px;
+}
+
+.teamHeader td:nth-child(5) {
+  width: 40px;
+}
+
+.teamHeader td:nth-child(6) {
+  width: 0px;
+}
+
+.teamHeader td:nth-child(7) {
+  width: 0px;
+}
+
+.addVehicle {
+  margin: 6px;
+}
+
+/* ===== VEHICLE CARD ===== */
+.vehicleHeader td:nth-child(1) {
+  width: 170px;
+}
+
+.vehicleHeader td:nth-child(3) {
+  width: 50px;
+}
+
+.vehicleHeader td:nth-child(4) {
+  width: 0px;
+}
+
+.trailerTable td:nth-child(1) {
+  width: 150px;
+}
+
+.trailerTable td:nth-child(2) {
+  width: 150px;
+}
+
+.trailerTable td:nth-child(3) {
+  text-align: right;
+}
+
+.trailerTable td:last-child {
+  width: 150px;
+}
+
+.trailerTable td:last-child select {
+  width: 150px;
+}
+
+.weaponsTable td:nth-child(1) {
+  width: 150px;
+}
+
+.weaponsTable td:nth-child(2) {
+  width: 70px;
+}
+
+.weaponsTable td:nth-child(3) {
+  width: 70px;
+}
+
+.weaponsTable td:nth-last-child(7) {
+  width: 70px;
+}
+
+.weaponsTable td:nth-last-child(6) {
+  width: 50px;
+}
+
+.weaponsTable td:nth-last-child(5) {
+  width: 150px;
+}
+
+.weaponsTable td:nth-last-child(3) {
+  width: 30px;
+  text-align: center;
+}
+
+.weaponsTable td:nth-last-child(2) {
+  width: 30px;
+  text-align: center;
+}
+
+.weaponsTable td:last-child {
+  width: 0px;
+  text-align: center;
+}
+
+.upgradesTable th:nth-child(1),
+.upgradesTable td:nth-child(1) {
+  width: 170px;
+}
+
+.upgradesTable th:nth-child(2),
+.upgradesTable td:nth-child(2) {
+  width: 30px;
+  text-align: center;
+}
+
+.upgradesTable th:nth-child(3),
+.upgradesTable td:nth-child(3) {
+  width: 30px;
+  text-align: center;
+}
+
+.upgradesTable th:nth-last-child(2),
+.upgradesTable td:nth-last-child(2) {
+  width: 30px;
+  text-align: center;
+}
+
+.upgradesTable th:last-child,
+.upgradesTable td:last-child {
+  width: 0px;
+  text-align: center;
+}
+
+.perksTable th:nth-child(1),
+.perksTable td:nth-child(1) {
+  width: 170px;
+}
+
+.perksTable th:nth-last-child(2),
+.perksTable td:nth-last-child(2) {
+  width: 30px;
+  text-align: center;
+}
+
+.perksTable th:last-child,
+.perksTable td:last-child {
+  width: 0px;
+}
+
+.vehicleCard {
+  margin: 8px;
+  padding: 8px;
   border: 1px solid #444;
+  background: #202020;
 }
 
-.small {
-  font-size: 11px;
-  color: #aaa;
+.vehicleCard input,
+.vehicleCard select {
+  background: #111;
+  color: #fff;
+  border: 1px solid #666;
+  padding: 3px 6px;
 }
 
-.error {
-  color: #ff5555;
+.vehicleCard table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 6px;
+  margin-bottom: 6px;
+}
+
+.vehicleCard td {
+  padding: 4px 6px;
+  font-size: 12px;
+}
+
+.vehicleStats {
+  text-align: center;
+}
+
+/* ===== TABLES ===== */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th {
+  background: #2a2a2a;
+  color: #ddd;
+  border-bottom: 1px solid #555;
+  text-align: left;
+  padding: 4px;
+  font-weight: normal;
+}
+
+td {
+  border-bottom: 1px solid #333;
+  padding: 4px;
+}
+
+/* alternating subtle row background */
+tr:nth-child(even) td {
+  background: #1b1b1b;
+}
+
+/* ===== WEAPONS / UPGRADES ===== */
+.vehicleCard table tr:first-child th:last-child {
+  text-align: right;
+}
+
+.vehicleCard table button {
+  padding: 2px 6px;
+}
+
+/* remove button */
+.removeButton {
+  color: white;
+  background: #500;
+  border: 1px solid #a00;
+}
+
+.removeButton:hover {
+  background: #700;
+}
+
+/* add button */
+.addButton {
+  color: #0f0;
+  border: 1px solid #080;
+}
+
+/* ===== LINKS ===== */
+a,
+.add-link {
+  color: #59a6ff;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.add-link:hover {
+  text-decoration: underline;
+}
+
+/* ===== SMALL TEXT ===== */
+.vehicleCard td,
+.vehicleCard th {
+  font-size: 12px;
+}
+
+/* free slots / stats highlight */
+.vehicleCard td strong {
+  color: #6fcf97;
+}
+
+/* blue link like "add vehicle" */
+button,
+.add-link {
+  color: #4da3ff;
+}
+
+/* dropdown compact look */
+select {
+  font-size: 12px;
+}
+
+/* ===== PRINT ===== */
+.noprint {
+  display: block;
 }
 
 @media print {
   .noprint {
     display: none !important;
+  }
+
+  body {
+    background: white;
+    color: black;
+  }
+
+  .teamCard,
+  .vehicleCard {
+    border: none;
+    background: white;
   }
 }
 

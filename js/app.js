@@ -1,28 +1,36 @@
-/* ===============================
-   ENGINE + UI (FULL INTEGRATION)
-================================ */
 let printMode = false;
-let team = [];
+let teams = [];
+let currentTeamIndex = 0;
 
-const sponsorSelect = document.getElementById("sponsorSelect");
+function setSponsor(ti, value) {
+  const team = teams[ti];
+  team.sponsor = value;
 
-allSponsors.forEach((s) => {
-  let o = document.createElement("option");
-  o.value = s.name;
-  o.textContent = s.name;
-  sponsorSelect.appendChild(o);
-});
-
-function getSponsor() {
-  return sponsorSelect.value;
+  render();
 }
 
-/* ===============================
-   HELPERS
-================================ */
+function teamCost(team) {
+  return team.vehicles.reduce((s, v) => s + vehicleCost(v, team.sponsor), 0);
+}
 
-function openPrintPreview() {
+function changeVehicle(ti, vi, type) {
+  const base = structuredClone(allVehicles.find((v) => v.vtype === type));
+
+  const old = teams[ti].vehicles[vi];
+
+  base.vehicleName = old.vehicleName;
+  base.weapons = old.weapons;
+  base.upgrades = old.upgrades;
+  base.perks = old.perks;
+
+  teams[ti].vehicles[vi] = base;
+
+  render();
+}
+
+function openPrintPreview(i) {
   printMode = true;
+  currentTeamIndex = i;
   render();
 }
 
@@ -41,9 +49,12 @@ function getVehicleKeywords(v) {
   return [...new Set([...base, ...upgradeKeywords])];
 }
 
-/* ===============================
-   VEHICLE STATS
-================================ */
+function setWeaponLocation(ti, vi, wi, loc) {
+  const v = teams[ti].vehicles[vi];
+  v.weapons[wi].location = loc;
+
+  render();
+}
 
 function canHaveTrailer(v, sponsor) {
   return (
@@ -77,7 +88,7 @@ function allowedTrailers(v, sponsor) {
   }
 
   if (v.vtype === "War Rig") {
-    return [v.trailer]; // fixed
+    return [v.trailer];
   }
 
   return allTrailers;
@@ -115,9 +126,86 @@ function computeStats(v) {
   };
 }
 
-/* ===============================
-   WEAPON LOGIC
-================================ */
+function addWeapon(ti, vi) {
+  let team = teams[ti];
+  let v = team.vehicles[vi];
+
+  let options = allowedWeaponsFull(v, team.sponsor);
+
+  let base = options.find((w) => w.wtype === "Heavy Machine Gun") || options[0];
+
+  let newW = structuredClone(base);
+
+  v.weapons.push({
+    weapon: newW,
+    facing: allowedFacings(v, newW)[0],
+    location: allowedLocations(v)[0],
+  });
+
+  render();
+}
+
+function removeWeapon(ti, vi, wi) {
+  teams[ti].vehicles[vi].weapons.splice(wi, 1);
+  render();
+}
+
+function addUpgrade(ti, vi) {
+  const team = teams[ti];
+  const v = team.vehicles[vi];
+
+  const opts = allowedUpgradesFull(v, team.sponsor);
+  if (!opts.length) return;
+
+  const base = structuredClone(opts[0]);
+
+  const current = usedSlots(v);
+  const slotVal = base.slots || 0;
+
+  if (current + slotVal > totalSlots(v)) {
+    alert("Not enough slots");
+    return;
+  }
+
+  v.upgrades.push(base);
+
+  render();
+}
+
+function removeUpgrade(ti, vi, ui) {
+  const v = teams[ti].vehicles[vi];
+
+  v.upgrades.splice(ui, 1);
+
+  render();
+}
+
+function setTrailer(ti, vi, type) {
+  const team = teams[ti];
+  const v = team.vehicles[vi];
+
+  const t = allTrailers.find((x) => x.ttype === type);
+  if (!t) return;
+
+  v.trailer = structuredClone(t);
+  if (v.trailer.ttype === "None") {
+    v.cargo = structuredClone(allCargos[0]);
+  }
+
+  render();
+}
+
+function setCargo(ti, vi, type) {
+  const team = teams[ti];
+  const v = team.vehicles[vi];
+
+  const c = allCargos.find((x) => x.ctype === type);
+  if (!c) return;
+
+  v.cargo = structuredClone(c);
+
+  render();
+}
 
 function weaponAttack(v, w) {
   if (
@@ -176,10 +264,6 @@ function weaponRules(v, w) {
   return r;
 }
 
-/* ===============================
-   FACINGS
-================================ */
-
 function allowedFacings(v, w) {
   if (
     w.crewFired ||
@@ -205,10 +289,6 @@ function allowedFacings(v, w) {
   return ["Front", "Rear", "Sides"];
 }
 
-/* ===============================
-   TURRET COST (IDENTICAL LOGIC)
-================================ */
-
 function weaponCost(v, entry) {
   let base = entry.weapon.cost;
 
@@ -229,10 +309,6 @@ function weaponCost(v, entry) {
   return entry === max ? base : base * 3;
 }
 
-/* ===============================
-   UPGRADE COST
-================================ */
-
 function upgradeCost(v, u, sponsor) {
   let c = u.cost;
 
@@ -244,7 +320,6 @@ function upgradeCost(v, u, sponsor) {
 
 function allowedUpgradesFull(v, sponsor) {
   return allUpgrades.filter((u) => {
-    // sponsor restriction
     if (
       u.allowedSponsors &&
       u.allowedSponsors.length > 0 &&
@@ -253,19 +328,14 @@ function allowedUpgradesFull(v, sponsor) {
       return false;
     }
 
-    // ===== ORIGINAL VEHICLE RESTRICTIONS =====
-
-    // Nitro not allowed if Jet Engine
     if (u.utype === "Nitro Booster" && v.keywords?.includes("Jet Engine")) {
       return false;
     }
 
-    // Prison Vehicle only Middle weight
     if (u.utype === "Prison Vehicle" && v.weight !== "Middle") {
       return false;
     }
 
-    // Tank tracks restrictions
     if (
       u.utype === "Tank tracks" &&
       ["Helicopter", "Gyrocopter", "Tank"].includes(v.vtype)
@@ -273,7 +343,6 @@ function allowedUpgradesFull(v, sponsor) {
       return false;
     }
 
-    // Extra crew limit
     if (u.utype === "Extra Crewmember") {
       let maxCrew = v.crew * 2;
       let currentCrew = computeStats(v).crew;
@@ -283,7 +352,6 @@ function allowedUpgradesFull(v, sponsor) {
       }
     }
 
-    // limit property
     if (u.limit != null) {
       let count = v.upgrades.filter((x) => x.utype === u.utype).length;
       if (count >= u.limit) {
@@ -294,36 +362,6 @@ function allowedUpgradesFull(v, sponsor) {
     return true;
   });
 }
-
-/* ===============================
-   PERKS
-================================ */
-
-function allowedPerks(v, sponsor) {
-  let s = allSponsors.find((x) => x.name === sponsor);
-
-  return allPerks.filter((p) => {
-    if (!s.perkClasses.includes(p.class)) return false;
-
-    if (p.ptype === "Stunt Driver") {
-      return ["Light", "Middle"].includes(v.weight) && v.handling >= 3;
-    }
-
-    if (p.ptype === "Skiing") {
-      return v.handling >= 3;
-    }
-
-    if (p.ptype === "Experimental Nuclear Engine") {
-      return v.weight !== "Light";
-    }
-
-    return true;
-  });
-}
-
-/* ===============================
-   COST
-================================ */
 
 function vehicleCost(v, sponsor) {
   let base = v.cost;
@@ -340,10 +378,6 @@ function vehicleCost(v, sponsor) {
   return base + wc + uc + pc + tc;
 }
 
-/* ===============================
-   SLOTS
-================================ */
-
 function usedSlots(v) {
   let ws = v.weapons.reduce((s, w) => {
     let val = weaponSlots(v, w.weapon);
@@ -359,11 +393,41 @@ function totalSlots(v) {
   return v.slots + trailerSlots(v);
 }
 
-/* ===============================
-   ACTIONS
-================================ */
+function allowedLocations(v) {
+  let locs = ["Cab"];
 
-function addVehicle() {
+  if (v.trailer && v.trailer.ttype !== "None") {
+    locs.push("Trailer");
+  }
+  if (v.vtype === "War Rig") {
+    locs.push("Trailer");
+  }
+
+  return locs;
+}
+
+function createTeam() {
+  return {
+    name: "New Team",
+    sponsor: allSponsors[0]?.name || "",
+    vehicles: [],
+    maxCost: 50,
+  };
+}
+
+function addTeam() {
+  teams.push(createTeam());
+  currentTeamIndex = teams.length - 1;
+  render();
+}
+
+function removeTeam(i) {
+  teams.splice(i, 1);
+  currentTeamIndex = Math.max(0, currentTeamIndex - 1);
+  render();
+}
+
+function addVehicle(i) {
   let v = structuredClone(defaultVehicle);
   v.name = "Vehicle";
   v.weapons = [];
@@ -372,38 +436,89 @@ function addVehicle() {
   v.trailer = allTrailers[0];
   v.cargo = allCargos[0];
 
-  team.push(v);
+  teams[i].vehicles.push(v);
   render();
 }
 
-function removeVehicle(i) {
-  team.splice(i, 1);
+function removeVehicle(ti, vi) {
+  const team = teams[ti];
+  team.vehicles.splice(vi, 1);
   render();
 }
 
-function changeVehicle(i, type) {
-  let base = structuredClone(allVehicles.find((v) => v.vtype === type));
-  base.name = team[i].name;
-  base.weapons = team[i].weapons;
-  base.upgrades = team[i].upgrades;
-  base.perks = team[i].perks;
-  team[i] = base;
+function changeUpgrade(ti, vi, ui, type) {
+  const team = teams[ti];
+  const v = team.vehicles[vi];
+
+  const base = allUpgrades.find((x) => x.utype === type);
+  if (!base) return;
+
+  const current = usedSlots(v);
+
+  const oldSlots = v.upgrades[ui].slots || 0;
+  const newSlots = base.slots || 0;
+
+  if (current - oldSlots + newSlots > totalSlots(v)) {
+    alert("Not enough slots");
+    return;
+  }
+
+  v.upgrades[ui] = structuredClone(base);
+
   render();
 }
 
-function addWeapon(i) {
-  let v = team[i];
-  let sponsor = getSponsor();
+function changeWeapon(ti, vi, wi, newType) {
+  const team = teams[ti];
+  const v = team.vehicles[vi];
 
-  let sel = document.getElementById(`weaponSel_${i}`);
-  let w = structuredClone(allWeapons.find((x) => x.wtype === sel.value));
+  const baseW = allWeapons.find((w) => w.wtype === newType);
+  if (!baseW) return;
 
-  // ✅ calculate current slots
-  let currentSlots = usedSlots(v);
+  const newWeapon = structuredClone(baseW);
 
-  let newSlots = weaponSlots(v, w);
+  const currentSlots = usedSlots(v);
 
-  let slotValue = newSlots === "-" ? 0 : newSlots;
+  const oldSlots = weaponSlots(v, v.weapons[wi].weapon);
+  const newSlots = weaponSlots(v, newWeapon);
+
+  const oldVal = oldSlots === "-" ? 0 : oldSlots;
+  const newVal = newSlots === "-" ? 0 : newSlots;
+
+  const adjustedSlots = currentSlots - oldVal + newVal;
+
+  if (adjustedSlots > totalSlots(v)) {
+    alert("Not enough slots");
+    return;
+  }
+
+  v.weapons[wi].weapon = newWeapon;
+
+  const facings = allowedFacings(v, newWeapon);
+  if (!facings.includes(v.weapons[wi].facing)) {
+    v.weapons[wi].facing = facings[0];
+  }
+
+  render();
+}
+
+function addVehicleWeapon(ti, vi) {
+  const team = teams[ti];
+  const v = team.vehicles[vi];
+
+  const sponsor = team.sponsor;
+
+  const options = allowedWeaponsFull(v, sponsor);
+
+  if (!options || options.length === 0) {
+    return;
+  }
+
+  const baseW = structuredClone(options[0]);
+
+  const currentSlots = usedSlots(v);
+  const newSlots = weaponSlots(v, baseW);
+  const slotValue = newSlots === "-" ? 0 : newSlots;
 
   if (currentSlots + slotValue > totalSlots(v)) {
     alert("Not enough slots");
@@ -411,74 +526,73 @@ function addWeapon(i) {
   }
 
   v.weapons.push({
-    weapon: w,
-    facing: allowedFacings(v, w)[0],
+    weapon: baseW,
+    facing: allowedFacings(v, baseW)[0],
+    location: allowedLocations(v)[0],
   });
 
   render();
 }
-function addUpgrade(i) {
-  let v = team[i];
-  let sponsor = getSponsor();
 
-  let sel = document.getElementById(`upgradeSel_${i}`);
-  let u = structuredClone(allUpgrades.find((x) => x.utype === sel.value));
+function setWeaponFacing(ti, vi, wi, facing) {
+  const team = teams[ti];
+  const v = team.vehicles[vi];
 
-  // ✅ calculate weapon slot usage
-  let weaponSlotTotal = v.weapons.reduce((sum, w) => {
-    let val = weaponSlots(v, w.weapon);
-    return sum + (val === "-" ? 0 : val);
-  }, 0);
+  v.weapons[wi].facing = facing;
 
-  // ✅ calculate upgrade slot usage
-  let upgradeSlotTotal = v.upgrades.reduce((sum, upg) => {
-    return sum + (upg.slots || 0);
-  }, 0);
-
-  let totalUsed = weaponSlotTotal + upgradeSlotTotal;
-
-  if (totalUsed + (u.slots || 0) > totalSlots(v)) {
-    alert("Not enough slots");
-    return;
-  }
-
-  v.upgrades.push(u);
   render();
 }
 
-function addPerk(i) {
-  let v = team[i];
-  let sponsor = getSponsor();
+function allowedPerks(sponsorName) {
+  const sponsor = allSponsors.find((s) => s.name === sponsorName);
 
-  let options = allowedPerks(v, sponsor);
+  if (!sponsor) return [];
 
-  // ✅ no perks available → do nothing
-  if (!options || options.length === 0) {
-    return;
+  if (sponsor.name === "None") {
+    return [];
   }
 
-  let sel = document.getElementById(`perkSel_${i}`);
+  return allPerks.filter((p) => sponsor.perkClasses.includes(p.class));
+}
 
-  let p = allPerks.find((x) => x.ptype === sel.value);
+function addPerk(ti, vi) {
+  const team = teams[ti];
+  const v = team.vehicles[vi];
 
-  // ✅ guard invalid selection
-  if (!p) {
-    return;
-  }
+  const opts = allowedPerks(team.sponsor);
+  if (!opts.length) return;
 
-  // ✅ enforce duplicate restriction
-  if (v.perks.some((pp) => pp.ptype === p.ptype)) {
-    return;
-  }
+  const base = structuredClone(
+    opts.find((p) => p.class === team.perkClass) || opts[0],
+  );
 
-  v.perks.push(p);
+  v.perks.push(base);
+
+  render();
+}
+
+function changePerk(ti, vi, pi, type) {
+  const team = teams[ti];
+  const v = team.vehicles[vi];
+
+  const base = allPerks.find((x) => x.ptype === type);
+  if (!base) return;
+
+  v.perks[pi] = structuredClone(base);
+
+  render();
+}
+
+function removePerk(ti, vi, pi) {
+  const v = teams[ti].vehicles[vi];
+
+  v.perks.splice(pi, 1);
 
   render();
 }
 
 function allowedWeaponsFull(v, sponsor) {
   return allWeapons.filter((w) => {
-    // ✅ Sponsor restriction
     if (
       w.allowedSponsors &&
       w.allowedSponsors.length > 0 &&
@@ -487,12 +601,10 @@ function allowedWeaponsFull(v, sponsor) {
       return false;
     }
 
-    // ✅ Exploding Ram restriction
     if (w.wtype === "Exploding Ram" && v.weight === "Light") {
       return false;
     }
 
-    // ✅ Limit enforcement (safe!)
     if (w.limit != null) {
       let count = v.weapons.reduce((c, entry) => {
         if (!entry || !entry.weapon) return c;
@@ -508,303 +620,36 @@ function allowedWeaponsFull(v, sponsor) {
   });
 }
 
-/* ===============================
-   RENDER
-================================ */
-
-function render() {
-  let editDiv = document.getElementById("editDiv");
-  let printDiv = document.getElementById("printDiv");
-  let headerDiv = document.getElementById("headerDiv");
-
-  if (printMode) {
-    editDiv.style.display = "none";
-    printDiv.style.display = "block";
-    headerDiv.style.display = "none";
-  } else {
-    editDiv.style.display = "block";
-    printDiv.style.display = "none";
-    headerDiv.style.display = "block";
-  }
-
-  editDiv.innerHTML = "";
-
-  let sponsor = getSponsor();
-  let total = 0;
-
-  team.forEach((v, i) => {
-    let stats = computeStats(v);
-
-    let trailerOptions = allowedTrailers(v, sponsor)
-      .map(
-        (t) =>
-          `<option ${t.ttype === v.trailer?.ttype ? "selected" : ""}>${t.ttype}</option>`,
-      )
-      .join("");
-
-    let cargoOptions = allowedCargo(v, sponsor)
-      .map(
-        (c) =>
-          `<option ${c.ctype === v.cargo?.ctype ? "selected" : ""}>${c.ctype}</option>`,
-      )
-      .join("");
-
-    // fix illegal facings automatically
-    v.weapons.forEach((w) => {
-      let allowed = allowedFacings(v, w.weapon);
-      if (!allowed.includes(w.facing)) w.facing = allowed[0];
-    });
-
-    let cost = vehicleCost(v, sponsor);
-    total += cost;
-
-    let div = document.createElement("div");
-
-    let wRows = v.weapons
-      .map(
-        (w, wi) => `
-      <tr>
-        <td>${w.weapon.wtype}</td>
-        <td>
-          <select onchange="team[${i}].weapons[${wi}].facing=this.value;render();">
-            ${allowedFacings(v, w.weapon)
-              .map(
-                (f) =>
-                  `<option ${f === w.facing ? "selected" : ""}>${f}</option>`,
-              )
-              .join("")}
-          </select>
-        </td>
-        <td>${w.weapon.attackType}</td>
-        <td>${weaponAttack(v, w.weapon)}</td>
-        <td>${weaponRange(v, w.weapon)}</td>
-        <td>${weaponRules(v, w.weapon)}</td>
-        <td>${weaponAmmo(v, w.weapon, sponsor)}</td>
-        <td>${weaponSlots(v, w.weapon)}</td>
-        <td>${format0(weaponCost(v, w))}</td>
-        <td><button onclick="team[${i}].weapons.splice(${wi},1);render()">X</button></td>
-      </tr>
-    `,
-      )
-      .join("");
-
-    let uRows = v.upgrades
-      .map(
-        (u, ui) => `
-      <tr>
-        <td>${u.utype}</td>
-        <td>${format0(u.ammo)}</td>
-        <td>${format0(u.slots)}</td>
-        <td>${u.specialRules || ""}</td>
-        <td>${format0(upgradeCost(v, u, sponsor))}</td>
-        <td><button onclick="team[${i}].upgrades.splice(${ui},1);render()">X</button></td>
-      </tr>
-    `,
-      )
-      .join("");
-
-    let pRows = v.perks
-      .map(
-        (p, pi) => `
-      <tr>
-        <td>${p.ptype}</td>
-        <td>${p.rules}</td>
-        <td>${format0(p.cost)}</td>
-        <td><button onclick="team[${i}].perks.splice(${pi},1);render()">X</button></td>
-      </tr>
-    `,
-      )
-      .join("");
-
-    div.innerHTML = `
-      <div>
-        <input value="${v.name}" onchange="team[${i}].name=this.value"/>
-        <select onchange="changeVehicle(${i},this.value)">
-          ${allVehicles.map((x) => `<option ${x.vtype === v.vtype ? "selected" : ""}>${x.vtype}</option>`).join("")}
-        </select>
-        ${cost} cans
-        <button onclick="removeVehicle(${i})">X</button>
-      </div>
-
-      <div>
-        Weight: ${v.weight}weight |
-        Hull: ${stats.hull} |
-        Handling: ${stats.handling} |
-        Max gear: ${stats.maxGear} |
-        Crew: ${stats.crew} |
-        Free slots: ${totalSlots(v) - usedSlots(v)}
-      </div>
-
-      <div>Keywords: ${getVehicleKeywords(v).join(", ")}</div>
-      <div>
-        Trailer:
-        <select onchange="
-          let t = allTrailers.find(x=>x.ttype===this.value);
-          team[${i}].trailer = t;
-          render();
-        ">
-          ${trailerOptions}
-        </select>
-
-        Cargo:
-        <select onchange="
-          let c = allCargos.find(x=>x.ctype===this.value);
-          team[${i}].cargo = c;
-          render();
-        ">
-          ${cargoOptions}
-        </select>
-      </div>
-      <table>
-        <tr>
-          <th>Weapon</th><th>Facing</th><th>Type</th><th>Attack</th>
-          <th>Range</th><th>Rules</th><th>Ammo</th><th>Slots</th><th>Cost</th><th></th>
-        </tr>
-
-        <tr>
-          <td>Handgun</td><td>360</td><td>Shooting</td>
-          <td>1D6</td><td>Medium</td><td>Blitz</td>
-          <td>-</td><td>-</td><td>-</td><td></td>
-        </tr>
-
-        ${wRows}
-      </table>
-
-      <select id="weaponSel_${i}">
-        ${allowedWeaponsFull(v, sponsor)
-          .map((w) => `<option>${w.wtype}</option>`)
-          .join("")}
-      </select>
-      <button onclick="addWeapon(${i})">+</button>
-
-      <table>
-        <tr><th>Upgrade</th><th>Ammo</th><th>Slots</th><th>Rules</th><th>Cost</th><th></th></tr>
-        ${uRows}
-      </table>
-
-      <select id="upgradeSel_${i}">
-        ${allowedUpgradesFull(v, sponsor)
-          .map((u) => `<option>${u.utype}</option>`)
-          .join("")}
-      </select>
-
-      <button onclick="addUpgrade(${i})">+</button>
-
-      <table>
-        <tr><th>Perk</th><th>Rules</th><th>Cost</th><th></th></tr>
-        ${pRows}
-      </table>
-      
-      ${
-        allowedPerks(v, sponsor).length > 0
-          ? `
-          <select id="perkSel_${i}">
-            ${allowedPerks(v, sponsor)
-              .map((p) => `<option>${p.ptype}</option>`)
-              .join("")}
-          </select>
-          <button onclick="addPerk(${i})">+</button>
-          `
-          : `<div class="small">No perks available</div>`
-      }`;
-
-    editDiv.appendChild(div);
-  });
-
-  document.getElementById("totalCost").textContent = total;
-
-  printDiv.innerHTML = `
-    <button class="noprint" onclick="closePrintPreview()">Close</button>
-    <button class="noprint" onclick="window.print()">Print</button>
-  `;
-
-  team.forEach((v) => {
-    let stats = computeStats(v);
-    let cost = vehicleCost(v, sponsor);
-
-    let wRows = v.weapons
-      .map(
-        (w) => `
-      <tr>
-        <td>${w.weapon.wtype}</td>
-        <td>${w.facing}</td>
-        <td>${weaponRange(v, w.weapon)}</td>
-        <td>${weaponAttack(v, w.weapon)}</td>
-        <td>${weaponAmmo(v, w.weapon, getSponsor())}</td>
-        <td>${weaponRules(v, w.weapon)}</td>
-      </tr>
-    `,
-      )
-      .join("");
-
-    let uList = v.upgrades.map((u) => u.utype).join(", ");
-    let pList = v.perks.map((p) => p.ptype).join(", ");
-
-    let block = document.createElement("div");
-
-    block.className = "printCard";
-
-    block.innerHTML = `
-      <h2>${v.name}</h2>
-
-      <div>
-        ${v.weight}weight | Hull ${stats.hull} |
-        Handling ${stats.handling} |
-        Gear ${stats.maxGear} |
-        Crew ${stats.crew} |
-        Cost ${cost} cans
-      </div>
-
-      <table>
-        <tr>
-          <th>Weapon</th>
-          <th>Facing</th>
-          <th>Range</th>
-          <th>Attack</th>
-          <th>Ammo</th>
-          <th>Rules</th>
-        </tr>
-
-        <tr>
-          <td>Handgun</td>
-          <td>360</td>
-          <td>Medium</td>
-          <td>1D6</td>
-          <td>-</td>
-          <td>Blitz</td>
-        </tr>
-
-        ${wRows}
-      </table>
-
-      <div><b>Upgrades:</b> ${uList || "-"}</div>
-      <div><b>Perks:</b> ${pList || "-"}</div>
-    `;
-
-    printDiv.appendChild(block);
-  });
-}
-
-function serializeTeam() {
+function serializeAll() {
   return JSON.stringify(
     {
-      team: team.map((v) => ({
-        name: v.name,
-        vtype: v.vtype,
-        weapons: v.weapons.map((w) => ({
-          wtype: w.weapon.wtype,
-          facing: w.facing,
+      teams: teams.map((t) => ({
+        teamName: t.teamName,
+        sponsor: t.sponsor,
+        maxCost: t.maxCost,
+
+        vehicles: t.vehicles.map((v) => ({
+          vehicleName: v.vehicleName,
+          vehicleType: v.vtype,
+
+          weapons: v.weapons.map((w) => ({
+            weaponType: w.weapon.wtype,
+            facing: w.facing,
+            location: w.location,
+          })),
+
+          upgrades: v.upgrades.map((u) => ({
+            upgradeType: u.utype,
+          })),
+
+          perks: v.perks.map((p) => ({
+            perkType: p.ptype,
+          })),
+
+          trailer: v.trailer.ttype || "None",
+          cargo: v.cargo.ctype || "None",
         })),
-        upgrades: v.upgrades.map((u) => ({
-          utype: u.utype,
-        })),
-        perks: v.perks.map((p) => ({
-          ptype: p.ptype,
-        })),
-        trailer: v.trailer?.ttype || "None",
-        cargo: v.cargo?.ctype || "None",
       })),
-      sponsor: getSponsor(),
     },
     null,
     2,
@@ -812,83 +657,156 @@ function serializeTeam() {
 }
 
 function saveToFile() {
-  let data = serializeTeam();
+  if (window.showSaveFilePicker) {
+    saveUsingFilePicker();
+  } else {
+    saveUsingDownload();
+  }
+}
 
-  let blob = new Blob([data], { type: "application/json" });
-  let url = URL.createObjectURL(blob);
+async function saveUsingFilePicker() {
+  try {
+    const handle = await window.showSaveFilePicker({
+      suggestedName: "gaslands_teams.json",
+      types: [
+        {
+          description: "JSON",
+          accept: { "application/json": [".json"] },
+        },
+      ],
+    });
 
-  let a = document.createElement("a");
+    const writable = await handle.createWritable();
+
+    await writable.write(serializeAll());
+    await writable.close();
+  } catch (e) {
+    console.log("Save cancelled", e);
+  }
+}
+
+function saveUsingDownload() {
+  const data = serializeAll();
+
+  const blob = new Blob([data], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+
+  const a = document.createElement("a");
   a.href = url;
-  a.download = "gaslands_team.json";
+  a.download = "gaslands_teams.json";
 
   document.body.appendChild(a);
   a.click();
-
   document.body.removeChild(a);
+
+  URL.revokeObjectURL(url);
 }
 
-function loadFromFile(event) {
+function loadFromDialog() {
+  // ✅ modern browsers
+  if (window.showOpenFilePicker) {
+    loadUsingFilePicker();
+  } else {
+    // ✅ fallback
+    document.getElementById("fallbackLoadInput").click();
+  }
+}
+
+function loadFromFileInput(event) {
   const file = event.target.files[0];
   if (!file) return;
 
   const reader = new FileReader();
 
-  reader.onload = function (e) {
-    const data = JSON.parse(e.target.result);
+  reader.onload = (e) => {
+    loadFromText(e.target.result);
+  };
 
-    // restore sponsor
-    if (data.sponsor) {
-      sponsorSelect.value = data.sponsor;
-    }
+  reader.readAsText(file);
+}
 
-    // rebuild team
-    team = (data.team || [])
+async function loadUsingFilePicker() {
+  try {
+    const [handle] = await window.showOpenFilePicker({
+      types: [
+        {
+          description: "JSON",
+          accept: { "application/json": [".json"] },
+        },
+      ],
+    });
+
+    const file = await handle.getFile();
+    const text = await file.text();
+
+    loadFromText(text);
+  } catch (e) {
+    console.log("Load cancelled", e);
+  }
+}
+
+function loadFromText(text) {
+  const data = JSON.parse(text);
+
+  teams = (data.teams || []).map((t) => {
+    const team = {
+      teamName: t.teamName || "Team",
+      sponsor: t.sponsor || allSponsors[0]?.name || "",
+      maxCost: t.maxCost || 50,
+      vehicles: [],
+    };
+
+    team.vehicles = (t.vehicles || [])
       .map((tv) => {
-        const baseVehicle = allVehicles.find((v) => v.vtype === tv.vtype);
+        const baseVehicle = allVehicles.find((v) => v.vtype === tv.vehicleType);
         if (!baseVehicle) return null;
 
         const v = structuredClone(baseVehicle);
 
-        v.name = tv.name || "Vehicle";
+        v.vehicleName = tv.vehicleName || "Vehicle";
 
         v.weapons = (tv.weapons || [])
           .map((w) => {
-            const baseW = allWeapons.find((x) => x.wtype === w.wtype);
-            if (!baseW) return null;
-
-            return {
-              weapon: structuredClone(baseW),
-              facing: w.facing || "Front",
-            };
+            const baseW = allWeapons.find((x) => x.wtype === w.weaponType);
+            return baseW
+              ? {
+                  weapon: structuredClone(baseW),
+                  facing: w.facing,
+                  location: w.location,
+                }
+              : null;
           })
           .filter(Boolean);
 
         v.upgrades = (tv.upgrades || [])
-          .map((u) => {
-            const baseU = allUpgrades.find((x) => x.utype === u.utype);
-            return baseU ? structuredClone(baseU) : null;
-          })
+          .map((u) =>
+            structuredClone(allUpgrades.find((x) => x.utype === u.upgradeType)),
+          )
           .filter(Boolean);
 
         v.perks = (tv.perks || [])
-          .map((p) => {
-            const baseP = allPerks.find((x) => x.ptype === p.ptype);
-            return baseP ? structuredClone(baseP) : null;
-          })
+          .map((p) =>
+            structuredClone(allPerks.find((x) => x.ptype === p.perkType)),
+          )
           .filter(Boolean);
 
-        v.trailer =
-          allTrailers.find((t) => t.ttype === tv.trailer) || allTrailers[0];
-        v.cargo = allCargos.find((c) => c.ctype === tv.cargo) || allCargos[0];
+        v.trailer = allTrailers.find((t) => t.ttype === tv.trailer) || "None";
+        v.cargo = allCargos.find((c) => c.ctype === tv.cargo) || "None";
 
         return v;
       })
       .filter(Boolean);
 
-    render();
-  };
+    return team;
+  });
 
-  reader.readAsText(file);
+  if (teams.length === 0) {
+    teams.push(createTeam());
+  }
+
+  currentTeamIndex = 0;
+
+  render();
 }
 
 render();

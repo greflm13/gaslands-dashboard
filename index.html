@@ -23,27 +23,33 @@
 </head>
 
 <body>
-  <div id="headerDiv">
+
+  <!-- ================= HEADER / CONTROLS ================= -->
+  <div id="headerDiv" class="noprint header">
+    <button class="addButton" onclick="addTeam()">Add Team</button>
     <button onclick="saveToFile()">Save</button>
-
-    <input type="file" id="loadFile" style="display:none" onchange="loadFromFile(event)">
-    <button onclick="document.getElementById('loadFile').click()">Load</button>
-    <button onclick="openPrintPreview()">Print</button>
-
-    <h1 >Gaslands Builder</h1>
-
-    <div class="panel">
-      Sponsor:
-      <select id="sponsorSelect" onchange="render()"></select>
-      <button onclick="addVehicle()">Add Vehicle</button>
-    </div>
+    <button onclick="loadFromDialog()">Load</button>
+    <input type="file" id="fallbackLoadInput" style="display:none" onchange="loadFromFileInput(event)">
   </div>
-  <div id="editDiv"></div>
-  <div id="printDiv" style="display:none;"></div>
-  <h2>Total: <span id="totalCost">0</span> cans</h2>
+
+  <!-- ================= EDIT VIEW ================= -->
+  <div id="editDiv">
+    <!-- Teams are rendered here by render() -->
+  </div>
+
+  <!-- ================= PRINT VIEW ================= -->
+  <div id="printDiv" style="display:none;">
+    <div class="noprint header" style="margin-bottom:10px;">
+      <button onclick="closePrintPreview()">Close Print Preview</button>
+      <button onclick="window.print()">Print</button>
+    </div>
+    <div id="printContent"></div>
+    <!-- Printable team content is rendered here by render() -->
+  </div>
 
 
   <script src="js/data.js"></script>
+  <script src="js/render.js"></script>
   <script src="js/app.js"></script>
 </body>
 
