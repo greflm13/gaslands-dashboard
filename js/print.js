@@ -17,19 +17,20 @@ import { el } from "./render";
 export function createPrintTeamCard(team, ti) {
   const container = el("div", { class: "teamCard" });
 
-  const headerRow = el("tr", {}, [
-    el("td", { text: team.teamName }),
+  container.appendChild(
+    el("div", { class: "teamHeader" }, [
+      el("div", { text: team.teamName, class: "teamName" }),
+      el("div", { text: team.sponsor, class: "teamSponsor" }),
+      el("div", { text: teamCost(team) + " cans", class: "teamCost" }),
+    ]),
+  );
 
-    el("td", { text: team.sponsor }),
-
-    el("td", { text: teamCost(team) + " cans" }),
-  ]);
-
-  container.appendChild(el("table", { class: "teamHeader" }, [headerRow]));
+  const vehicles = el("div", { class: "teamVehicles" });
 
   team.vehicles.forEach((v, vi) => {
-    container.appendChild(createPrintVehicleCard(team, ti, v, vi));
+    vehicles.appendChild(createPrintVehicleCard(team, ti, v, vi));
   });
+  container.appendChild(vehicles);
 
   return container;
 }
@@ -165,25 +166,24 @@ function createPrintVehicleCard(team, ti, v, vi) {
   const free = totalSlots(v) - usedSlots(v);
 
   container.appendChild(
-    el("table", { class: "vehicleHeader" }, [
-      el("tr", {}, [
-        el("td", { text: v.vehicleName }),
-        el("td", { text: v.vtype }),
-        el("td", { text: `${vehicleCost(v, team.sponsor)} cans` }),
-      ]),
+    el("div", { class: "vehicleHeader" }, [
+      el("div", { text: v.vehicleName, class: "vehicleName" }),
+      el("div", { text: v.vtype, class: "vehicleType" }),
+      el("div", { text: `${v.weight}wheight`, class: "vehicleWeight" }),
     ]),
   );
 
   container.appendChild(
-    el("table", { class: "vehicleStats" }, [
-      el("tr", {}, [
-        el("td", { text: `Weight: ${v.weight}` }),
-        el("td", { text: `Hull: ${stats.hull}` }),
-        el("td", { text: `Handling: ${stats.handling}` }),
-        el("td", { text: `Max gear: ${stats.maxGear}` }),
-        el("td", { text: `Crew: ${stats.crew}` }),
-        el("td", { text: `Free slots: ${free}` }),
-      ]),
+    el("div", { class: "vehicleStats" }, [
+      el("div", { text: `Hull: ${stats.hull}` }),
+      el("div", { text: `Handling: ${stats.handling}` }),
+      el("div", { text: `Max gear: ${stats.maxGear}` }),
+      el("div", { text: `Crew: ${stats.crew}` }),
+      el("div", { text: `Free slots: ${free}` }),
+      el("div", {
+        text: `${vehicleCost(v, team.sponsor)} cans`,
+        class: "vehicleCost",
+      }),
     ]),
   );
 

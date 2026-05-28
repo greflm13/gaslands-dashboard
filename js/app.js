@@ -43,11 +43,17 @@ export function changeVehicle(ti, vi, type) {
 export function openPrintPreview(i) {
   state.printMode = true;
   state.currentTeamIndex = i;
+  const rootElement = document.getElementsByTagName("body")[0];
+  rootElement.style.background = "#fff";
+  rootElement.style.color= "#222";
   update();
 }
 
 function closePrintPreview() {
   state.printMode = false;
+  const rootElement = document.getElementsByTagName("body")[0];
+  rootElement.style.background = "#111";
+  rootElement.style.color= "#eee";
   update();
 }
 

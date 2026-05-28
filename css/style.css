@@ -396,6 +396,47 @@ button,
   font-size: 12px;
 }
 
+/* ==========================================================================
+   Print
+   ========================================================================== */
+
+#printDiv .teamHeader {
+  display: flex;
+}
+
+#printDiv .teamHeader div {
+  display: inline-block;
+  padding: 6px;
+}
+
+#printDiv .teamHeader .teamName {
+  font-weight: bold;
+  font-size: x-large;
+}
+
+#printDiv .teamVehicles {
+  display: flex;
+  overflow: visible;
+}
+
+#printDiv .vehicleCard {
+  border: 4px solid #111;
+  margin: 10px;
+  padding: 6px;
+  display: flex;
+}
+
+#printDiv .vehicleHeader {
+  display: flex;
+}
+
+#printDiv .vehicleName {
+  display: block;
+  flex: 100%;
+  font-weight: bold;
+  font-size: xx-large;
+}
+
 .noprint {
   display: block;
 }
