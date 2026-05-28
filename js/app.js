@@ -12,11 +12,13 @@ import {
   defaultVehicle,
 } from "./data.js";
 
+let saveTimer;
+
 export function setSponsor(ti, value) {
   const team = state.teams[ti];
   team.sponsor = value;
 
-  render();
+  update();
 }
 
 export function teamCost(team) {
@@ -35,18 +37,18 @@ export function changeVehicle(ti, vi, type) {
 
   state.teams[ti].vehicles[vi] = base;
 
-  render();
+  update();
 }
 
 export function openPrintPreview(i) {
   state.printMode = true;
   state.currentTeamIndex = i;
-  render();
+  update();
 }
 
 function closePrintPreview() {
   state.printMode = false;
-  render();
+  update();
 }
 
 function format0(x) {
@@ -63,7 +65,7 @@ function setWeaponLocation(ti, vi, wi, loc) {
   const v = state.teams[ti].vehicles[vi];
   v.weapons[wi].location = loc;
 
-  render();
+  update();
 }
 
 function canHaveTrailer(v, sponsor) {
@@ -152,12 +154,12 @@ export function addWeapon(ti, vi) {
     location: allowedLocations(v)[0],
   });
 
-  render();
+  update();
 }
 
 export function removeWeapon(ti, vi, wi) {
   state.teams[ti].vehicles[vi].weapons.splice(wi, 1);
-  render();
+  update();
 }
 
 export function addUpgrade(ti, vi) {
@@ -179,7 +181,7 @@ export function addUpgrade(ti, vi) {
 
   v.upgrades.push(base);
 
-  render();
+  update();
 }
 
 export function removeUpgrade(ti, vi, ui) {
@@ -187,7 +189,7 @@ export function removeUpgrade(ti, vi, ui) {
 
   v.upgrades.splice(ui, 1);
 
-  render();
+  update();
 }
 
 export function setTrailer(ti, vi, type) {
@@ -202,7 +204,7 @@ export function setTrailer(ti, vi, type) {
     v.cargo = structuredClone(allCargos[0]);
   }
 
-  render();
+  update();
 }
 
 export function setCargo(ti, vi, type) {
@@ -214,7 +216,7 @@ export function setCargo(ti, vi, type) {
 
   v.cargo = structuredClone(c);
 
-  render();
+  update();
 }
 
 export function weaponAttack(v, w) {
@@ -428,13 +430,13 @@ function createTeam() {
 function addTeam() {
   state.teams.push(createTeam());
   state.currentTeamIndex = state.teams.length - 1;
-  render();
+  update();
 }
 
 export function removeTeam(i) {
   state.teams.splice(i, 1);
   state.currentTeamIndex = Math.max(0, state.currentTeamIndex - 1);
-  render();
+  update();
 }
 
 export function addVehicle(i) {
@@ -447,13 +449,13 @@ export function addVehicle(i) {
   v.cargo = allCargos[0];
 
   state.teams[i].vehicles.push(v);
-  render();
+  update();
 }
 
 export function removeVehicle(ti, vi) {
   const team = state.teams[ti];
   team.vehicles.splice(vi, 1);
-  render();
+  update();
 }
 
 export function changeUpgrade(ti, vi, ui, type) {
@@ -475,7 +477,7 @@ export function changeUpgrade(ti, vi, ui, type) {
 
   v.upgrades[ui] = structuredClone(base);
 
-  render();
+  update();
 }
 
 export function changeWeapon(ti, vi, wi, newType) {
@@ -509,7 +511,7 @@ export function changeWeapon(ti, vi, wi, newType) {
     v.weapons[wi].facing = facings[0];
   }
 
-  render();
+  update();
 }
 
 export function setWeaponFacing(ti, vi, wi, facing) {
@@ -518,7 +520,7 @@ export function setWeaponFacing(ti, vi, wi, facing) {
 
   v.weapons[wi].facing = facing;
 
-  render();
+  update();
 }
 
 export function allowedPerks(sponsorName) {
@@ -546,7 +548,7 @@ export function addPerk(ti, vi) {
 
   v.perks.push(base);
 
-  render();
+  update();
 }
 
 export function changePerk(ti, vi, pi, type) {
@@ -558,7 +560,7 @@ export function changePerk(ti, vi, pi, type) {
 
   v.perks[pi] = structuredClone(base);
 
-  render();
+  update();
 }
 
 export function removePerk(ti, vi, pi) {
@@ -566,7 +568,7 @@ export function removePerk(ti, vi, pi) {
 
   v.perks.splice(pi, 1);
 
-  render();
+  update();
 }
 
 export function allowedWeaponsFull(v, sponsor) {
@@ -782,13 +784,49 @@ function loadFromText(text) {
 
   state.currentTeamIndex = 0;
 
-  render();
+  update();
+}
+
+function saveState() {
+  try {
+    localStorage.setItem("gaslandsDashboard", JSON.stringify(state));
+  } catch (e) {
+    console.error("Save failed", e);
+  }
+}
+
+function loadState() {
+  try {
+    const raw = localStorage.getItem("gaslandsDashboard");
+    if (!raw) return false;
+
+    const parsed = JSON.parse(raw);
+
+    state.teams = parsed.teams || [];
+    state.currentTeamIndex = parsed.currentTeamIndex || 0;
+
+    return true;
+  } catch (e) {
+    console.error("Load failed", e);
+    return false;
+  }
+}
+
+function saveStateDebounced() {
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(saveState, 300);
 }
 
 function startPrint() {
   window.print();
 }
 
+function update() {
+  saveStateDebounced();
+  render();
+}
+
+loadState();
 render();
 
 document.getElementById("addTeamButton").addEventListener("click", addTeam);
@@ -801,3 +839,4 @@ document
   .getElementById("closePrintButton")
   .addEventListener("click", closePrintPreview);
 document.getElementById("printButton").addEventListener("click", startPrint);
+window.addEventListener("beforeunload", saveState);

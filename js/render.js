@@ -35,8 +35,9 @@ import {
   weaponRules,
   weaponSlots,
 } from "./app.js";
+import { createPrintTeamCard } from "./print.js";
 
-function el(tag, props = {}, children = []) {
+export function el(tag, props = {}, children = []) {
   const e = document.createElement(tag);
 
   Object.entries(props).forEach(([k, v]) => {
@@ -53,6 +54,7 @@ function el(tag, props = {}, children = []) {
 
   return e;
 }
+
 function select(options, value, onChange) {
   return el(
     "select",
@@ -426,164 +428,6 @@ export function render() {
   } else {
     printContent.innerHTML = "";
     let team = state.teams[state.currentTeamIndex];
-    let cost = teamCost(team);
-    const perkOptions = allowedPerks(team.sponsor);
-
-    let teamHTML = `
-      <div class="teamCard">
-        <table class="teamHeader">
-          <tr>
-            <td>${team.teamName}</td>
-            <td>${team.sponsor}</td>
-            <td>${cost} cans</td>
-          </tr>
-        </table>
-      `;
-    team.vehicles.forEach((v, vi) => {
-      let stats = computeStats(v);
-      let free = totalSlots(v) - usedSlots(v);
-
-      let weaponRows = v.weapons
-        .map((w, wi) => {
-          let facings = allowedFacings(v, w.weapon);
-          let locs = allowedLocations(v);
-
-          return `
-          <tr>
-            <td>${w.weapon.wtype}</td>
-            <td>${w.facing}</td>
-            ${locs.length === 1 ? "" : `<td>${w.location}</td>`}
-            <td>${w.weapon.attackType}</td>
-            <td>${weaponAttack(v, w.weapon)}</td>
-            <td>${weaponRange(v, w.weapon)}</td>
-            <td>${weaponRules(v, w.weapon)}</td>
-            <td>${weaponSlots(v, w.weapon)}</td>
-            <td>${weaponCost(v, w)}</td>
-          </tr>
-          `;
-        })
-        .join("");
-
-      let upgradeRows = v.upgrades
-        .map(
-          (u, ui) => `
-          <tr>
-            <td>${u.utype}</td>
-            <td>${u.ammo || "-"}</td>
-            <td>${u.slots || "-"}</td>
-            <td>${u.specialRules || ""}</td>
-            <td>${u.cost || 0}</td>
-          </tr>
-        `,
-        )
-        .join("");
-
-      teamHTML += `
-        <div class="vehicleCard">
-          <table class="vehicleHeader">
-            <tr>
-              <td>${v.vehicleName}</td>
-              <td>${v.vtype}</td>
-              <td>${vehicleCost(v, team.sponsor)} cans</td>
-            </tr>
-          </table>
-
-          <table class="vehicleStats">
-            <tr>
-              <td>Weight: ${v.weight}</td>
-              <td>Hull: ${stats.hull}</td>
-              <td>Handling: ${stats.handling}</td>
-              <td>Max gear: ${stats.maxGear}</td>
-              <td>Crew: ${stats.crew}</td>
-              <td>Free slots: ${free}</td>
-            </tr>
-          </table>
-
-          <!-- Trailer / Cargo -->
-          ${
-            team.sponsor === "Rusty's Bootleggers"
-              ? `<table class="trailerTable">
-                <tr>
-                  <td>Trailer:</td>
-                  <td>${v.trailer.ttype}</td>
-                  <td>Cargo:</td>
-                  <td>${v.cargo.ctype}</td>
-                </tr>
-              </table>`
-              : ""
-          }
-
-          <!-- WEAPONS -->
-          <table class="weaponsTable">
-            <tr>
-              <th>Weapon</th>
-              <th>Facing</th>
-              ${allowedLocations(v).length === 1 ? "" : `<th>Location</th>`}
-              <th>Type</th>
-              <th>Attack</th>
-              <th>Range</th>
-              <th>Special Rules</th>
-              <th>Slots</th>
-              <th>Cost</th>
-            </tr>
-
-            <tr>
-              <td>Handgun</td>
-              <td>360</td>
-              ${allowedLocations(v).length === 1 ? "" : `<td></td>`}
-              <td>Shooting</td>
-              <td>1D6</td>
-              <td>Medium</td>
-              <td>Blitz</td>
-              <td>-</td>
-              <td>-</td>
-            </tr>
-
-            ${weaponRows}
-          </table>
-
-          <!-- UPGRADES -->
-          <table class="upgradesTable">
-            <tr>
-              <th>Upgrade</th>
-              <th>Ammo</th>
-              <th>Slots</th>
-              <th>Special Rules</th>
-              <th>Cost</th>
-            </tr>
-
-            ${upgradeRows}
-          </table>
-
-          ${
-            perkOptions.length
-              ? `<!-- ===== PERKS ===== -->
-          <table class="perksTable">
-            <tr>
-              <th>Perk</th>
-              <th>Special Rules</th>
-              <th>Cost</th>
-            </tr>
-
-            ${v.perks
-              .map(
-                (p, pi) => `
-                <tr>
-                  <td>${p.ptype}</td>
-                  <td>${p.rules || ""}</td>
-                  <td>${p.cost || 0}</td>
-                      
-                </tr>
-              `,
-              )
-              .join("")}`
-              : ``
-          }
-        </div>
-        `;
-    });
-
-    teamHTML += `</div>`;
-    printContent.innerHTML += teamHTML;
+    printContent.appendChild(createPrintTeamCard(team));
   }
 }
