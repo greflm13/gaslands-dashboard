@@ -117,6 +117,14 @@ button:hover {
   background: #181818;
 }
 
+#editDiv .expensive {
+  color: #ff4444;
+}
+
+#editDiv .cheap {
+  color: #44ff44;
+}
+
 #editDiv .teamHeader {
   width: 100%;
   border-collapse: collapse;
@@ -140,10 +148,15 @@ button:hover {
 }
 
 #editDiv .teamHeader td:nth-child(3) {
-  color: #ff4444;
   font-weight: bold;
   text-align: right;
   width: 100px;
+}
+
+#editDiv .teamHeader td:nth-child(3)::after {
+  content: " /";
+  color: white;
+  font-weight: normal;
 }
 
 #editDiv .teamHeader td:nth-child(4) {
@@ -348,30 +361,21 @@ button:hover {
   padding: 2px 6px;
 }
 
-#editDiv .removeButton {
-  color: white;
-  background: #500;
-  border: 1px solid #a00;
+.removeButton {
+  cursor: pointer;
+  content: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAOxAAADsQBlSsOGwAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAFGSURBVDiNnZO9TgJBFIW/AZX/zmZbSgoaKUkmUJLwBPoQ22pM/Im+hK0+AqGloaThDei2s2B3FoKRazHssuuGRbzJJPN3zz3nzhkFFB14rsB1Dc4VCDkhoAx8reDDgwcceL2DYAsifxxbkFsIHHihCYtTkpMgTVgUylBSSY6uC1pnuWttz3ahgDKUaIEXI7uuiIhIEIhova+otd0TsXd2+y3wzlJVZjPwfWg0YDyG4RA2GxiNoFaDMIT5PM0sxQBEul2R5dJWW61EwtDOjRHp9VJ9aIGXBYhAjJE41utMcgRQOPjgSuWvcyX4/l5CxMQYkX7/iIRkcqQ52ZNfIFkJnQ7U62AMDAYwmcB0al/DGKhWod0+IsF10x5IeiHhgVjCf638vbNysQyXn3DVh4sDfc6EAPdgZvCmsN/5qQI3J37ndw8efwCti3bEgmgKyQAAAABJRU5ErkJggg==");
 }
 
-#editDiv .removeButton:hover {
-  background: #700;
+.addButton {
+  cursor: pointer;
+  content: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAOxAAADsQBlSsOGwAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAEZSURBVDiNzZM/bsIwFIc/B0dI/JEyJFJXryyII5QTZAcp7B3KDZqiHqBLdyN6gJ6gF2CALlmzNZXIwECRUJDcpSDSpAjEwjf9rOf3/H62nwAqNBkh6WFjIzAcwyDIyMh4ZcWDpMmIDvfcUkccTT0sAu8MmYGFpFeWrByF9jXa1yhH5YMC6FLHpm8hqZad7NZcgnZA0A5wa25xgwAkVevEpv/l4gJyJ5Sjcq22vFapBkjXKfEy/l15JIQYPdfmVPRcG0IMHsnFFgQeCXfclFnQvgZg8DYgWkRFCy987e8gXsYHvvJEi4jp57Q0dg3PuGWDgb+/MV2njD/Ge13AAFs2ggZPdBjSPXuYvpnxLIAKDR6x6Z85zhNWhD+vjYJnJRxgmwAAAABJRU5ErkJggg==");
 }
 
-#editDiv .addButton {
-  color: #0f0;
-  border: 1px solid #080;
-}
-
-#editDiv a,
+a,
 .add-link {
   color: #59a6ff;
   cursor: pointer;
   font-size: 12px;
-}
-
-#editDiv .add-link:hover {
-  text-decoration: underline;
 }
 
 #editDiv .vehicleCard td,
@@ -383,7 +387,7 @@ button:hover {
   color: #6fcf97;
 }
 
-#editDiv button,
+button,
 .add-link {
   color: #4da3ff;
 }

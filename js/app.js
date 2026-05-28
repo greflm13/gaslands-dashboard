@@ -420,7 +420,7 @@ export function allowedLocations(v) {
 
 function createTeam() {
   return {
-    name: "New Team",
+    teamName: "New Team",
     sponsor: allSponsors[0]?.name || "",
     vehicles: [],
     maxCost: 50,
@@ -441,7 +441,7 @@ export function removeTeam(i) {
 
 export function addVehicle(i) {
   let v = structuredClone(defaultVehicle);
-  v.name = "Vehicle";
+  v.vehicleName = "Vehicle";
   v.weapons = [];
   v.upgrades = [];
   v.perks = [];

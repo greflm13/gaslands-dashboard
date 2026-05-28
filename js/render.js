@@ -86,7 +86,10 @@ function createTeamCard(team, ti) {
       ),
     ]),
 
-    el("td", { text: teamCost(team) + " /" }),
+    el("td", {
+      text: teamCost(team),
+      class: teamCost(team) <= team.maxCost ? "cheap" : "expensive",
+    }),
 
     el("td", {}, [el("input", { value: team.maxCost })]),
 
@@ -97,9 +100,11 @@ function createTeamCard(team, ti) {
     ]),
 
     el("td", {}, [
-      el("button", { onclick: () => removeTeam(ti), class: "removeButton" }, [
-        "X",
-      ]),
+      el("img", {
+        onclick: () => removeTeam(ti),
+        class: "removeButton",
+        class: "removeButton",
+      }),
     ]),
   ]);
 
@@ -109,10 +114,10 @@ function createTeamCard(team, ti) {
     el(
       "button",
       {
-        class: "addVehicle addButton",
+        class: "addVehicle",
         onclick: () => addVehicle(ti),
       },
-      ["+ Vehicle"],
+      ["add Vehicle"],
     ),
   );
 
@@ -155,9 +160,10 @@ function createWeaponsTable(team, ti, v, vi) {
       el("th", { text: "Slots" }),
       el("th", { text: "Cost" }),
       el("th", {}, [
-        el("button", { onclick: () => addWeapon(ti, vi), class: "addButton" }, [
-          "+",
-        ]),
+        el("img", {
+          onclick: () => addWeapon(ti, vi),
+          class: "addButton",
+        }),
       ]),
     ]),
   );
@@ -210,11 +216,10 @@ function createWeaponRow(team, ti, v, vi, w, wi) {
     el("td", { text: weaponCost(v, w) }),
 
     el("td", {}, [
-      el(
-        "button",
-        { onclick: () => removeWeapon(ti, vi, wi), class: "removeButton" },
-        ["X"],
-      ),
+      el("img", {
+        onclick: () => removeWeapon(ti, vi, wi),
+        class: "removeButton",
+      }),
     ]),
   ]);
 }
@@ -230,11 +235,10 @@ function createUpgradesTable(team, ti, v, vi) {
       el("th", { text: "Special Rules" }),
       el("th", { text: "Cost" }),
       el("th", {}, [
-        el(
-          "button",
-          { onclick: () => addUpgrade(ti, vi), class: "addButton" },
-          ["+"],
-        ),
+        el("img", {
+          onclick: () => addUpgrade(ti, vi),
+          class: "addButton",
+        }),
       ]),
     ]),
   );
@@ -254,11 +258,10 @@ function createUpgradesTable(team, ti, v, vi) {
         el("td", { text: u.specialRules || "" }),
         el("td", { text: u.cost || 0 }),
         el("td", {}, [
-          el(
-            "button",
-            { onclick: () => removeUpgrade(ti, vi, ui), class: "removeButton" },
-            ["X"],
-          ),
+          el("img", {
+            onclick: () => removeUpgrade(ti, vi, ui),
+            class: "removeButton",
+          }),
         ]),
       ]),
     );
@@ -276,9 +279,10 @@ function createPerksTable(team, ti, v, vi) {
       el("th", { text: "Special Rules" }),
       el("th", { text: "Cost" }),
       el("th", {}, [
-        el("button", { onclick: () => addPerk(ti, vi), class: "addButton" }, [
-          "+",
-        ]),
+        el("img", {
+          onclick: () => addPerk(ti, vi),
+          class: "addButton",
+        }),
       ]),
     ]),
   );
@@ -296,11 +300,10 @@ function createPerksTable(team, ti, v, vi) {
         el("td", { text: p.rules || "" }),
         el("td", { text: p.cost || 0 }),
         el("td", {}, [
-          el(
-            "button",
-            { onclick: () => removePerk(ti, vi, pi), class: "removeButton" },
-            ["X"],
-          ),
+          el("img", {
+            onclick: () => removePerk(ti, vi, pi),
+            class: "removeButton",
+          }),
         ]),
       ]),
     );
@@ -366,11 +369,10 @@ function createVehicleCard(team, ti, v, vi) {
         el("td", { text: `${vehicleCost(v, team.sponsor)} cans` }),
 
         el("td", {}, [
-          el(
-            "button",
-            { onclick: () => removeVehicle(ti, vi), class: "removeButton" },
-            ["X"],
-          ),
+          el("img", {
+            onclick: () => removeVehicle(ti, vi),
+            class: "removeButton",
+          }),
         ]),
       ]),
     ]),
