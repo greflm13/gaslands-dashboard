@@ -39,13 +39,13 @@ export function changeVehicle(ti, vi, type) {
 }
 
 export function openPrintPreview(i) {
-  state.state.printMode = true;
+  state.printMode = true;
   state.currentTeamIndex = i;
   render();
 }
 
 function closePrintPreview() {
-  state.state.printMode = false;
+  state.printMode = false;
   render();
 }
 
