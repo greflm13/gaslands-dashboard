@@ -167,19 +167,29 @@ function createPrintVehicleCard(team, ti, v, vi) {
 
   container.appendChild(
     el("div", { class: "vehicleHeader" }, [
-      el("div", { text: v.vehicleName, class: "vehicleName rubik-dirt-regular" }),
+      el("div", {
+        text: v.vehicleName,
+        class: "vehicleName rubik-dirt-regular",
+      }),
       el("div", { text: v.vtype, class: "vehicleType rubik-dirt-regular" }),
-      el("div", { text: `${v.weight}wheight`, class: "vehicleWeight rubik-dirt-regular" }),
+      el("div", {
+        text: `${v.weight}wheight`,
+        class: "vehicleWeight rubik-dirt-regular",
+      }),
     ]),
   );
 
   container.appendChild(
     el("div", { class: "vehicleStats" }, [
-      el("div", { class: "hullPoints" }, [
-        ...Array.from({ length: stats.hull }, () =>
-          el("div", { class: "hullPoint" }),
-        ),
+      el("div", { class: "hullContainer" }, [
+        el("div", { text: "Hull", class: "rotated rubik-dirt-regular" }),
+        el("div", { class: "hullPoints" }, [
+          ...Array.from({ length: stats.hull }, () =>
+            el("div", { class: "hullPoint" }),
+          ),
+        ]),
       ]),
+
       el("div", { text: `Handling: ${stats.handling}` }),
       el("div", { text: `Max gear: ${stats.maxGear}` }),
       el("div", { text: `Crew: ${stats.crew}` }),
