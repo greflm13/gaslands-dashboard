@@ -23,33 +23,23 @@
 </head>
 
 <body>
-
-  <!-- ================= HEADER / CONTROLS ================= -->
   <div id="headerDiv" class="noprint header">
-    <button class="addButton" onclick="addTeam()">Add Team</button>
-    <button onclick="saveToFile()">Save</button>
-    <button onclick="loadFromDialog()">Load</button>
-    <input type="file" id="fallbackLoadInput" style="display:none" onchange="loadFromFileInput(event)">
+    <button id="addTeamButton" class="addButton">Add Team</button>
+    <button id="saveButton">Save</button>
+    <button id="loadButton">Load</button>
+    <input type="file" id="fallbackLoadInput" style="display:none">
   </div>
 
-  <!-- ================= EDIT VIEW ================= -->
   <div id="editDiv">
-    <!-- Teams are rendered here by render() -->
   </div>
 
-  <!-- ================= PRINT VIEW ================= -->
   <div id="printDiv" style="display:none;">
     <div class="noprint header" style="margin-bottom:10px;">
-      <button onclick="closePrintPreview()">Close Print Preview</button>
-      <button onclick="window.print()">Print</button>
+      <button id="closePrintButton">Close Print Preview</button>
+      <button id="printButton">Print</button>
     </div>
     <div id="printContent"></div>
-    <!-- Printable team content is rendered here by render() -->
   </div>
-
-
-  <script src="js/data.js"></script>
-  <script src="js/render.js"></script>
   <script src="js/app.js"></script>
 </body>
 

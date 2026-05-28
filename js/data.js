@@ -1,4 +1,4 @@
-const allVehicles = [
+export const allVehicles = [
   {
     vtype: "Buggy",
     weight: "Light",
@@ -198,16 +198,16 @@ allVehicles.forEach(
     (v.optionText =
       v.vtype + (v.ruleset != "BASE" ? " (" + v.ruleset + ")" : "")),
 );
-const defaultVehicle = allVehicles.filter((v) => v.vtype == "Car")[0];
+export const defaultVehicle = allVehicles.filter((v) => v.vtype == "Car")[0];
 
-const allTrailers = [
+export const allTrailers = [
   { ttype: "None", slots: 0, cost: 0 },
   { ttype: "Lightweight", slots: 0, cost: 4 },
   { ttype: "Middleweight", slots: 1, cost: 8 },
   { ttype: "Heavyweight", slots: 3, cost: 12 },
 ];
 
-const vehicleKeywords = [
+export const vehicleKeywords = [
   {
     ktype: "Airborne",
     phase: "Play",
@@ -326,7 +326,7 @@ const vehicleKeywords = [
   },
 ];
 
-const handgun = {
+export const handgun = {
   wtype: "Handgun",
   attackType: "Shooting",
   attack: "1D6",
@@ -340,7 +340,7 @@ const handgun = {
   ruleset: "BASE",
   limit: null,
 }; // always picked and available
-const allWeapons = [
+export const allWeapons = [
   // basic weapons
   {
     wtype: "Machine Gun",
@@ -899,13 +899,13 @@ allWeapons.forEach(
       w.wtype + (w.ruleset != "BASE" ? " (" + w.ruleset + ")" : "")),
 );
 
-const thumperCargo = allWeapons.filter((w) => w.wtype == "Thumper")[0];
+export const thumperCargo = allWeapons.filter((w) => w.wtype == "Thumper")[0];
 
-const allLocations = ["Cab", "Trailer"]; // first element in array is the default
+export const allLocations = ["Cab", "Trailer"]; // first element in array is the default
 
-const weaponKeywords = [];
+export const weaponKeywords = [];
 
-const allUpgrades = [
+export const allUpgrades = [
   {
     utype: "Armour Plating",
     slots: 1,
@@ -1037,7 +1037,7 @@ allUpgrades.forEach(
       u.utype + (u.ruleset != "BASE" ? " (" + u.ruleset + ")" : "")),
 );
 
-const allCargos = [
+export const allCargos = [
   { ctype: "None", specialRules: null, keywords: [], ruleset: "BASE" },
   {
     ctype: "Peach Moonshine",
@@ -1081,7 +1081,7 @@ allCargos.forEach(
       c.ctype + (c.ruleset != "BASE" ? " (" + c.ruleset + ")" : "")),
 );
 
-const allSponsors = [
+export const allSponsors = [
   { name: "None", keywords: [], perkClasses: [], ruleset: "BASE" },
   {
     name: "Rutherford",
@@ -1193,7 +1193,7 @@ allSponsors.forEach(
       s.name + (s.ruleset != "BASE" ? " (" + s.ruleset + ")" : "")),
 );
 
-const sponsorKeywords = [
+export const sponsorKeywords = [
   {
     ktype: "Military hardware",
     phase: "Build",
@@ -1552,7 +1552,7 @@ for (var idx in tmpKeywords) {
   allKeywords[kw.ktype] = kw;
 }
 
-const allPerks = [
+export const allPerks = [
   {
     class: "Aggression",
     ptype: "Double-Barrelled",
@@ -2215,12 +2215,12 @@ const allPerks = [
   },
 ];
 
-const allPerkClasses = Array.from(new Set(allPerks.map((p) => p.class)));
+export const allPerkClasses = Array.from(new Set(allPerks.map((p) => p.class)));
 
-const aggressionPerks = allPerks.filter((x) => x.class == "Aggression");
-const badassPerks = allPerks.filter((x) => x.class == "Badass");
+export const aggressionPerks = allPerks.filter((x) => x.class == "Aggression");
+export const badassPerks = allPerks.filter((x) => x.class == "Badass");
 
-const allInjuries = [
+export const allInjuries = [
   {
     itype: "Deathwish",
     cost: 1,
@@ -2300,7 +2300,7 @@ const allInjuries = [
   },
 ];
 
-const allSavageHighwaysUpgrades = [
+export const allSavageHighwaysUpgrades = [
     {
       utype: "Hangers On",
       slots: 0,

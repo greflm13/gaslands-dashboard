@@ -1,41 +1,51 @@
-let printMode = false;
-let teams = [];
-let currentTeamIndex = 0;
+import { render } from "./render.js";
+import { state } from "./state.js";
+import {
+  allCargos,
+  allLocations,
+  allPerks,
+  allSponsors,
+  allTrailers,
+  allUpgrades,
+  allVehicles,
+  allWeapons,
+  defaultVehicle,
+} from "./data.js";
 
-function setSponsor(ti, value) {
-  const team = teams[ti];
+export function setSponsor(ti, value) {
+  const team = state.teams[ti];
   team.sponsor = value;
 
   render();
 }
 
-function teamCost(team) {
+export function teamCost(team) {
   return team.vehicles.reduce((s, v) => s + vehicleCost(v, team.sponsor), 0);
 }
 
-function changeVehicle(ti, vi, type) {
+export function changeVehicle(ti, vi, type) {
   const base = structuredClone(allVehicles.find((v) => v.vtype === type));
 
-  const old = teams[ti].vehicles[vi];
+  const old = state.teams[ti].vehicles[vi];
 
   base.vehicleName = old.vehicleName;
   base.weapons = old.weapons;
   base.upgrades = old.upgrades;
   base.perks = old.perks;
 
-  teams[ti].vehicles[vi] = base;
+  state.teams[ti].vehicles[vi] = base;
 
   render();
 }
 
-function openPrintPreview(i) {
-  printMode = true;
-  currentTeamIndex = i;
+export function openPrintPreview(i) {
+  state.state.printMode = true;
+  state.currentTeamIndex = i;
   render();
 }
 
 function closePrintPreview() {
-  printMode = false;
+  state.state.printMode = false;
   render();
 }
 
@@ -50,7 +60,7 @@ function getVehicleKeywords(v) {
 }
 
 function setWeaponLocation(ti, vi, wi, loc) {
-  const v = teams[ti].vehicles[vi];
+  const v = state.teams[ti].vehicles[vi];
   v.weapons[wi].location = loc;
 
   render();
@@ -94,7 +104,7 @@ function allowedTrailers(v, sponsor) {
   return allTrailers;
 }
 
-function computeStats(v) {
+export function computeStats(v) {
   let hull = v.hull;
   let handling = v.handling;
   let maxGear = v.maxGear;
@@ -126,8 +136,8 @@ function computeStats(v) {
   };
 }
 
-function addWeapon(ti, vi) {
-  let team = teams[ti];
+export function addWeapon(ti, vi) {
+  let team = state.teams[ti];
   let v = team.vehicles[vi];
 
   let options = allowedWeaponsFull(v, team.sponsor);
@@ -145,13 +155,13 @@ function addWeapon(ti, vi) {
   render();
 }
 
-function removeWeapon(ti, vi, wi) {
-  teams[ti].vehicles[vi].weapons.splice(wi, 1);
+export function removeWeapon(ti, vi, wi) {
+  state.teams[ti].vehicles[vi].weapons.splice(wi, 1);
   render();
 }
 
-function addUpgrade(ti, vi) {
-  const team = teams[ti];
+export function addUpgrade(ti, vi) {
+  const team = state.teams[ti];
   const v = team.vehicles[vi];
 
   const opts = allowedUpgradesFull(v, team.sponsor);
@@ -172,16 +182,16 @@ function addUpgrade(ti, vi) {
   render();
 }
 
-function removeUpgrade(ti, vi, ui) {
-  const v = teams[ti].vehicles[vi];
+export function removeUpgrade(ti, vi, ui) {
+  const v = state.teams[ti].vehicles[vi];
 
   v.upgrades.splice(ui, 1);
 
   render();
 }
 
-function setTrailer(ti, vi, type) {
-  const team = teams[ti];
+export function setTrailer(ti, vi, type) {
+  const team = state.teams[ti];
   const v = team.vehicles[vi];
 
   const t = allTrailers.find((x) => x.ttype === type);
@@ -195,8 +205,8 @@ function setTrailer(ti, vi, type) {
   render();
 }
 
-function setCargo(ti, vi, type) {
-  const team = teams[ti];
+export function setCargo(ti, vi, type) {
+  const team = state.teams[ti];
   const v = team.vehicles[vi];
 
   const c = allCargos.find((x) => x.ctype === type);
@@ -207,7 +217,7 @@ function setCargo(ti, vi, type) {
   render();
 }
 
-function weaponAttack(v, w) {
+export function weaponAttack(v, w) {
   if (
     w.wtype === "Mortar" &&
     v.upgrades.some((u) => u.utype === "Cluster Bombs")
@@ -217,7 +227,7 @@ function weaponAttack(v, w) {
   return w.attack;
 }
 
-function weaponRange(v, w) {
+export function weaponRange(v, w) {
   if (
     w.attackType === "Dropped" &&
     v.upgrades.some((u) => u.utype === "Improvised Sludge Thrower")
@@ -227,7 +237,7 @@ function weaponRange(v, w) {
   return w.range;
 }
 
-function weaponSlots(v, w) {
+export function weaponSlots(v, w) {
   let slots = w.slots || 0;
   let k = getVehicleKeywords(v);
 
@@ -243,7 +253,7 @@ function weaponAmmo(v, w, sponsor) {
   return format0(a);
 }
 
-function weaponRules(v, w) {
+export function weaponRules(v, w) {
   let r = w.specialRules || "";
 
   if (
@@ -264,7 +274,7 @@ function weaponRules(v, w) {
   return r;
 }
 
-function allowedFacings(v, w) {
+export function allowedFacings(v, w) {
   if (
     w.crewFired ||
     w.wtype === "Thumper" ||
@@ -289,7 +299,7 @@ function allowedFacings(v, w) {
   return ["Front", "Rear", "Sides"];
 }
 
-function weaponCost(v, entry) {
+export function weaponCost(v, entry) {
   let base = entry.weapon.cost;
 
   if (entry.facing !== "Turret/360") return base;
@@ -318,7 +328,7 @@ function upgradeCost(v, u, sponsor) {
   return c;
 }
 
-function allowedUpgradesFull(v, sponsor) {
+export function allowedUpgradesFull(v, sponsor) {
   return allUpgrades.filter((u) => {
     if (
       u.allowedSponsors &&
@@ -363,7 +373,7 @@ function allowedUpgradesFull(v, sponsor) {
   });
 }
 
-function vehicleCost(v, sponsor) {
+export function vehicleCost(v, sponsor) {
   let base = v.cost;
 
   if (v.upgrades.some((u) => u.utype === "Prison Vehicle")) {
@@ -378,7 +388,7 @@ function vehicleCost(v, sponsor) {
   return base + wc + uc + pc + tc;
 }
 
-function usedSlots(v) {
+export function usedSlots(v) {
   let ws = v.weapons.reduce((s, w) => {
     let val = weaponSlots(v, w.weapon);
     return s + (val === "-" ? 0 : val);
@@ -389,11 +399,11 @@ function usedSlots(v) {
   return ws + us;
 }
 
-function totalSlots(v) {
+export function totalSlots(v) {
   return v.slots + trailerSlots(v);
 }
 
-function allowedLocations(v) {
+export function allowedLocations(v) {
   let locs = ["Cab"];
 
   if (v.trailer && v.trailer.ttype !== "None") {
@@ -416,18 +426,18 @@ function createTeam() {
 }
 
 function addTeam() {
-  teams.push(createTeam());
-  currentTeamIndex = teams.length - 1;
+  state.teams.push(createTeam());
+  state.currentTeamIndex = state.teams.length - 1;
   render();
 }
 
-function removeTeam(i) {
-  teams.splice(i, 1);
-  currentTeamIndex = Math.max(0, currentTeamIndex - 1);
+export function removeTeam(i) {
+  state.teams.splice(i, 1);
+  state.currentTeamIndex = Math.max(0, currentTeamIndex - 1);
   render();
 }
 
-function addVehicle(i) {
+export function addVehicle(i) {
   let v = structuredClone(defaultVehicle);
   v.name = "Vehicle";
   v.weapons = [];
@@ -436,18 +446,18 @@ function addVehicle(i) {
   v.trailer = allTrailers[0];
   v.cargo = allCargos[0];
 
-  teams[i].vehicles.push(v);
+  state.teams[i].vehicles.push(v);
   render();
 }
 
-function removeVehicle(ti, vi) {
-  const team = teams[ti];
+export function removeVehicle(ti, vi) {
+  const team = state.teams[ti];
   team.vehicles.splice(vi, 1);
   render();
 }
 
-function changeUpgrade(ti, vi, ui, type) {
-  const team = teams[ti];
+export function changeUpgrade(ti, vi, ui, type) {
+  const team = state.teams[ti];
   const v = team.vehicles[vi];
 
   const base = allUpgrades.find((x) => x.utype === type);
@@ -468,8 +478,8 @@ function changeUpgrade(ti, vi, ui, type) {
   render();
 }
 
-function changeWeapon(ti, vi, wi, newType) {
-  const team = teams[ti];
+export function changeWeapon(ti, vi, wi, newType) {
+  const team = state.teams[ti];
   const v = team.vehicles[vi];
 
   const baseW = allWeapons.find((w) => w.wtype === newType);
@@ -502,40 +512,8 @@ function changeWeapon(ti, vi, wi, newType) {
   render();
 }
 
-function addVehicleWeapon(ti, vi) {
-  const team = teams[ti];
-  const v = team.vehicles[vi];
-
-  const sponsor = team.sponsor;
-
-  const options = allowedWeaponsFull(v, sponsor);
-
-  if (!options || options.length === 0) {
-    return;
-  }
-
-  const baseW = structuredClone(options[0]);
-
-  const currentSlots = usedSlots(v);
-  const newSlots = weaponSlots(v, baseW);
-  const slotValue = newSlots === "-" ? 0 : newSlots;
-
-  if (currentSlots + slotValue > totalSlots(v)) {
-    alert("Not enough slots");
-    return;
-  }
-
-  v.weapons.push({
-    weapon: baseW,
-    facing: allowedFacings(v, baseW)[0],
-    location: allowedLocations(v)[0],
-  });
-
-  render();
-}
-
-function setWeaponFacing(ti, vi, wi, facing) {
-  const team = teams[ti];
+export function setWeaponFacing(ti, vi, wi, facing) {
+  const team = state.teams[ti];
   const v = team.vehicles[vi];
 
   v.weapons[wi].facing = facing;
@@ -543,7 +521,7 @@ function setWeaponFacing(ti, vi, wi, facing) {
   render();
 }
 
-function allowedPerks(sponsorName) {
+export function allowedPerks(sponsorName) {
   const sponsor = allSponsors.find((s) => s.name === sponsorName);
 
   if (!sponsor) return [];
@@ -555,8 +533,8 @@ function allowedPerks(sponsorName) {
   return allPerks.filter((p) => sponsor.perkClasses.includes(p.class));
 }
 
-function addPerk(ti, vi) {
-  const team = teams[ti];
+export function addPerk(ti, vi) {
+  const team = state.teams[ti];
   const v = team.vehicles[vi];
 
   const opts = allowedPerks(team.sponsor);
@@ -571,8 +549,8 @@ function addPerk(ti, vi) {
   render();
 }
 
-function changePerk(ti, vi, pi, type) {
-  const team = teams[ti];
+export function changePerk(ti, vi, pi, type) {
+  const team = state.teams[ti];
   const v = team.vehicles[vi];
 
   const base = allPerks.find((x) => x.ptype === type);
@@ -583,15 +561,15 @@ function changePerk(ti, vi, pi, type) {
   render();
 }
 
-function removePerk(ti, vi, pi) {
-  const v = teams[ti].vehicles[vi];
+export function removePerk(ti, vi, pi) {
+  const v = state.teams[ti].vehicles[vi];
 
   v.perks.splice(pi, 1);
 
   render();
 }
 
-function allowedWeaponsFull(v, sponsor) {
+export function allowedWeaponsFull(v, sponsor) {
   return allWeapons.filter((w) => {
     if (
       w.allowedSponsors &&
@@ -623,7 +601,7 @@ function allowedWeaponsFull(v, sponsor) {
 function serializeAll() {
   return JSON.stringify(
     {
-      teams: teams.map((t) => ({
+      teams: state.teams.map((t) => ({
         teamName: t.teamName,
         sponsor: t.sponsor,
         maxCost: t.maxCost,
@@ -703,11 +681,9 @@ function saveUsingDownload() {
 }
 
 function loadFromDialog() {
-  // ✅ modern browsers
   if (window.showOpenFilePicker) {
     loadUsingFilePicker();
   } else {
-    // ✅ fallback
     document.getElementById("fallbackLoadInput").click();
   }
 }
@@ -748,7 +724,7 @@ async function loadUsingFilePicker() {
 function loadFromText(text) {
   const data = JSON.parse(text);
 
-  teams = (data.teams || []).map((t) => {
+  state.teams = (data.teams || []).map((t) => {
     const team = {
       teamName: t.teamName || "Team",
       sponsor: t.sponsor || allSponsors[0]?.name || "",
@@ -800,13 +776,28 @@ function loadFromText(text) {
     return team;
   });
 
-  if (teams.length === 0) {
-    teams.push(createTeam());
+  if (state.teams.length === 0) {
+    state.teams.push(createTeam());
   }
 
-  currentTeamIndex = 0;
+  state.currentTeamIndex = 0;
 
   render();
 }
 
+function startPrint() {
+  window.print();
+}
+
 render();
+
+document.getElementById("addTeamButton").addEventListener("click", addTeam);
+document.getElementById("saveButton").addEventListener("click", saveToFile);
+document.getElementById("loadButton").addEventListener("click", loadFromDialog);
+document
+  .getElementById("fallbackLoadInput")
+  .addEventListener("change", loadFromFileInput);
+document
+  .getElementById("closePrintButton")
+  .addEventListener("click", closePrintPreview);
+document.getElementById("printButton").addEventListener("click", startPrint);

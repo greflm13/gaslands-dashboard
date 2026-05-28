@@ -1,3 +1,37 @@
+import { state } from "./state.js";
+import { allSponsors, allVehicles, allTrailers, allCargos } from "./data.js";
+import {
+  teamCost,
+  removeTeam,
+  addVehicle,
+  vehicleCost,
+  computeStats,
+  totalSlots,
+  usedSlots,
+  allowedLocations,
+  allowedPerks,
+  addWeapon,
+  allowedFacings,
+  allowedWeaponsFull,
+  weaponAttack,
+  weaponRange,
+  weaponRules,
+  weaponSlots,
+  weaponCost,
+  changeWeapon,
+  changeVehicle,
+  setSponsor,
+  removeWeapon,
+  addUpgrade,
+  allowedUpgradesFull,
+  changeUpgrade,
+  removeUpgrade,
+  removeVehicle,
+  setTrailer,
+  setCargo,
+  addPerk,changePerk,removePerk,setWeaponFacing,openPrintPreview
+} from "./app.js";
+
 function el(tag, props = {}, children = []) {
   const e = document.createElement(tag);
 
@@ -274,17 +308,17 @@ function createTrailerSection(team, ti, v, vi) {
       el("td", {}, [
         select(
           allTrailers.map((t) => t.ttype),
-          v.trailer.ttype,
+          v.trailer?.ttype || "None",
           (e) => setTrailer(ti, vi, e.target.value),
         ),
       ]),
 
       el("td", { text: "Cargo:" }),
       el("td", {}, [
-        v.trailer.ttype !== "None"
+        (v.trailer?.ttype || "None") !== "None"
           ? select(
               allCargos.map((c) => c.ctype),
-              v.cargo.ctype,
+              v.cargo?.ctype || "None",
               (e) => setCargo(ti, vi, e.target.value),
             )
           : el("select", {}, [
@@ -359,13 +393,13 @@ function createVehicleCard(team, ti, v, vi) {
   return container;
 }
 
-function render() {
+export function render() {
   const editDiv = document.getElementById("editDiv");
   const printDiv = document.getElementById("printDiv");
   const headerDiv = document.getElementById("headerDiv");
   const printContent = document.getElementById("printContent");
 
-  if (printMode) {
+  if (state.printMode) {
     editDiv.style.display = "none";
     printDiv.style.display = "block";
     headerDiv.style.display = "none";
@@ -375,15 +409,15 @@ function render() {
     headerDiv.style.display = "block";
   }
 
-  if (!printMode) {
+  if (!state.printMode) {
     editDiv.innerHTML = "";
 
-    teams.forEach((team, ti) => {
+    state.teams.forEach((team, ti) => {
       editDiv.appendChild(createTeamCard(team, ti));
     });
   } else {
     printContent.innerHTML = "";
-    let team = teams[currentTeamIndex];
+    let team = state.teams[state.currentTeamIndex];
     let cost = teamCost(team);
     const perkOptions = allowedPerks(team.sponsor);
 
