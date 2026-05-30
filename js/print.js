@@ -50,48 +50,12 @@ function createDefaultWeaponRow(v) {
   ]);
 }
 
-function createPrintWeaponsTable(team, ti, v, vi) {
-  const table = el("table", { class: "weaponsTable" });
-
-  table.appendChild(
-    el("tr", {}, [
-      el("th", { text: "Weapon" }),
-      el("th", { text: "Facing" }),
-      ...(allowedLocations(v).length > 1
-        ? [el("th", { text: "Location" })]
-        : []),
-      el("th", { text: "Type" }),
-      el("th", { text: "Attack" }),
-      el("th", { text: "Range" }),
-      el("th", { text: "Special Rules" }),
-      el("th", { text: "Slots" }),
-      el("th", { text: "Cost" }),
-    ]),
-  );
-
-  table.appendChild(createDefaultWeaponRow(v));
-
-  v.weapons.forEach((w, wi) => {
-    table.appendChild(createPrintWeaponRow(team, ti, v, vi, w, wi));
-  });
-
-  return table;
-}
-
 function createPrintWeaponRow(team, ti, v, vi, w, wi) {
   const locs = allowedLocations(v);
 
-  return el("tr", {}, [
-    el("td", { text: w.weapon.wtype }),
-    el("td", { text: w.facing }),
-    ...(locs.length > 1 ? [el("td", { text: w.location })] : []),
-    el("td", { text: w.weapon.attackType }),
-    el("td", { text: weaponAttack(v, w.weapon) }),
-    el("td", { text: weaponRange(v, w.weapon) }),
-    el("td", { text: weaponRules(v, w.weapon) }),
-    el("td", { text: weaponSlots(v, w.weapon) }),
-    el("td", { text: weaponCost(v, w) }),
-  ]);
+  return el("div", {
+    text: `${w.weapon.wtype} - ${w.facing}${locs.length > 1 ? " - " + w.location : ""} - ${weaponAttack(v, w.weapon)} - ${weaponRange(v, w.weapon)} - ${weaponRules(v, w.weapon)}`,
+  });
 }
 
 function createPrintUpgradesTable(team, ti, v, vi) {
@@ -147,16 +111,13 @@ function createPrintPerksTable(team, ti, v, vi) {
 }
 
 function createPrintTrailerSection(team, ti, v, vi) {
-  if (team.sponsor !== "Rusty's Bootleggers") return null;
+  if (v.trailer.ttype == "None" || team.sponsor !== "Rusty's Bootleggers") {
+    return null;
+  }
 
-  return el("table", { class: "trailerTable" }, [
-    el("tr", {}, [
-      el("td", { text: "Trailer:" }),
-      el("td", { text: v.trailer?.ttype || "None" }),
-      el("td", { text: "Cargo:" }),
-      el("td", { text: v.cargo?.ctype || "None" }),
-    ]),
-  ]);
+  return el("div", {
+    text: `Trailer: ${v.trailer.ttype} - Cargo: ${v.cargo?.ctype || "None"}`,
+  });
 }
 
 function createPrintVehicleCard(team, ti, v, vi) {
@@ -171,46 +132,58 @@ function createPrintVehicleCard(team, ti, v, vi) {
         text: v.vehicleName,
         class: "vehicleName",
       }),
+      el("div", { text: "Max gear", class: "vehicleMaxGear" }),
       el("div", { text: v.vtype, class: "vehicleType" }),
       el("div", {
         text: `${v.weight}wheight`,
         class: "vehicleWeight",
       }),
+      el("div", { text: `${stats.maxGear}`, class: "vehicleGear" }),
     ]),
   );
 
   container.appendChild(
     el("div", { class: "vehicleStats" }, [
+      el("div", {
+        text: `Handling: ${stats.handling}`,
+        class: "vehicleHandling",
+      }),
+      el("div", { text: `Crew: ${stats.crew}`, class: "vehicleCrew" }),
+      el("div", {
+        text: `Cans: ${vehicleCost(v, team.sponsor)}`,
+        class: "vehicleCost",
+      }),
       el("div", { class: "hullContainer" }, [
-        el("div", { text: "Hull", class: "rotated" }),
+        el("div", { text: "Hull", class: "hullLabel" }),
         el("div", { class: "hullPoints" }, [
           ...Array.from({ length: stats.hull }, () =>
             el("div", { class: "hullPoint" }),
           ),
         ]),
       ]),
-
-      el("div", { text: `Handling: ${stats.handling}` }),
-      el("div", { text: `Max gear: ${stats.maxGear}` }),
-      el("div", { text: `Crew: ${stats.crew}` }),
-      el("div", { text: `Free slots: ${free}` }),
-      el("div", {
-        text: `${vehicleCost(v, team.sponsor)} cans`,
-        class: "vehicleCost",
-      }),
     ]),
   );
 
+  const armoryContainer = el("div", { class: "armoryContainer" }, [
+    el("div", { class: "armoryLabel", text: "Armory/Perks" }),
+  ]);
+  const armory = el("div", { class: "vehicleArmory" });
+
   const trailer = createPrintTrailerSection(team, ti, v, vi);
-  if (trailer) container.appendChild(trailer);
+  if (trailer) armory.appendChild(trailer);
 
-  container.appendChild(createPrintWeaponsTable(team, ti, v, vi));
+  v.weapons.forEach((w, wi) => {
+    armory.appendChild(createPrintWeaponRow(team, ti, v, vi, w, wi));
+  });
 
-  container.appendChild(createPrintUpgradesTable(team, ti, v, vi));
+  armory.appendChild(createPrintUpgradesTable(team, ti, v, vi));
 
   if (allowedPerks(team.sponsor).length) {
-    container.appendChild(createPrintPerksTable(team, ti, v, vi));
+    armory.appendChild(createPrintPerksTable(team, ti, v, vi));
   }
+
+  armoryContainer.appendChild(armory);
+  container.appendChild(armoryContainer);
 
   return container;
 }
