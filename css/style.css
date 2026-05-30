@@ -89,6 +89,18 @@ textarea {
   font-style: normal;
 }
 
+.stardos-stencil-regular {
+  font-family: "Stardos Stencil", system-ui;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.stardos-stencil-bold {
+  font-family: "Stardos Stencil", system-ui;
+  font-weight: 700;
+  font-style: normal;
+}
+
 body {
   background: #111;
   color: #eee;
@@ -406,8 +418,10 @@ button,
    ========================================================================== */
 
 #printDiv {
-  font-weight: bold;
+  font-family: "Stardos Stencil", system-ui;
+  font-weight: 700;
   text-transform: uppercase;
+  color: white;
 }
 
 #printDiv .teamHeader {
@@ -417,6 +431,7 @@ button,
 #printDiv .teamHeader div {
   display: inline-block;
   padding: 6px;
+  color: black;
 }
 
 #printDiv .teamHeader .teamName {
@@ -426,14 +441,16 @@ button,
 
 #printDiv .teamVehicles {
   display: grid;
-  grid-template-columns: 350px 350px;
+  grid-template-columns: 92mm 92mm;
   overflow: visible;
 }
 
 #printDiv .vehicleCard {
-  border: 4px solid #111;
-  margin: 10px;
-  padding: 6px;
+  margin: 2.5mm 0;
+  width: 88mm;
+  height: 64mm;
+  background-image: url("/img/vehicle-card-background.png");
+  background-size: cover;
 }
 
 #printDiv .vehicleHeader {
@@ -441,23 +458,27 @@ button,
   grid-template-columns: 1fr auto;
   grid-template-rows: auto auto;
   gap: 2px 8px;
+  margin: 4mm 0 0 4mm;
 }
 
 #printDiv .vehicleName {
   grid-column: 1 / -1;
   font-weight: bold;
-  font-size: x-large;
+  font-size: 10pt;
 }
 
 #printDiv .vehicleType {
   grid-column: 1;
   grid-row: 2;
+  font-size: 8pt;
 }
 
 #printDiv .vehicleWeight {
   grid-column: 2;
   grid-row: 2;
   font-size: smaller;
+  font-size: 6pt;
+  justify-content: right;
 }
 
 #printDiv .hullContainer {
@@ -601,78 +622,4 @@ button,
 
 @media only screen and (min-width: 35em) {
   /* Style adjustments for viewports that meet the condition */
-}
-
-@media print,
-  (-webkit-min-device-pixel-ratio: 1.25),
-  (min-resolution: 1.25dppx),
-  (min-resolution: 120dpi) {
-  /* Style adjustments for high resolution devices */
-}
-
-/* ==========================================================================
-   Print styles.
-   Inlined to avoid the additional HTTP request:
-   https://www.phpied.com/delay-loading-your-print-css/
-   ========================================================================== */
-
-@media print {
-  *,
-  *::before,
-  *::after {
-    background: #fff !important;
-    color: #000 !important;
-    /* Black prints faster */
-    box-shadow: none !important;
-    text-shadow: none !important;
-  }
-
-  a,
-  a:visited {
-    text-decoration: underline;
-  }
-
-  a[href]::after {
-    content: " (" attr(href) ")";
-  }
-
-  abbr[title]::after {
-    content: " (" attr(title) ")";
-  }
-
-  /*
-   * Don't show links that are fragment identifiers,
-   * or use the `javascript:` pseudo protocol
-   */
-  a[href^="#"]::after,
-  a[href^="javascript:"]::after {
-    content: "";
-  }
-
-  pre {
-    white-space: pre-wrap !important;
-  }
-
-  pre,
-  blockquote {
-    border: 1px solid #999;
-    page-break-inside: avoid;
-  }
-
-  tr,
-  img {
-    page-break-inside: avoid;
-  }
-
-  p,
-  h2,
-  h3 {
-    orphans: 3;
-    widows: 3;
-  }
-
-  h2,
-  h3 {
-    page-break-after: avoid;
-  }
 }
