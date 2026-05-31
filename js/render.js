@@ -39,6 +39,8 @@ import {
 } from "./app.js";
 import { createPrintTeamCard } from "./print.js";
 
+let isRendering = false;
+
 export function el(tag, props = {}, children = []) {
   const e = document.createElement(tag);
 
@@ -446,32 +448,38 @@ async function createVehicleCard(team, ti, v, vi) {
 }
 
 export async function render() {
-  const editDiv = document.getElementById("editDiv");
-  const printDiv = document.getElementById("printDiv");
-  const headerDiv = document.getElementById("headerDiv");
-  const printContent = document.getElementById("printContent");
+  if (isRendering) return;
+  isRendering = true;
+  try {
+    const editDiv = document.getElementById("editDiv");
+    const printDiv = document.getElementById("printDiv");
+    const headerDiv = document.getElementById("headerDiv");
+    const printContent = document.getElementById("printContent");
 
-  if (state.printMode) {
-    editDiv.style.display = "none";
-    printDiv.style.display = "block";
-    headerDiv.style.display = "none";
-  } else {
-    editDiv.style.display = "block";
-    printDiv.style.display = "none";
-    headerDiv.style.display = "block";
-  }
+    if (state.printMode) {
+      editDiv.style.display = "none";
+      printDiv.style.display = "block";
+      headerDiv.style.display = "none";
+    } else {
+      editDiv.style.display = "block";
+      printDiv.style.display = "none";
+      headerDiv.style.display = "block";
+    }
 
-  if (!state.printMode) {
-    editDiv.innerHTML = "";
+    if (!state.printMode) {
+      editDiv.innerHTML = "";
 
-    const cards = await Promise.all(
-      state.teams.map(async (team, ti) => await createTeamCard(team, ti)),
-    );
+      const cards = await Promise.all(
+        state.teams.map(async (team, ti) => await createTeamCard(team, ti)),
+      );
 
-    cards.forEach((card) => editDiv.appendChild(card));
-  } else {
-    printContent.innerHTML = "";
-    let team = state.teams[state.currentTeamIndex];
-    printContent.appendChild(await createPrintTeamCard(team));
+      cards.forEach((card) => editDiv.appendChild(card));
+    } else {
+      printContent.innerHTML = "";
+      let team = state.teams[state.currentTeamIndex];
+      printContent.appendChild(await createPrintTeamCard(team));
+    }
+  } finally {
+    isRendering = false;
   }
 }

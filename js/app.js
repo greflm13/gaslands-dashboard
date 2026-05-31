@@ -729,8 +729,8 @@ function loadFromFileInput(event) {
 
   const reader = new FileReader();
 
-  reader.onload = (e) => {
-    loadFromText(e.target.result);
+  reader.onload = async (e) => {
+    await loadFromText(e.target.result);
   };
 
   reader.readAsText(file);
@@ -750,7 +750,7 @@ async function loadUsingFilePicker() {
     const file = await handle.getFile();
     const text = await file.text();
 
-    loadFromText(text);
+    await loadFromText(text);
   } catch (e) {
     console.log("Load cancelled", e);
   }
