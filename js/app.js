@@ -12,6 +12,8 @@ import {
   defaultVehicle,
 } from "./data.js";
 
+console.log("APP INIT")
+
 let saveTimer;
 let isImporting = false;
 
