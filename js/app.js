@@ -13,6 +13,7 @@ import {
 } from "./data.js";
 
 let saveTimer;
+let isImporting = false;
 
 export function setSponsor(ti, value) {
   const team = state.teams[ti];
@@ -756,6 +757,11 @@ async function loadUsingFilePicker() {
 }
 
 async function loadFromText(text) {
+  isImporting = true;
+
+  state.teams = [];
+  state.currentTeamIndex = 0;
+
   const data = JSON.parse(text);
 
   state.teams = await Promise.all(
@@ -829,10 +835,12 @@ async function loadFromText(text) {
 
   state.currentTeamIndex = 0;
 
+  isImporting = false;
   update();
 }
 
 function saveState() {
+  if (isImporting) return;
   try {
     localStorage.setItem("gaslandsDashboard", JSON.stringify(state));
   } catch (e) {
@@ -915,8 +923,8 @@ function startPrint() {
 }
 
 function update() {
-  saveStateDebounced();
   render();
+  saveStateDebounced();
 }
 
 loadState();
