@@ -835,8 +835,8 @@ async function loadFromText(text) {
 
   state.currentTeamIndex = 0;
 
-  isImporting = false;
   update();
+  isImporting = false;
 }
 
 function saveState() {
@@ -923,8 +923,8 @@ function startPrint() {
 }
 
 function update() {
-  render();
   saveStateDebounced();
+  render();
 }
 
 loadState();
