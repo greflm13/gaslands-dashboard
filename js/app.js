@@ -13,6 +13,7 @@ import {
 } from "./data.js";
 
 let isImporting = false;
+let interactionLock = false;
 
 export function setSponsor(ti, value) {
   const team = state.teams[ti];
@@ -649,11 +650,15 @@ async function serializeAll() {
 }
 
 function saveToFile() {
-  if (window.showSaveFilePicker) {
-    saveUsingFilePicker();
-  } else {
-    saveUsingDownload();
-  }
+  runOnce(async () => {
+    console.log("SAVE");
+
+    if (window.showSaveFilePicker) {
+      await saveUsingFilePicker();
+    } else {
+      await saveUsingDownload();
+    }
+  });
 }
 
 async function saveUsingFilePicker() {
@@ -908,8 +913,27 @@ async function deleteImageFromDB(id) {
   store.delete(id);
 }
 
+function runOnce(fn) {
+  if (interactionLock) {
+    console.log("Blocked duplicate interaction");
+    return;
+  }
+
+  interactionLock = true;
+
+  try {
+    fn();
+  } finally {
+    setTimeout(() => {
+      interactionLock = false;
+    }, 0);
+  }
+}
+
 function startPrint() {
-  window.print();
+  runOnce(() => {
+    window.print();
+  });
 }
 
 function update() {
