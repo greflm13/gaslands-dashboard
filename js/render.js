@@ -71,10 +71,38 @@ function select(options, value, onChange) {
   );
 }
 
+function toggleFold(ti) {
+  const folder = document.getElementById(`folder-${ti}`);
+  const state = folder.className;
+  const team = document.getElementById(`team-${ti}`);
+  const vehicles = Array.from(team.getElementsByClassName("vehicleCard"));
+  const button = document.getElementById(`vehicle-adder-${ti}`);
+  if (state == "unfolded") {
+    folder.className = "folded";
+    vehicles.forEach((i) => {
+      i.className = "vehicleCard hidden";
+    });
+    button.className = "addVehicle hidden";
+  } else {
+    folder.className = "unfolded";
+    vehicles.forEach((i) => {
+      i.className = "vehicleCard";
+    });
+    button.className = "addVehicle";
+  }
+}
+
 async function createTeamCard(team, ti) {
-  const container = el("div", { class: "teamCard" });
+  const container = el("div", { class: "teamCard", id: `team-${ti}` });
 
   const headerRow = el("tr", {}, [
+    el("td", {}, [
+      el("img", {
+        class: "unfolded",
+        id: `folder-${ti}`,
+        onclick: () => toggleFold(ti),
+      }),
+    ]),
     el("td", {}, [
       el("input", {
         value: team.teamName,
@@ -120,6 +148,7 @@ async function createTeamCard(team, ti) {
       {
         class: "addVehicle",
         onclick: () => addVehicle(ti),
+        id: `vehicle-adder-${ti}`,
       },
       ["add Vehicle"],
     ),

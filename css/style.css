@@ -152,6 +152,21 @@ button:hover {
   padding: 6px;
 }
 
+#editDiv .teamHeader .unfolded {
+  width: 20px;
+  transform: rotate(90deg);
+  cursor: pointer;
+  content: url("/img/arrow.png");
+  padding: 0;
+}
+
+#editDiv .teamHeader .folded {
+  width: 20px;
+  cursor: pointer;
+  content: url("/img/arrow.png");
+  padding: 0;
+}
+
 #editDiv .teamHeader input,
 #editDiv .teamHeader select {
   background: #111;
@@ -161,38 +176,42 @@ button:hover {
 }
 
 #editDiv .teamHeader td:nth-child(1) {
+  width: 20px;
+}
+
+#editDiv .teamHeader td:nth-child(2) {
   width: 170px;
 }
 
-#editDiv .teamHeader td:nth-child(3) {
+#editDiv .teamHeader td:nth-child(4) {
   font-weight: bold;
   text-align: right;
   width: 100px;
 }
 
-#editDiv .teamHeader td:nth-child(3)::after {
+#editDiv .teamHeader td:nth-child(4)::after {
   content: " /";
   color: white;
   font-weight: normal;
-}
-
-#editDiv .teamHeader td:nth-child(4) {
-  width: 40px;
-}
-
-#editDiv .teamHeader td:nth-child(4) input {
-  width: 40px;
 }
 
 #editDiv .teamHeader td:nth-child(5) {
   width: 40px;
 }
 
+#editDiv .teamHeader td:nth-child(5) input {
+  width: 40px;
+}
+
 #editDiv .teamHeader td:nth-child(6) {
-  width: 0px;
+  width: 40px;
 }
 
 #editDiv .teamHeader td:nth-child(7) {
+  width: 0px;
+}
+
+#editDiv .teamHeader td:nth-child(8) {
   width: 0px;
 }
 
