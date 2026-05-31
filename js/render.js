@@ -467,13 +467,11 @@ export async function render() {
     }
 
     if (!state.printMode) {
-      editDiv.innerHTML = "";
-
       const cards = await Promise.all(
-        state.teams.map(async (team, ti) => await createTeamCard(team, ti)),
+        (state.teams || []).map((team, ti) => createTeamCard(team, ti)),
       );
 
-      cards.forEach((card) => editDiv.appendChild(card));
+      editDiv.replaceChildren(...cards);
     } else {
       printContent.innerHTML = "";
       let team = state.teams[state.currentTeamIndex];
