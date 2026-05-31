@@ -938,6 +938,7 @@ document
 document.getElementById("printButton").addEventListener("click", startPrint);
 window.addEventListener("beforeunload", saveState);
 window.addEventListener("pageshow", () => {
+  if (!event.persisted) return;
   loadState();
   render();
 });
