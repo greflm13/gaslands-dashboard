@@ -448,7 +448,6 @@ async function createVehicleCard(team, ti, v, vi) {
 }
 
 export async function render() {
-  console.log("RENDER CALLED");
   if (isRendering) return;
   isRendering = true;
   try {

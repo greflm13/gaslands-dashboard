@@ -854,7 +854,8 @@ function loadState() {
 
     const parsed = JSON.parse(raw);
 
-    state.teams = parsed.teams || [];
+    state.teams = Array.isArray(parsed.teams) ? [...parsed.teams] : [];
+
     state.currentTeamIndex = parsed.currentTeamIndex || 0;
 
     return true;
@@ -926,9 +927,15 @@ function update() {
   render();
 }
 
-loadState();
-render();
+function init() {
+  if (state.initialized) return;
+  state.initialized = true;
 
+  loadState();
+  render();
+}
+
+init();
 document.getElementById("addTeamButton").addEventListener("click", addTeam);
 document.getElementById("saveButton").addEventListener("click", saveToFile);
 document.getElementById("loadButton").addEventListener("click", loadFromDialog);
