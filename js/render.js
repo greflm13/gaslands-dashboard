@@ -83,12 +83,14 @@ function toggleFold(ti) {
       i.className = "vehicleCard hidden";
     });
     button.className = "addVehicle hidden";
+    state.teams[ti].folded = true;
   } else {
     folder.className = "unfolded";
     vehicles.forEach((i) => {
       i.className = "vehicleCard";
     });
     button.className = "addVehicle";
+    state.teams[ti].folded = false;
   }
 }
 
@@ -98,7 +100,7 @@ async function createTeamCard(team, ti) {
   const headerRow = el("tr", {}, [
     el("td", {}, [
       el("img", {
-        class: "unfolded",
+        class: team.folded ? "folded" : "unfolded",
         id: `folder-${ti}`,
         onclick: () => toggleFold(ti),
       }),
