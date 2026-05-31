@@ -915,13 +915,13 @@ function startPrint() {
   window.print();
 }
 
-function update() {
+async function update() {
   saveStateDebounced();
-  render();
+  await render();
 }
 
 loadState();
-render();
+await render();
 
 document.getElementById("addTeamButton").addEventListener("click", addTeam);
 document.getElementById("saveButton").addEventListener("click", saveToFile);
