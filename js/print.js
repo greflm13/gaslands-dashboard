@@ -21,7 +21,9 @@ export async function createPrintTeamCard(team, ti) {
   container.appendChild(
     el("div", { class: "teamHeader" }, [
       el("div", { text: team.teamName, class: "teamName" }),
-      el("div", { text: team.sponsor, class: "teamSponsor" }),
+      ...(team.sponsor != "None"
+        ? [el("div", { text: team.sponsor, class: "teamSponsor" })]
+        : []),
       el("div", { text: teamCost(team) + " cans", class: "teamCost" }),
     ]),
   );
@@ -62,11 +64,7 @@ function createPrintPerksRow(team, ti, v, vi, p, pi) {
 }
 
 function createPrintTrailerRow(team, ti, v, vi) {
-  if (
-    v.trailer?.ttype ||
-    "None" == "None" ||
-    team.sponsor !== "Rusty's Bootleggers"
-  ) {
+  if (v.trailer?.ttype == "None" || team.sponsor !== "Rusty's Bootleggers") {
     return null;
   }
 
@@ -158,8 +156,9 @@ async function createPrintVehicleCard(team, ti, v, vi) {
   container.appendChild(armoryContainer);
 
   const img = await createPrintImage(team, ti, v, vi);
-  if (img) {container.appendChild(img);
-    armoryContainer.className = "armoryContainer smallerArmory"
+  if (img) {
+    container.appendChild(img);
+    armoryContainer.className = "armoryContainer smallerArmory";
   }
 
   return container;
