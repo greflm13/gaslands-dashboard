@@ -12,7 +12,6 @@ import {
   defaultVehicle,
 } from "./data.js";
 
-let saveTimer;
 let isImporting = false;
 
 export function setSponsor(ti, value) {
@@ -861,11 +860,6 @@ function loadState() {
   }
 }
 
-function saveStateDebounced() {
-  clearTimeout(saveTimer);
-  saveTimer = setTimeout(saveState, 300);
-}
-
 function openDB() {
   return new Promise((resolve, reject) => {
     const request = indexedDB.open(state.DB_NAME, state.DB_VERSION);
@@ -919,7 +913,7 @@ function startPrint() {
 }
 
 function update() {
-  saveStateDebounced();
+  saveState();
   render();
 }
 
