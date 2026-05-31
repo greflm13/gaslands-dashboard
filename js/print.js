@@ -35,19 +35,10 @@ export function createPrintTeamCard(team, ti) {
   return container;
 }
 
-function createDefaultWeaponRow(v) {
-  return el("tr", {}, [
-    el("td", { text: "Handgun" }),
-    el("td", { text: "360" }),
-    ...(allowedLocations(v).length > 1 ? [el("td")] : []),
-    el("td", { text: "Shooting" }),
-    el("td", { text: "1D6" }),
-    el("td", { text: "Medium" }),
-    el("td", { text: "Blitz" }),
-    el("td", { text: "-" }),
-    el("td", { text: "-" }),
-    el("td"),
-  ]);
+function createDefaultWeaponRow() {
+  return el("div", {
+    text: "Handgun - 360 - 1D6 - Medium - Blitz",
+  });
 }
 
 function createPrintWeaponRow(team, ti, v, vi, w, wi) {
@@ -127,6 +118,8 @@ function createPrintVehicleCard(team, ti, v, vi) {
 
   const trailer = createPrintTrailerRow(team, ti, v, vi);
   if (trailer) armory.appendChild(trailer);
+
+  armory.appendChild(createDefaultWeaponRow());
 
   v.weapons.forEach((w, wi) => {
     armory.appendChild(createPrintWeaponRow(team, ti, v, vi, w, wi));
