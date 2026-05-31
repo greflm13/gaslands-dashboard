@@ -764,7 +764,7 @@ async function loadFromText(text) {
 
   const data = JSON.parse(text);
 
-  state.teams = await Promise.all(
+  const teams = await Promise.all(
     (data.teams || []).map(async (t, ti) => {
       const team = {
         teamName: t.teamName || "Team",
@@ -774,60 +774,59 @@ async function loadFromText(text) {
       };
 
       const vehicles = await Promise.all(
-        (t.vehicles || [])
-          .map(async (tv, tvi) => {
-            const baseVehicle = allVehicles.find(
-              (v) => v.vtype === tv.vehicleType,
-            );
-            if (!baseVehicle) return null;
+        (t.vehicles || []).map(async (tv, tvi) => {
+          const baseVehicle = allVehicles.find(
+            (v) => v.vtype === tv.vehicleType,
+          );
+          if (!baseVehicle) return null;
 
-            const v = structuredClone(baseVehicle);
+          const v = structuredClone(baseVehicle);
 
-            v.vehicleName = tv.vehicleName || "Vehicle";
+          v.vehicleName = tv.vehicleName || "Vehicle";
 
-            v.weapons = (tv.weapons || []).map((w) => {
-              const baseW = allWeapons.find((x) => x.wtype === w.weaponType);
-              return baseW
-                ? {
-                    weapon: structuredClone(baseW),
-                    facing: w.facing,
-                    location: w.location,
-                  }
-                : null;
-            });
+          v.weapons = (tv.weapons || []).map((w) => {
+            const baseW = allWeapons.find((x) => x.wtype === w.weaponType);
+            return baseW
+              ? {
+                  weapon: structuredClone(baseW),
+                  facing: w.facing,
+                  location: w.location,
+                }
+              : null;
+          });
 
-            v.upgrades = (tv.upgrades || [])
-              .map((u) =>
-                structuredClone(
-                  allUpgrades.find((x) => x.utype === u.upgradeType),
-                ),
-              )
-              .filter(Boolean);
+          v.upgrades = (tv.upgrades || [])
+            .map((u) =>
+              structuredClone(
+                allUpgrades.find((x) => x.utype === u.upgradeType),
+              ),
+            )
+            .filter(Boolean);
 
-            v.perks = (tv.perks || [])
-              .map((p) =>
-                structuredClone(allPerks.find((x) => x.ptype === p.perkType)),
-              )
-              .filter(Boolean);
+          v.perks = (tv.perks || [])
+            .map((p) =>
+              structuredClone(allPerks.find((x) => x.ptype === p.perkType)),
+            )
+            .filter(Boolean);
 
-            v.trailer =
-              allTrailers.find((t) => t.ttype === tv.trailer) || "None";
-            v.cargo = allCargos.find((c) => c.ctype === tv.cargo) || "None";
+          v.trailer = allTrailers.find((t) => t.ttype === tv.trailer) || "None";
+          v.cargo = allCargos.find((c) => c.ctype === tv.cargo) || "None";
 
-            const imageId = "img_" + ti + "_" + tvi;
-            v.imageID = imageId;
+          const imageId = "img_" + ti + "_" + tvi;
+          v.imageID = imageId;
 
-            await saveImage(imageId, tv.image);
+          await saveImage(imageId, tv.image);
 
-            return v;
-          })
-          .filter(Boolean),
+          return v;
+        }),
       );
 
       team.vehicles = vehicles.filter(Boolean);
       return team;
     }),
   );
+
+  state.teams = teams.filter(Boolean);
 
   if (state.teams.length === 0) {
     state.teams.push(createTeam());
