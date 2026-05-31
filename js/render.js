@@ -465,7 +465,7 @@ export async function render() {
     editDiv.innerHTML = "";
 
     const cards = await Promise.all(
-      state.teams.map((team, ti) => createTeamCard(team, ti)),
+      state.teams.map(async (team, ti) => await createTeamCard(team, ti)),
     );
 
     cards.forEach((card) => editDiv.appendChild(card));
