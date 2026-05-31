@@ -58,7 +58,11 @@ function createPrintPerksRow(team, ti, v, vi, p, pi) {
 }
 
 function createPrintTrailerRow(team, ti, v, vi) {
-  if (v.trailer.ttype == "None" || team.sponsor !== "Rusty's Bootleggers") {
+  if (
+    v.trailer?.ttype ||
+    "None" == "None" ||
+    team.sponsor !== "Rusty's Bootleggers"
+  ) {
     return null;
   }
 
