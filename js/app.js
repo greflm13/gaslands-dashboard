@@ -937,3 +937,7 @@ document
   .addEventListener("click", closePrintPreview);
 document.getElementById("printButton").addEventListener("click", startPrint);
 window.addEventListener("beforeunload", saveState);
+window.addEventListener("pageshow", () => {
+  loadState();
+  render();
+});
