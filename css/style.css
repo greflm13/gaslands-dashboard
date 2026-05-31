@@ -204,11 +204,15 @@ button:hover {
   width: 170px;
 }
 
-#editDiv .vehicleHeader td:nth-child(3) {
-  width: 50px;
+#editDiv .vehicleHeader td:nth-child(2) {
+  width: 120px;
 }
 
 #editDiv .vehicleHeader td:nth-child(4) {
+  width: 50px;
+}
+
+#editDiv .vehicleHeader td:nth-child(5) {
   width: 0px;
 }
 
@@ -345,6 +349,26 @@ button:hover {
 
 #editDiv .vehicleStats {
   text-align: center;
+}
+
+#editDiv .imagePicker {
+  font-size: 8px;
+}
+
+#editDiv .vehicleImg {
+  margin-left: 7px;
+  object-fit: cover;
+}
+
+#editDiv .vehicleImgHover {
+  position: absolute;
+  padding: 10px;
+  background-color: #1b1b1b;
+  object-fit: cover;
+}
+
+#editDiv .vehicleImgHover img {
+  object-fit: cover;
 }
 
 #editDiv table {
@@ -575,6 +599,33 @@ button,
   font-size: 8pt;
   font-family: "Stardos Stencil", system-ui;
   font-weight: bold;
+}
+
+#printDiv .smallerArmory {
+  grid-template-columns: 5.25mm 50mm;
+}
+
+#printDiv .vehicleImg {
+  position: relative;
+}
+
+#printDiv .theVehicleImg {
+  position: absolute;
+  width: 19.5mm;
+  height: 19.5mm;
+  object-fit: cover;
+  transform: rotate(16.5deg);
+  top: -23.3mm;
+  left: 63.6mm;
+  z-index: 1;
+}
+
+#printDiv .theFrame {
+  position: absolute;
+  width: 80mm;
+  top: -53mm;
+  left: 10mm;
+  z-index: 2;
 }
 
 .noprint {

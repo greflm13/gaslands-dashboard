@@ -2,6 +2,7 @@ import { state } from "./state.js";
 import { allSponsors, allVehicles, allTrailers, allCargos } from "./data.js";
 import {
   addPerk,
+  addImage,
   addUpgrade,
   addVehicle,
   addWeapon,
@@ -15,6 +16,7 @@ import {
   changeVehicle,
   changeWeapon,
   computeStats,
+  loadImageFromDB,
   openPrintPreview,
   removePerk,
   removeTeam,
@@ -67,7 +69,7 @@ function select(options, value, onChange) {
   );
 }
 
-function createTeamCard(team, ti) {
+async function createTeamCard(team, ti) {
   const container = el("div", { class: "teamCard" });
 
   const headerRow = el("tr", {}, [
@@ -121,9 +123,11 @@ function createTeamCard(team, ti) {
     ),
   );
 
-  team.vehicles.forEach((v, vi) => {
-    container.appendChild(createVehicleCard(team, ti, v, vi));
-  });
+  const cards = await Promise.all(
+    team.vehicles.map((v, vi) => createVehicleCard(team, ti, v, vi)),
+  );
+
+  cards.forEach((card) => container.appendChild(card));
 
   return container;
 }
@@ -342,7 +346,25 @@ function createTrailerSection(team, ti, v, vi) {
   ]);
 }
 
-function createVehicleCard(team, ti, v, vi) {
+async function showHoverImage(ti, v, vi, e) {
+  const hover = el("div", { class: "vehicleImgHover" }, [
+    el("img", {
+      src: await loadImageFromDB(v.imageID),
+      width: "250px",
+      height: "250px",
+      top: e.clientY + "px",
+      left: e.clentX + "px",
+    }),
+  ]);
+  document.getElementById(`img-${ti}-${vi}`).appendChild(hover);
+}
+
+function removeHoverImage(ti, vi, e) {
+  parent = document.getElementById(`img-${ti}-${vi}`);
+  parent.removeChild(parent.lastElementChild);
+}
+
+async function createVehicleCard(team, ti, v, vi) {
   const container = el("div", { class: "vehicleCard" });
 
   const stats = computeStats(v);
@@ -364,6 +386,24 @@ function createVehicleCard(team, ti, v, vi) {
             v.vtype,
             (e) => changeVehicle(ti, vi, e.target.value),
           ),
+        ]),
+        el("td", { id: `img-${ti}-${vi}` }, [
+          el("label", { text: "Image: ", for: `imgi-${ti}-${vi}` }),
+          el("input", {
+            type: "File",
+            accept: "image/*",
+            id: `imgi-${ti}-${vi}`,
+            class: "imagePicker",
+            onchange: (e) => addImage(ti, vi, e),
+          }),
+          el("img", {
+            src: await loadImageFromDB(v.imageID),
+            class: "vehicleImg",
+            width: "25px",
+            height: "25px",
+            onmouseenter: (e) => showHoverImage(ti, v, vi, e),
+            onmouseleave: (e) => removeHoverImage(ti, vi, e),
+          }),
         ]),
 
         el("td", { text: `${vehicleCost(v, team.sponsor)} cans` }),
@@ -405,7 +445,7 @@ function createVehicleCard(team, ti, v, vi) {
   return container;
 }
 
-export function render() {
+export async function render() {
   const editDiv = document.getElementById("editDiv");
   const printDiv = document.getElementById("printDiv");
   const headerDiv = document.getElementById("headerDiv");
@@ -424,12 +464,14 @@ export function render() {
   if (!state.printMode) {
     editDiv.innerHTML = "";
 
-    state.teams.forEach((team, ti) => {
-      editDiv.appendChild(createTeamCard(team, ti));
-    });
+    const cards = await Promise.all(
+      state.teams.map((team, ti) => createTeamCard(team, ti)),
+    );
+
+    cards.forEach((card) => editDiv.appendChild(card));
   } else {
     printContent.innerHTML = "";
     let team = state.teams[state.currentTeamIndex];
-    printContent.appendChild(createPrintTeamCard(team));
+    printContent.appendChild(await createPrintTeamCard(team));
   }
 }

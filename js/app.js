@@ -45,7 +45,7 @@ export function openPrintPreview(i) {
   state.currentTeamIndex = i;
   const rootElement = document.getElementsByTagName("body")[0];
   rootElement.style.background = "#fff";
-  rootElement.style.color= "#222";
+  rootElement.style.color = "#222";
   update();
 }
 
@@ -53,7 +53,7 @@ function closePrintPreview() {
   state.printMode = false;
   const rootElement = document.getElementsByTagName("body")[0];
   rootElement.style.background = "#111";
-  rootElement.style.color= "#eee";
+  rootElement.style.color = "#eee";
   update();
 }
 
@@ -461,6 +461,7 @@ export function addVehicle(i) {
 export function removeVehicle(ti, vi) {
   const team = state.teams[ti];
   team.vehicles.splice(vi, 1);
+  deleteImageFromDB("img_" + ti + "_" + vi);
   update();
 }
 
@@ -606,36 +607,41 @@ export function allowedWeaponsFull(v, sponsor) {
   });
 }
 
-function serializeAll() {
+async function serializeAll() {
   return JSON.stringify(
     {
-      teams: state.teams.map((t) => ({
-        teamName: t.teamName,
-        sponsor: t.sponsor,
-        maxCost: t.maxCost,
+      teams: await Promise.all(
+        state.teams.map(async (t) => ({
+          teamName: t.teamName,
+          sponsor: t.sponsor,
+          maxCost: t.maxCost,
 
-        vehicles: t.vehicles.map((v) => ({
-          vehicleName: v.vehicleName,
-          vehicleType: v.vtype,
+          vehicles: await Promise.all(
+            t.vehicles.map(async (v) => ({
+              vehicleName: v.vehicleName,
+              vehicleType: v.vtype,
 
-          weapons: v.weapons.map((w) => ({
-            weaponType: w.weapon.wtype,
-            facing: w.facing,
-            location: w.location,
-          })),
+              weapons: v.weapons.map((w) => ({
+                weaponType: w.weapon.wtype,
+                facing: w.facing,
+                location: w.location,
+              })),
 
-          upgrades: v.upgrades.map((u) => ({
-            upgradeType: u.utype,
-          })),
+              upgrades: v.upgrades.map((u) => ({
+                upgradeType: u.utype,
+              })),
 
-          perks: v.perks.map((p) => ({
-            perkType: p.ptype,
-          })),
+              perks: v.perks.map((p) => ({
+                perkType: p.ptype,
+              })),
 
-          trailer: v.trailer.ttype || "None",
-          cargo: v.cargo.ctype || "None",
+              trailer: v.trailer.ttype || "None",
+              cargo: v.cargo.ctype || "None",
+              image: await loadImageFromDB(v.imageID),
+            })),
+          ),
         })),
-      })),
+      ),
     },
     null,
     2,
@@ -664,15 +670,35 @@ async function saveUsingFilePicker() {
 
     const writable = await handle.createWritable();
 
-    await writable.write(serializeAll());
+    await writable.write(await serializeAll());
     await writable.close();
   } catch (e) {
     console.log("Save cancelled", e);
   }
 }
 
-function saveUsingDownload() {
-  const data = serializeAll();
+export function addImage(ti, vi, event) {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+
+  reader.onload = async (e) => {
+    const base64 = e.target.result;
+
+    const imageId = "img_" + ti + "_" + vi;
+
+    await saveImage(imageId, base64);
+
+    state.teams[ti].vehicles[vi].imageID = imageId;
+    update();
+  };
+
+  reader.readAsDataURL(file);
+}
+
+async function saveUsingDownload() {
+  const data = await serializeAll();
 
   const blob = new Blob([data], { type: "application/json" });
   const url = URL.createObjectURL(blob);
@@ -729,60 +755,74 @@ async function loadUsingFilePicker() {
   }
 }
 
-function loadFromText(text) {
+async function loadFromText(text) {
   const data = JSON.parse(text);
 
-  state.teams = (data.teams || []).map((t) => {
-    const team = {
-      teamName: t.teamName || "Team",
-      sponsor: t.sponsor || allSponsors[0]?.name || "",
-      maxCost: t.maxCost || 50,
-      vehicles: [],
-    };
+  state.teams = await Promise.all(
+    (data.teams || []).map(async (t, ti) => {
+      const team = {
+        teamName: t.teamName || "Team",
+        sponsor: t.sponsor || allSponsors[0]?.name || "",
+        maxCost: t.maxCost || 50,
+        vehicles: [],
+      };
 
-    team.vehicles = (t.vehicles || [])
-      .map((tv) => {
-        const baseVehicle = allVehicles.find((v) => v.vtype === tv.vehicleType);
-        if (!baseVehicle) return null;
+      team.vehicles = await Promise.all(
+        (t.vehicles || [])
+          .map(async (tv, tvi) => {
+            const baseVehicle = allVehicles.find(
+              (v) => v.vtype === tv.vehicleType,
+            );
+            if (!baseVehicle) return null;
 
-        const v = structuredClone(baseVehicle);
+            const v = structuredClone(baseVehicle);
 
-        v.vehicleName = tv.vehicleName || "Vehicle";
+            v.vehicleName = tv.vehicleName || "Vehicle";
 
-        v.weapons = (tv.weapons || [])
-          .map((w) => {
-            const baseW = allWeapons.find((x) => x.wtype === w.weaponType);
-            return baseW
-              ? {
-                  weapon: structuredClone(baseW),
-                  facing: w.facing,
-                  location: w.location,
-                }
-              : null;
+            v.weapons = (tv.weapons || [])
+              .map((w) => {
+                const baseW = allWeapons.find((x) => x.wtype === w.weaponType);
+                return baseW
+                  ? {
+                      weapon: structuredClone(baseW),
+                      facing: w.facing,
+                      location: w.location,
+                    }
+                  : null;
+              })
+              .filter(Boolean);
+
+            v.upgrades = (tv.upgrades || [])
+              .map((u) =>
+                structuredClone(
+                  allUpgrades.find((x) => x.utype === u.upgradeType),
+                ),
+              )
+              .filter(Boolean);
+
+            v.perks = (tv.perks || [])
+              .map((p) =>
+                structuredClone(allPerks.find((x) => x.ptype === p.perkType)),
+              )
+              .filter(Boolean);
+
+            v.trailer =
+              allTrailers.find((t) => t.ttype === tv.trailer) || "None";
+            v.cargo = allCargos.find((c) => c.ctype === tv.cargo) || "None";
+
+            const imageId = "img_" + ti + "_" + tvi;
+            v.imageID = imageId;
+
+            await saveImage(imageId, tv.image);
+
+            return v;
           })
-          .filter(Boolean);
+          .filter(Boolean),
+      );
 
-        v.upgrades = (tv.upgrades || [])
-          .map((u) =>
-            structuredClone(allUpgrades.find((x) => x.utype === u.upgradeType)),
-          )
-          .filter(Boolean);
-
-        v.perks = (tv.perks || [])
-          .map((p) =>
-            structuredClone(allPerks.find((x) => x.ptype === p.perkType)),
-          )
-          .filter(Boolean);
-
-        v.trailer = allTrailers.find((t) => t.ttype === tv.trailer) || "None";
-        v.cargo = allCargos.find((c) => c.ctype === tv.cargo) || "None";
-
-        return v;
-      })
-      .filter(Boolean);
-
-    return team;
-  });
+      return team;
+    }),
+  );
 
   if (state.teams.length === 0) {
     state.teams.push(createTeam());
@@ -821,6 +861,54 @@ function loadState() {
 function saveStateDebounced() {
   clearTimeout(saveTimer);
   saveTimer = setTimeout(saveState, 300);
+}
+
+function openDB() {
+  return new Promise((resolve, reject) => {
+    const request = indexedDB.open(state.DB_NAME, state.DB_VERSION);
+
+    request.onupgradeneeded = (e) => {
+      const db = e.target.result;
+      if (!db.objectStoreNames.contains(state.STORE_NAME)) {
+        db.createObjectStore(state.STORE_NAME, { keyPath: "id" });
+      }
+    };
+
+    request.onsuccess = () => resolve(request.result);
+    request.onerror = () => reject(request.error);
+  });
+}
+
+async function saveImage(id, base64) {
+  const db = await openDB();
+  const tx = db.transaction(state.STORE_NAME, "readwrite");
+  const store = tx.objectStore(state.STORE_NAME);
+
+  store.put({ id, data: base64 });
+
+  return tx.complete;
+}
+
+export async function loadImageFromDB(id) {
+  if (!id) return null;
+  const db = await openDB();
+  const tx = db.transaction(state.STORE_NAME, "readonly");
+  const store = tx.objectStore(state.STORE_NAME);
+
+  return new Promise((resolve, reject) => {
+    const request = store.get(id);
+
+    request.onsuccess = () => resolve(request.result?.data || null);
+    request.onerror = () => reject(request.error);
+  });
+}
+
+async function deleteImageFromDB(id) {
+  const db = await openDB();
+  const tx = db.transaction(state.STORE_NAME, "readwrite");
+  const store = tx.objectStore(state.STORE_NAME);
+
+  store.delete(id);
 }
 
 function startPrint() {

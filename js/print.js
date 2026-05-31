@@ -2,6 +2,7 @@ import {
   allowedLocations,
   allowedPerks,
   computeStats,
+  loadImageFromDB,
   teamCost,
   totalSlots,
   usedSlots,
@@ -14,7 +15,7 @@ import {
 } from "./app";
 import { el } from "./render";
 
-export function createPrintTeamCard(team, ti) {
+export async function createPrintTeamCard(team, ti) {
   const container = el("div", { class: "teamCard" });
 
   container.appendChild(
@@ -27,9 +28,12 @@ export function createPrintTeamCard(team, ti) {
 
   const vehicles = el("div", { class: "teamVehicles" });
 
-  team.vehicles.forEach((v, vi) => {
-    vehicles.appendChild(createPrintVehicleCard(team, ti, v, vi));
-  });
+  const cards = await Promise.all(
+    team.vehicles.map((v, vi) => createPrintVehicleCard(team, ti, v, vi)),
+  );
+
+  cards.forEach((card) => vehicles.appendChild(card));
+
   container.appendChild(vehicles);
 
   return container;
@@ -71,7 +75,19 @@ function createPrintTrailerRow(team, ti, v, vi) {
   });
 }
 
-function createPrintVehicleCard(team, ti, v, vi) {
+async function createPrintImage(team, ti, v, vi) {
+  if (!v.imageID) return null;
+
+  const base64 = await loadImageFromDB(v.imageID);
+  if (!base64) return null;
+
+  return el("div", { class: "vehicleImg" }, [
+    el("img", { src: base64, class: "theVehicleImg" }),
+    el("img", { src: "/img/vehicle-image-frame.png", class: "theFrame" }),
+  ]);
+}
+
+async function createPrintVehicleCard(team, ti, v, vi) {
   const container = el("div", { class: "vehicleCard" });
 
   const stats = computeStats(v);
@@ -118,6 +134,7 @@ function createPrintVehicleCard(team, ti, v, vi) {
   const armoryContainer = el("div", { class: "armoryContainer" }, [
     el("div", { class: "armoryLabel", text: "Armory/Perks" }),
   ]);
+
   const armory = el("div", { class: "vehicleArmory" });
 
   const trailer = createPrintTrailerRow(team, ti, v, vi);
@@ -139,6 +156,11 @@ function createPrintVehicleCard(team, ti, v, vi) {
 
   armoryContainer.appendChild(armory);
   container.appendChild(armoryContainer);
+
+  const img = await createPrintImage(team, ti, v, vi);
+  if (img) {container.appendChild(img);
+    armoryContainer.className = "armoryContainer smallerArmory"
+  }
 
   return container;
 }
