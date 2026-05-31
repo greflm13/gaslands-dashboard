@@ -12,8 +12,6 @@ import {
   defaultVehicle,
 } from "./data.js";
 
-console.log("APP INIT")
-
 let saveTimer;
 let isImporting = false;
 
@@ -829,10 +827,6 @@ async function loadFromText(text) {
   );
 
   state.teams = teams.filter(Boolean);
-
-  if (state.teams.length === 0) {
-    state.teams.push(createTeam());
-  }
 
   state.currentTeamIndex = 0;
 
