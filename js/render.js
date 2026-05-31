@@ -36,6 +36,7 @@ import {
   weaponRange,
   weaponRules,
   weaponSlots,
+  saveState,
 } from "./app.js";
 import { createPrintTeamCard } from "./print.js";
 
@@ -73,11 +74,11 @@ function select(options, value, onChange) {
 
 function toggleFold(ti) {
   const folder = document.getElementById(`folder-${ti}`);
-  const state = folder.className;
+  const foldState = folder.className;
   const team = document.getElementById(`team-${ti}`);
   const vehicles = Array.from(team.getElementsByClassName("vehicleCard"));
   const button = document.getElementById(`vehicle-adder-${ti}`);
-  if (state == "unfolded") {
+  if (foldState == "unfolded") {
     folder.className = "folded";
     vehicles.forEach((i) => {
       i.className = "vehicleCard hidden";
@@ -92,6 +93,31 @@ function toggleFold(ti) {
     button.className = "addVehicle";
     state.teams[ti].folded = false;
   }
+  saveState();
+}
+
+function setFold() {
+  state.teams.forEach((t, ti) => {
+    const folder = document.getElementById(`folder-${ti}`);
+    const foldState = folder.className;
+    const team = document.getElementById(`team-${ti}`);
+    const vehicles = Array.from(team.getElementsByClassName("vehicleCard"));
+    const button = document.getElementById(`vehicle-adder-${ti}`);
+    if (foldState == "unfolded") {
+      folder.className = "unfolded";
+      vehicles.forEach((i) => {
+        i.className = "vehicleCard";
+      });
+      button.className = "addVehicle";
+    } else {
+      folder.className = "folded";
+      vehicles.forEach((i) => {
+        i.className = "vehicleCard hidden";
+      });
+      button.className = "addVehicle hidden";
+    }
+    saveState();
+  });
 }
 
 async function createTeamCard(team, ti) {
@@ -503,6 +529,7 @@ export async function render() {
       );
 
       editDiv.replaceChildren(...cards);
+      setFold();
     } else {
       printContent.innerHTML = "";
       let team = state.teams[state.currentTeamIndex];

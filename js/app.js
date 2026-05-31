@@ -833,7 +833,7 @@ async function loadFromText(text) {
   isImporting = false;
 }
 
-function saveState() {
+export function saveState() {
   if (isImporting) return;
   try {
     localStorage.setItem("gaslandsDashboard", JSON.stringify(state));
