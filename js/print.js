@@ -54,69 +54,25 @@ function createPrintWeaponRow(team, ti, v, vi, w, wi) {
   const locs = allowedLocations(v);
 
   return el("div", {
-    text: `${w.weapon.wtype} - ${w.facing}${locs.length > 1 ? " - " + w.location : ""} - ${weaponAttack(v, w.weapon)} - ${weaponRange(v, w.weapon)} - ${weaponRules(v, w.weapon)}`,
+    text: `${w.weapon.wtype} - ${w.facing}${locs.length > 1 ? " - " + w.location : ""} - ${weaponAttack(v, w.weapon)} - ${weaponRange(v, w.weapon)}${weaponRules(v, w.weapon) != "" ? " - " + weaponRules(v, w.weapon) : ""}`,
   });
 }
 
-function createPrintUpgradesTable(team, ti, v, vi) {
-  const table = el("table", { class: "upgradesTable" });
-
-  table.appendChild(
-    el("tr", {}, [
-      el("th", { text: "Upgrade" }),
-      el("th", { text: "Ammo" }),
-      el("th", { text: "Slots" }),
-      el("th", { text: "Special Rules" }),
-      el("th", { text: "Cost" }),
-    ]),
-  );
-
-  v.upgrades.forEach((u, ui) => {
-    table.appendChild(
-      el("tr", {}, [
-        el("td", { text: u.utype }),
-        el("td", { text: u.ammo || "-" }),
-        el("td", { text: u.slots || "-" }),
-        el("td", { text: u.specialRules || "" }),
-        el("td", { text: u.cost || 0 }),
-      ]),
-    );
-  });
-
-  return table;
+function createPrintUpgradesRow(team, ti, v, vi, u, ui) {
+  return el("div", { text: `${u.utype} - ${u.specialRules}` });
 }
 
-function createPrintPerksTable(team, ti, v, vi) {
-  const table = el("table", { class: "perksTable" });
-
-  table.appendChild(
-    el("tr", {}, [
-      el("th", { text: "Perk" }),
-      el("th", { text: "Special Rules" }),
-      el("th", { text: "Cost" }),
-    ]),
-  );
-
-  v.perks.forEach((p, pi) => {
-    table.appendChild(
-      el("tr", {}, [
-        el("td", { text: p.ptype }),
-        el("td", { text: p.rules || "" }),
-        el("td", { text: p.cost || 0 }),
-      ]),
-    );
-  });
-
-  return table;
+function createPrintPerksRow(team, ti, v, vi, p, pi) {
+  return el("div", { text: `${p.ptype} - ${p.rules}` });
 }
 
-function createPrintTrailerSection(team, ti, v, vi) {
+function createPrintTrailerRow(team, ti, v, vi) {
   if (v.trailer.ttype == "None" || team.sponsor !== "Rusty's Bootleggers") {
     return null;
   }
 
   return el("div", {
-    text: `Trailer: ${v.trailer.ttype} - Cargo: ${v.cargo?.ctype || "None"}`,
+    text: `Trailer - ${v.trailer.ttype} - ${v.cargo?.ctype || "None"}`,
   });
 }
 
@@ -169,18 +125,20 @@ function createPrintVehicleCard(team, ti, v, vi) {
   ]);
   const armory = el("div", { class: "vehicleArmory" });
 
-  const trailer = createPrintTrailerSection(team, ti, v, vi);
+  const trailer = createPrintTrailerRow(team, ti, v, vi);
   if (trailer) armory.appendChild(trailer);
 
   v.weapons.forEach((w, wi) => {
     armory.appendChild(createPrintWeaponRow(team, ti, v, vi, w, wi));
   });
 
-  armory.appendChild(createPrintUpgradesTable(team, ti, v, vi));
+  v.upgrades.forEach((u, ui) => {
+    armory.appendChild(createPrintUpgradesRow(team, ti, v, vi, u, ui));
+  });
 
-  if (allowedPerks(team.sponsor).length) {
-    armory.appendChild(createPrintPerksTable(team, ti, v, vi));
-  }
+  v.perks.forEach((p, pi) => {
+    armory.appendChild(createPrintPerksRow(team, ti, v, vi, p, pi));
+  });
 
   armoryContainer.appendChild(armory);
   container.appendChild(armoryContainer);
