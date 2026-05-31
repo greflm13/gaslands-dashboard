@@ -635,8 +635,8 @@ async function serializeAll() {
                 perkType: p.ptype,
               })),
 
-              trailer: v.trailer.ttype || "None",
-              cargo: v.cargo.ctype || "None",
+              trailer: v.trailer?.ttype || "None",
+              cargo: v.cargo?.ctype || "None",
               image: await loadImageFromDB(v.imageID),
             })),
           ),
