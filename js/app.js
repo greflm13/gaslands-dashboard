@@ -923,22 +923,24 @@ function init() {
 
   loadState();
   render();
+  document.getElementById("addTeamButton").addEventListener("click", addTeam);
+  document.getElementById("saveButton").addEventListener("click", saveToFile);
+  document
+    .getElementById("loadButton")
+    .addEventListener("click", loadFromDialog);
+  document
+    .getElementById("fallbackLoadInput")
+    .addEventListener("change", loadFromFileInput);
+  document
+    .getElementById("closePrintButton")
+    .addEventListener("click", closePrintPreview);
+  document.getElementById("printButton").addEventListener("click", startPrint);
+  window.addEventListener("beforeunload", saveState);
+  window.addEventListener("pageshow", () => {
+    if (!event.persisted) return;
+    loadState();
+    render();
+  });
 }
 
 init();
-document.getElementById("addTeamButton").addEventListener("click", addTeam);
-document.getElementById("saveButton").addEventListener("click", saveToFile);
-document.getElementById("loadButton").addEventListener("click", loadFromDialog);
-document
-  .getElementById("fallbackLoadInput")
-  .addEventListener("change", loadFromFileInput);
-document
-  .getElementById("closePrintButton")
-  .addEventListener("click", closePrintPreview);
-document.getElementById("printButton").addEventListener("click", startPrint);
-window.addEventListener("beforeunload", saveState);
-window.addEventListener("pageshow", () => {
-  if (!event.persisted) return;
-  loadState();
-  render();
-});
