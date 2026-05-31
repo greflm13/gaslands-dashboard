@@ -767,7 +767,7 @@ async function loadFromText(text) {
         vehicles: [],
       };
 
-      team.vehicles = await Promise.all(
+      const vehicles = await Promise.all(
         (t.vehicles || [])
           .map(async (tv, tvi) => {
             const baseVehicle = allVehicles.find(
@@ -779,18 +779,16 @@ async function loadFromText(text) {
 
             v.vehicleName = tv.vehicleName || "Vehicle";
 
-            v.weapons = (tv.weapons || [])
-              .map((w) => {
-                const baseW = allWeapons.find((x) => x.wtype === w.weaponType);
-                return baseW
-                  ? {
-                      weapon: structuredClone(baseW),
-                      facing: w.facing,
-                      location: w.location,
-                    }
-                  : null;
-              })
-              .filter(Boolean);
+            v.weapons = (tv.weapons || []).map((w) => {
+              const baseW = allWeapons.find((x) => x.wtype === w.weaponType);
+              return baseW
+                ? {
+                    weapon: structuredClone(baseW),
+                    facing: w.facing,
+                    location: w.location,
+                  }
+                : null;
+            });
 
             v.upgrades = (tv.upgrades || [])
               .map((u) =>
@@ -820,6 +818,7 @@ async function loadFromText(text) {
           .filter(Boolean),
       );
 
+      team.vehicles = vehicles.filter(Boolean);
       return team;
     }),
   );
