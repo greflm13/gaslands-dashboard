@@ -1,8 +1,12 @@
 import {
+  allCargos,
+  allPerks,
+  allSponsors,
   allTrailers,
   allUpgrades,
   allVehicles,
   allWeapons,
+  sponsorKeywords,
   vehicleKeywords,
 } from "./data";
 import { el } from "./render";
@@ -159,32 +163,104 @@ function referenceSponsors() {
 
   sponsorsTable.appendChild(
     el("tr", {}, [
-      el("th", { text: "Upgrade" }),
-      el("th", { text: "Slots" }),
-      el("th", { text: "Ammo" }),
-      el("th", { text: "Rules" }),
-      el("th", { text: "Cost" }),
       el("th", { text: "Sponsor" }),
+      el("th", { text: "Perk Classes" }),
+      el("th", { text: "Keywords" }),
     ]),
   );
 
-  allUpgrades.forEach((u) => {
+  allSponsors.forEach((s) => {
     sponsorsTable.appendChild(
       el("tr", {}, [
-        el("td", { text: u.utype }),
-        el("td", { text: u.slots }),
-        el("td", { text: u.ammo }),
-        el("td", { text: u.specialRules }),
-        el("td", { text: u.cost }),
-        el("td", { text: u.allowedSponsors }),
+        el("td", { text: s.name }),
+        el("td", { text: s.perkClasses }),
+        el("td", { text: s.keywords }),
       ]),
     );
   });
 
-  referenceTables.replaceChildren(sponsorsTable);
+  const sponsorsKeywordsTable = el("table", { class: "referenceTable" });
+
+  sponsorsKeywordsTable.appendChild(
+    el("tr", {}, [
+      el("th", { text: "Sponsor Keyword" }),
+      el("th", { text: "Rules" }),
+    ]),
+  );
+
+  sponsorKeywords.forEach((k) => {
+    sponsorsKeywordsTable.appendChild(
+      el("tr", {}, [el("td", { text: k.ktype }), el("td", { text: k.rules })]),
+    );
+  });
+
+  const perksTable = el("table", { class: "referenceTable" });
+
+  perksTable.appendChild(
+    el("tr", {}, [
+      el("th", { text: "Perk" }),
+      el("th", { text: "Rules" }),
+      el("th", { text: "Cost" }),
+    ]),
+  );
+
+  const perksByClass = {};
+  allPerks.forEach((p) => {
+    if (!perksByClass[p.class]) {
+      perksByClass[p.class] = [];
+    }
+    perksByClass[p.class].push(p);
+  });
+
+  Object.keys(perksByClass).forEach((cls) => {
+    perksTable.appendChild(
+      el("tr", {}, [
+        el("td", {
+          text: cls,
+          colSpan: 3,
+        }),
+      ]),
+    );
+
+    perksByClass[cls].forEach((p) => {
+      perksTable.appendChild(
+        el("tr", {}, [
+          el("td", { text: p.ptype }),
+          el("td", { text: p.rules }),
+          el("td", { text: p.cost.toString() }),
+        ]),
+      );
+    });
+  });
+
+  referenceTables.replaceChildren(
+    sponsorsTable,
+    sponsorsKeywordsTable,
+    perksTable,
+  );
 }
 
-function referenceCargos() {}
+function referenceCargos() {
+  const referenceTables = document.getElementById("referenceTables");
+  const cargosTable = el("table", { class: "referenceTable" });
+
+  cargosTable.appendChild(
+    el("tr", {}, [
+      el("th", { text: "Cargo" }),
+      el("th", { text: "Rules" }),
+    ]),
+  );
+
+  allCargos.forEach((c) => {
+    cargosTable.appendChild(
+      el("tr", {}, [
+        el("td", { text: c.ctype }),
+        el("td", { text: c.specialRules }),
+      ]),
+    );
+  });
+
+  referenceTables.replaceChildren(cargosTable);}
 
 export function createReference() {
   return el("div", { class: "reference" }, [
