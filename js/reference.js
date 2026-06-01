@@ -1,4 +1,4 @@
-import { allTrailers, allVehicles, vehicleKeywords } from "./data";
+import { allTrailers, allVehicles, allWeapons, vehicleKeywords } from "./data";
 import { el } from "./render";
 
 function referenceVehicles() {
@@ -60,12 +60,12 @@ function referenceVehicles() {
     ]),
   );
 
-  allTrailers.forEach((k) => {
+  allTrailers.forEach((t) => {
     trailersTable.appendChild(
       el("tr", {}, [
-        el("td", { text: k.ttype }),
-        el("td", { text: k.slots }),
-        el("td", { text: k.cost }),
+        el("td", { text: t.ttype }),
+        el("td", { text: t.slots }),
+        el("td", { text: t.cost }),
       ]),
     );
   });
@@ -77,7 +77,44 @@ function referenceVehicles() {
   );
 }
 
-function referenceWeapons() {}
+function referenceWeapons() {
+  const referenceTables = document.getElementById("referenceTables");
+  const weaponsTable = el("table", { class: "referenceTable" });
+
+  weaponsTable.appendChild(
+    el("tr", {}, [
+      el("th", { text: "Weapon" }),
+      el("th", { text: "Type" }),
+      el("th", { text: "Attack" }),
+      el("th", { text: "Range" }),
+      el("th", { text: "Ammo" }),
+      el("th", { text: "Slots" }),
+      el("th", { text: "Crew fired" }),
+      el("th", { text: "Special Rules" }),
+      el("th", { text: "Cost" }),
+      el("th", { text: "Sponsor" }),
+    ]),
+  );
+
+  allWeapons.forEach((w) => {
+    weaponsTable.appendChild(
+      el("tr", {}, [
+        el("td", { text: w.wtype }),
+        el("td", { text: w.attackType }),
+        el("td", { text: w.attack }),
+        el("td", { text: w.range }),
+        el("td", { text: w.ammo }),
+        el("td", { text: w.slots }),
+        el("td", { text: w.crewFired }),
+        el("td", { text: w.specialRules }),
+        el("td", { text: w.cost }),
+        el("td", { text: w.allowedSponsors }),
+      ]),
+    );
+  });
+
+  referenceTables.replaceChildren(weaponsTable)
+}
 
 function referenceUpgrades() {}
 
