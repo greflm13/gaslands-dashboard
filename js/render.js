@@ -453,13 +453,6 @@ async function createVehicleCard(team, ti, v, vi) {
         ]),
         el("td", { id: `img-${ti}-${vi}` }, [
           el("label", { text: "Image: ", for: `imgi-${ti}-${vi}` }),
-          el("input", {
-            type: "File",
-            accept: "image/*",
-            id: `imgi-${ti}-${vi}`,
-            class: "imagePicker",
-            onchange: (e) => addImage(ti, vi, e),
-          }),
           el("img", {
             src: await loadImageFromDB(v.imageID),
             class: "vehicleImg",
@@ -467,6 +460,13 @@ async function createVehicleCard(team, ti, v, vi) {
             height: "25px",
             onmouseenter: (e) => showHoverImage(ti, v, vi, e),
             onmouseleave: (e) => removeHoverImage(ti, vi, e),
+          }),
+          el("input", {
+            type: "File",
+            accept: "image/*",
+            id: `imgi-${ti}-${vi}`,
+            class: "imagePicker",
+            onchange: (e) => addImage(ti, vi, e),
           }),
         ]),
 
