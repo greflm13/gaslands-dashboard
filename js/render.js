@@ -151,7 +151,12 @@ async function createTeamCard(team, ti) {
       class: teamCost(team) <= team.maxCost ? "cheap" : "expensive",
     }),
 
-    el("td", {}, [el("input", { value: team.maxCost })]),
+    el("td", {}, [
+      el("input", {
+        value: team.maxCost,
+        onchange: (e) => (team.maxCost = e.target.value),
+      }),
+    ]),
 
     el("td", { text: "cans" }),
 
