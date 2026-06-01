@@ -49,9 +49,23 @@ function createDefaultWeaponRow() {
 
 function createPrintWeaponRow(team, ti, v, vi, w, wi) {
   const locs = allowedLocations(v);
+  let text = w.weapon.wtype;
+  text += " - " + w.facing;
+  if (locs.length > 1) {
+    text += " - " + w.location;
+  }
+  const attack = weaponAttack(v, w.weapon);
+  if (attack != "") {
+    text += " - " + attack;
+  }
+  text += " - " + weaponRange(v, w.weapon);
+  const rules = weaponRules(v, w.weapon);
+  if (rules != "") {
+    text += " - " + rules;
+  }
 
   return el("div", {
-    text: `${w.weapon.wtype} - ${w.facing}${locs.length > 1 ? " - " + w.location : ""} - ${weaponAttack(v, w.weapon)} - ${weaponRange(v, w.weapon)}${weaponRules(v, w.weapon) != "" ? " - " + weaponRules(v, w.weapon) : ""}`,
+    text: text,
   });
 }
 
