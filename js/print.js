@@ -7,6 +7,7 @@ import {
   totalSlots,
   usedSlots,
   vehicleCost,
+  weaponAmmo,
   weaponAttack,
   weaponCost,
   weaponRange,
@@ -60,6 +61,10 @@ function createPrintWeaponRow(team, ti, v, vi, w, wi) {
     text += " - " + attack;
   }
   text += " - " + weaponRange(v, w.weapon);
+  const ammo = weaponAmmo(v, w.weapon);
+  if (ammo > 0) {
+    text += " - " + ammo;
+  }
   const rules = weaponRules(v, w.weapon);
   if (rules != "") {
     text += " - " + rules;

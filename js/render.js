@@ -37,6 +37,7 @@ import {
   weaponRules,
   weaponSlots,
   saveState,
+  weaponAmmo,
 } from "./app.js";
 import { createPrintTeamCard } from "./print.js";
 
@@ -207,6 +208,7 @@ function createDefaultWeaponRow(v) {
     el("td", { text: "Blitz" }),
     el("td", { text: "-" }),
     el("td", { text: "-" }),
+    el("td", { text: "-" }),
     el("td"),
   ]);
 }
@@ -225,6 +227,7 @@ function createWeaponsTable(team, ti, v, vi) {
       el("th", { text: "Attack" }),
       el("th", { text: "Range" }),
       el("th", { text: "Special Rules" }),
+      el("th", { text: "Ammo" }),
       el("th", { text: "Slots" }),
       el("th", { text: "Cost" }),
       el("th", {}, [
@@ -280,6 +283,7 @@ function createWeaponRow(team, ti, v, vi, w, wi) {
     el("td", { text: weaponAttack(v, w.weapon) }),
     el("td", { text: weaponRange(v, w.weapon) }),
     el("td", { text: weaponRules(v, w.weapon) }),
+    el("td", { text: weaponAmmo(v, w.weapon) }),
     el("td", { text: weaponSlots(v, w.weapon) }),
     el("td", { text: weaponCost(v, w) }),
 

@@ -256,7 +256,7 @@ export function weaponSlots(v, w) {
   return format0(slots);
 }
 
-function weaponAmmo(v, w, sponsor) {
+export function weaponAmmo(v, w, sponsor) {
   let a = w.ammo;
   if (a === 3 && sponsor === "Rutherford") a += 1;
   return format0(a);

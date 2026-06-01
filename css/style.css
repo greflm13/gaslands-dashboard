@@ -267,16 +267,21 @@ button:hover {
   width: 70px;
 }
 
-#editDiv .weaponsTable td:nth-last-child(7) {
+#editDiv .weaponsTable td:nth-last-child(8) {
   width: 70px;
 }
 
-#editDiv .weaponsTable td:nth-last-child(6) {
+#editDiv .weaponsTable td:nth-last-child(7) {
   width: 50px;
 }
 
-#editDiv .weaponsTable td:nth-last-child(5) {
+#editDiv .weaponsTable td:nth-last-child(6) {
   width: 150px;
+}
+
+#editDiv .weaponsTable td:nth-last-child(4) {
+  width: 30px;
+  text-align: center;
 }
 
 #editDiv .weaponsTable td:nth-last-child(3) {
