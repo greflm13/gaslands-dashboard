@@ -40,6 +40,7 @@ import {
   weaponAmmo,
 } from "./app.js";
 import { createPrintTeamCard } from "./print.js";
+import { createReference } from "./reference.js";
 
 let isRendering = false;
 
@@ -527,17 +528,20 @@ export async function render() {
       printDiv.style.display = "block";
       headerDiv.style.display = "none";
     } else {
-      editDiv.style.display = "block";
+      editDiv.style.display = "grid";
       printDiv.style.display = "none";
       headerDiv.style.display = "block";
     }
 
     if (!state.printMode) {
+      const edit = el("div", { class: "editLayout" });
       const cards = await Promise.all(
         (state.teams || []).map((team, ti) => createTeamCard(team, ti)),
       );
 
-      editDiv.replaceChildren(...cards);
+      edit.replaceChildren(...cards);
+      const editPage = [edit, createReference()];
+      editDiv.replaceChildren(...editPage);
       setFold();
     } else {
       printContent.innerHTML = "";

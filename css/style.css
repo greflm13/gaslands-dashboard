@@ -128,6 +128,10 @@ button:hover {
   background: #3a3a3a;
 }
 
+#editDiv {
+  grid-template-columns: 1fr minmax(auto, 610px);
+}
+
 #editDiv .teamCard {
   margin: 10px;
   border: 1px solid #333;
@@ -468,6 +472,16 @@ button,
   height: 64mm;
   width: 88mm;
   background-image: url("/img/vehicle-card-background.png");
+}
+
+#editDiv .referenceButtons {
+  display: grid;
+  grid-template-columns: auto auto auto auto auto;
+}
+
+#editDiv .referenceTable {
+  font-size: 7pt;
+  margin-top: 10px;
 }
 
 /* ==========================================================================
