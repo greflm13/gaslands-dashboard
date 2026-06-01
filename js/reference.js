@@ -1,4 +1,10 @@
-import { allTrailers, allVehicles, allWeapons, vehicleKeywords } from "./data";
+import {
+  allTrailers,
+  allUpgrades,
+  allVehicles,
+  allWeapons,
+  vehicleKeywords,
+} from "./data";
 import { el } from "./render";
 
 function referenceVehicles() {
@@ -113,12 +119,70 @@ function referenceWeapons() {
     );
   });
 
-  referenceTables.replaceChildren(weaponsTable)
+  referenceTables.replaceChildren(weaponsTable);
 }
 
-function referenceUpgrades() {}
+function referenceUpgrades() {
+  const referenceTables = document.getElementById("referenceTables");
+  const upgradesTable = el("table", { class: "referenceTable" });
 
-function referenceSponsors() {}
+  upgradesTable.appendChild(
+    el("tr", {}, [
+      el("th", { text: "Upgrade" }),
+      el("th", { text: "Slots" }),
+      el("th", { text: "Ammo" }),
+      el("th", { text: "Rules" }),
+      el("th", { text: "Cost" }),
+      el("th", { text: "Sponsor" }),
+    ]),
+  );
+
+  allUpgrades.forEach((u) => {
+    upgradesTable.appendChild(
+      el("tr", {}, [
+        el("td", { text: u.utype }),
+        el("td", { text: u.slots }),
+        el("td", { text: u.ammo }),
+        el("td", { text: u.specialRules }),
+        el("td", { text: u.cost }),
+        el("td", { text: u.allowedSponsors }),
+      ]),
+    );
+  });
+
+  referenceTables.replaceChildren(upgradesTable);
+}
+
+function referenceSponsors() {
+  const referenceTables = document.getElementById("referenceTables");
+  const sponsorsTable = el("table", { class: "referenceTable" });
+
+  sponsorsTable.appendChild(
+    el("tr", {}, [
+      el("th", { text: "Upgrade" }),
+      el("th", { text: "Slots" }),
+      el("th", { text: "Ammo" }),
+      el("th", { text: "Rules" }),
+      el("th", { text: "Cost" }),
+      el("th", { text: "Sponsor" }),
+    ]),
+  );
+
+  allUpgrades.forEach((u) => {
+    sponsorsTable.appendChild(
+      el("tr", {}, [
+        el("td", { text: u.utype }),
+        el("td", { text: u.slots }),
+        el("td", { text: u.ammo }),
+        el("td", { text: u.specialRules }),
+        el("td", { text: u.cost }),
+        el("td", { text: u.allowedSponsors }),
+      ]),
+    );
+  });
+
+  referenceTables.replaceChildren(sponsorsTable);
+}
 
 function referenceCargos() {}
 
