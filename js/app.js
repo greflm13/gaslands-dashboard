@@ -609,44 +609,40 @@ export function allowedWeaponsFull(v, sponsor) {
 }
 
 async function serializeAll() {
-  return JSON.stringify(
-    {
-      teams: await Promise.all(
-        state.teams.map(async (t) => ({
-          teamName: t.teamName,
-          sponsor: t.sponsor,
-          maxCost: t.maxCost,
+  return JSON.stringify({
+    teams: await Promise.all(
+      state.teams.map(async (t) => ({
+        teamName: t.teamName,
+        sponsor: t.sponsor,
+        maxCost: t.maxCost,
 
-          vehicles: await Promise.all(
-            t.vehicles.map(async (v) => ({
-              vehicleName: v.vehicleName,
-              vehicleType: v.vtype,
+        vehicles: await Promise.all(
+          t.vehicles.map(async (v) => ({
+            vehicleName: v.vehicleName,
+            vehicleType: v.vtype,
 
-              weapons: v.weapons.map((w) => ({
-                weaponType: w.weapon.wtype,
-                facing: w.facing,
-                location: w.location,
-              })),
-
-              upgrades: v.upgrades.map((u) => ({
-                upgradeType: u.utype,
-              })),
-
-              perks: v.perks.map((p) => ({
-                perkType: p.ptype,
-              })),
-
-              trailer: v.trailer?.ttype || "None",
-              cargo: v.cargo?.ctype || "None",
-              image: await loadImageFromDB(v.imageID),
+            weapons: v.weapons.map((w) => ({
+              weaponType: w.weapon.wtype,
+              facing: w.facing,
+              location: w.location,
             })),
-          ),
-        })),
-      ),
-    },
-    null,
-    2,
-  );
+
+            upgrades: v.upgrades.map((u) => ({
+              upgradeType: u.utype,
+            })),
+
+            perks: v.perks.map((p) => ({
+              perkType: p.ptype,
+            })),
+
+            trailer: v.trailer?.ttype || "None",
+            cargo: v.cargo?.ctype || "None",
+            image: await loadImageFromDB(v.imageID),
+          })),
+        ),
+      })),
+    ),
+  });
 }
 
 function saveToFile() {
