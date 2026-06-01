@@ -941,6 +941,14 @@ function update() {
   render();
 }
 
+function layout88x64() {
+  document.getElementById("layoutStylesheet").href = "css/88x64.css";
+}
+
+function layout100x70() {
+  document.getElementById("layoutStylesheet").href = "css/100x70.css";
+}
+
 function init() {
   if (state.initialized) return;
   state.initialized = true;
@@ -959,6 +967,8 @@ function init() {
     .getElementById("closePrintButton")
     .addEventListener("click", closePrintPreview);
   document.getElementById("printButton").addEventListener("click", startPrint);
+  document.getElementById("88x64").addEventListener("click", layout88x64);
+  document.getElementById("100x70").addEventListener("click", layout100x70);
   window.addEventListener("beforeunload", saveState);
   window.addEventListener("pageshow", () => {
     if (!event.persisted) return;
