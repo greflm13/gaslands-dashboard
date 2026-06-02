@@ -547,6 +547,11 @@ export async function render() {
       printContent.innerHTML = "";
       let team = state.teams[state.currentTeamIndex];
       printContent.appendChild(await createPrintTeamCard(team));
+
+      document.querySelectorAll("#printDiv .theVehicleImg").forEach((el) => {
+        const randomIndex = Math.floor(Math.random() * 10) + 1; // 1–10
+        el.style.backgroundImage = `url(/img/bg${String(randomIndex).padStart(2, "0")}.png)`;
+      });
     }
   } finally {
     isRendering = false;
