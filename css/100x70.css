@@ -155,6 +155,10 @@
   font-weight: bold;
 }
 
+#printDiv .armoryRow {
+  line-height: 1;
+}
+
 #printDiv .smallerArmory {
   grid-template-columns: 5.25mm 55mm;
 }

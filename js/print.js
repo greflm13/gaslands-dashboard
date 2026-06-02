@@ -45,6 +45,7 @@ export async function createPrintTeamCard(team, ti) {
 function createDefaultWeaponRow() {
   return el("div", {
     text: "Handgun - 360 - 1D6 - Medium - Blitz",
+    class: "armoryRow",
   });
 }
 
@@ -71,15 +72,19 @@ function createPrintWeaponRow(team, ti, v, vi, w, wi) {
 
   return el("div", {
     text: text,
+    class: "armoryRow",
   });
 }
 
 function createPrintUpgradesRow(team, ti, v, vi, u, ui) {
-  return el("div", { text: `${u.utype} - ${u.specialRules}` });
+  return el("div", {
+    text: `${u.utype} - ${u.specialRules}`,
+    class: "armoryRow",
+  });
 }
 
 function createPrintPerksRow(team, ti, v, vi, p, pi) {
-  return el("div", { text: `${p.ptype} - ${p.rules}` });
+  return el("div", { text: `${p.ptype} - ${p.rules}`, class: "armoryRow" });
 }
 
 function createPrintTrailerRow(team, ti, v, vi) {
@@ -89,6 +94,7 @@ function createPrintTrailerRow(team, ti, v, vi) {
 
   return el("div", {
     text: `Trailer - ${v.trailer.ttype} - ${v.cargo?.ctype || "None"}`,
+    class: "armoryRow",
   });
 }
 
