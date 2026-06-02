@@ -70,15 +70,17 @@ function referenceVehicles() {
     ]),
   );
 
-  allTrailers.forEach((t) => {
-    trailersTable.appendChild(
-      el("tr", {}, [
-        el("td", { text: t.ttype }),
-        el("td", { text: t.slots }),
-        el("td", { text: t.cost }),
-      ]),
-    );
-  });
+  allTrailers
+    .filter((t) => t.ttype !== "None")
+    .forEach((t) => {
+      trailersTable.appendChild(
+        el("tr", {}, [
+          el("td", { text: t.ttype }),
+          el("td", { text: t.slots }),
+          el("td", { text: t.cost }),
+        ]),
+      );
+    });
 
   referenceTables.replaceChildren(
     vehiclesTable,
@@ -169,15 +171,17 @@ function referenceSponsors() {
     ]),
   );
 
-  allSponsors.forEach((s) => {
-    sponsorsTable.appendChild(
-      el("tr", {}, [
-        el("td", { text: s.name }),
-        el("td", { text: s.perkClasses }),
-        el("td", { text: s.keywords }),
-      ]),
-    );
-  });
+  allSponsors
+    .filter((s) => s.name !== "None")
+    .forEach((s) => {
+      sponsorsTable.appendChild(
+        el("tr", {}, [
+          el("td", { text: s.name }),
+          el("td", { text: s.perkClasses }),
+          el("td", { text: s.keywords }),
+        ]),
+      );
+    });
 
   const sponsorsKeywordsTable = el("table", { class: "referenceTable" });
 
@@ -245,22 +249,22 @@ function referenceCargos() {
   const cargosTable = el("table", { class: "referenceTable" });
 
   cargosTable.appendChild(
-    el("tr", {}, [
-      el("th", { text: "Cargo" }),
-      el("th", { text: "Rules" }),
-    ]),
+    el("tr", {}, [el("th", { text: "Cargo" }), el("th", { text: "Rules" })]),
   );
 
-  allCargos.forEach((c) => {
-    cargosTable.appendChild(
-      el("tr", {}, [
-        el("td", { text: c.ctype }),
-        el("td", { text: c.specialRules }),
-      ]),
-    );
-  });
+  allCargos
+    .filter((c) => c.ctype !== "None")
+    .forEach((c) => {
+      cargosTable.appendChild(
+        el("tr", {}, [
+          el("td", { text: c.ctype }),
+          el("td", { text: c.specialRules }),
+        ]),
+      );
+    });
 
-  referenceTables.replaceChildren(cargosTable);}
+  referenceTables.replaceChildren(cargosTable);
+}
 
 export function createReference() {
   return el("div", { class: "reference" }, [
