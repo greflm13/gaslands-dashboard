@@ -645,16 +645,13 @@ async function serializeAll() {
   });
 }
 
-function saveToFile() {
-  runOnce(async () => {
-    console.log("SAVE");
-
-    if (window.showSaveFilePicker) {
-      await saveUsingFilePicker();
-    } else {
-      await saveUsingDownload();
-    }
-  });
+async function saveToFile() {
+  update();
+  if (window.showSaveFilePicker) {
+    await saveUsingFilePicker();
+  } else {
+    await saveUsingDownload();
+  }
 }
 
 async function saveUsingFilePicker() {
@@ -678,6 +675,23 @@ async function saveUsingFilePicker() {
   }
 }
 
+async function saveUsingDownload() {
+  const data = await serializeAll();
+
+  const blob = new Blob([data], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "gaslands_teams.json";
+
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+
+  URL.revokeObjectURL(url);
+}
+
 export function addImage(ti, vi, event) {
   const file = event.target.files[0];
   if (!file) return;
@@ -696,23 +710,6 @@ export function addImage(ti, vi, event) {
   };
 
   reader.readAsDataURL(file);
-}
-
-async function saveUsingDownload() {
-  const data = await serializeAll();
-
-  const blob = new Blob([data], { type: "application/json" });
-  const url = URL.createObjectURL(blob);
-
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = "gaslands_teams.json";
-
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-
-  URL.revokeObjectURL(url);
 }
 
 function loadFromDialog() {
@@ -909,27 +906,8 @@ async function deleteImageFromDB(id) {
   store.delete(id);
 }
 
-function runOnce(fn) {
-  if (interactionLock) {
-    console.log("Blocked duplicate interaction");
-    return;
-  }
-
-  interactionLock = true;
-
-  try {
-    fn();
-  } finally {
-    setTimeout(() => {
-      interactionLock = false;
-    }, 0);
-  }
-}
-
 function startPrint() {
-  runOnce(() => {
-    window.print();
-  });
+  window.print();
 }
 
 function update() {

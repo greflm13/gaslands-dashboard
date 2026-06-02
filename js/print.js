@@ -56,7 +56,6 @@ function createPrintWeaponRow(team, ti, v, vi, w, wi) {
     text += " - " + w.location;
   }
   const attack = weaponAttack(v, w.weapon);
-  console.log(attack);
   if (attack != "-") {
     text += " - " + attack;
   }
