@@ -580,3 +580,23 @@ button,
 @media only screen and (min-width: 35em) {
   /* Style adjustments for viewports that meet the condition */
 }
+
+@media (max-width: 1106px) {
+  #editDiv {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  #editDiv {
+    font-size: 8pt;
+  }
+
+  #editDiv input,
+  #editDiv select,
+  #editDiv button,
+  #editDiv .vehicleCard th,
+  #editDiv .vehicleCard td {
+    font-size: 7pt;
+  }
+}
