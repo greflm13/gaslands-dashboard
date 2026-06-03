@@ -83,6 +83,11 @@ textarea {
 /* ==========================================================================
    Author's custom styles
    ========================================================================== */
+
+:root {
+  --scale: 1;
+}
+
 .rubik-dirt-regular {
   font-family: "Rubik Dirt", system-ui;
   font-weight: 400;
@@ -511,6 +516,7 @@ button,
 
 #printDiv .teamHeader {
   display: flex;
+  font-family: "Rubik Dirt", system-ui;
 }
 
 #printDiv .teamHeader .teamName {
@@ -546,6 +552,23 @@ button,
   .noprint {
     display: none !important;
   }
+
+  body {
+    background: #fff;
+    color: #222;
+  }
+
+  #printDiv .teamHeader div {
+    color: black;
+  }
+
+  #printDiv .hullPoint {
+    background-color: white !important;
+  }
+
+  #printDiv #printContent {
+    display: block !important;
+  }
 }
 
 /* ==========================================================================
@@ -564,6 +587,7 @@ button,
 .diceContainer {
   padding: 20px;
   text-align: center;
+  font-family: "Rubik Dirt", system-ui;
 }
 
 .dice3d {
@@ -652,25 +676,6 @@ button,
   gap: 16px;
   justify-content: center;
   align-items: center;
-}
-
-@media print {
-  body {
-    background: #fff;
-    color: #222;
-  }
-
-  #printDiv .teamHeader div {
-    color: black;
-  }
-
-  #printDiv .hullPoint {
-    background-color: white;
-  }
-
-  #printDiv #printContent {
-    display: block;
-  }
 }
 
 /* ==========================================================================
@@ -764,6 +769,23 @@ button,
   #editDiv {
     grid-template-columns: 1fr;
   }
+
+  #printDiv #printContent {
+    grid-template-columns: 1fr;
+  }
+
+  #printDiv .teamVehicles {
+    grid-template-columns: 1fr !important;
+  }
+
+  #printDiv .teamCard {
+    transform: scale(1.5);
+    transform-origin: top left;
+  }
+
+  #printDiv .diceGrid {
+    grid-row: 1;
+  }
 }
 
 @media (max-width: 768px) {
@@ -777,5 +799,10 @@ button,
   #editDiv .vehicleCard th,
   #editDiv .vehicleCard td {
     font-size: 7pt;
+  }
+
+  #printDiv .teamCard {
+    transform: scale(1.75);
+    transform-origin: top left;
   }
 }
