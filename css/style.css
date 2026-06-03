@@ -600,6 +600,15 @@ button,
   justify-content: center;
 }
 
+.dice3d.selected {
+  outline: 2px solid blue;
+}
+
+.dice3d.cancelled {
+  opacity: 0.4;
+  filter: grayscale(100%);
+}
+
 .cube {
   width: 100%;
   height: 100%;
@@ -644,7 +653,7 @@ button,
 }
 
 .back {
-  transform: rotateY(180deg) translateZ(32px) rotateZ(180deg);
+  transform: rotateY(180deg) translateZ(32px);
 }
 
 .right {

@@ -2,30 +2,44 @@ import { el } from "./render";
 
 let diceCount = 1;
 let diceCubes = [];
+let selectedDice = [];
 const resultsDiv = el("div", { class: "diceResults" });
 
 const normalFaces = [
-  { cls: "front", val: "/img/1.svg" },
-  { cls: "back", val: "/img/6.svg" },
-  { cls: "right", val: "/img/3.svg" },
-  { cls: "left", val: "/img/4.svg" },
-  { cls: "top", val: "/img/5.svg" },
-  { cls: "bottom", val: "/img/2.svg" },
+  { cls: "back", val: "/img/1.svg" },
+  { cls: "front", val: "/img/6.svg" },
+  { cls: "left", val: "/img/3.svg" },
+  { cls: "right", val: "/img/4.svg" },
+  { cls: "bottom", val: "/img/5.svg" },
+  { cls: "top", val: "/img/2.svg" },
 ];
 
 const skidFaces = [
-  { cls: "front", val: "/img/hazard.svg" },
-  { cls: "back", val: "/img/shift.svg" },
-  { cls: "right", val: "/img/spin.svg" },
-  { cls: "left", val: "/img/shift.svg" },
-  { cls: "top", val: "/img/shift.svg" },
-  { cls: "bottom", val: "/img/slide.svg" },
+  { cls: "back", val: "/img/hazard.svg" },
+  { cls: "front", val: "/img/shift.svg" },
+  { cls: "left", val: "/img/spin.svg" },
+  { cls: "right", val: "/img/shift.svg" },
+  { cls: "bottom", val: "/img/shift.svg" },
+  { cls: "top", val: "/img/slide.svg" },
 ];
 
 const diceTypes = {
   normal: normalFaces,
   skid: skidFaces,
 };
+
+function getFaceMap(type) {
+  const faces = diceTypes[type];
+
+  return {
+    1: faces.find((f) => f.cls === "front"),
+    2: faces.find((f) => f.cls === "bottom"),
+    3: faces.find((f) => f.cls === "right"),
+    4: faces.find((f) => f.cls === "left"),
+    5: faces.find((f) => f.cls === "top"),
+    6: faces.find((f) => f.cls === "back"),
+  };
+}
 
 function closeDicePage() {
   const diceDiv = document.getElementById("diceDiv");
@@ -79,7 +93,8 @@ export function createDiceSet(title, type) {
     diceCubes = [];
 
     for (let i = 0; i < diceCount; i++) {
-      const { wrapper, cube } = createDice(6, type);
+      const id = `dice_${type}_${i}`;
+      const { wrapper, cube } = createDice(type, id);
       diceCubes.push({ cube, wrapper });
       resultsDiv.appendChild(wrapper);
     }
@@ -113,22 +128,84 @@ export function createDiceSet(title, type) {
 
 function getRotationAngles(v) {
   switch (v) {
-    case 1:
-      return { x: 0, y: 0 };
-    case 2:
-      return { x: -90, y: 0 };
-    case 3:
-      return { x: 0, y: 90 };
-    case 4:
-      return { x: 0, y: -90 };
-    case 5:
-      return { x: 90, y: 0 };
     case 6:
-      return { x: 180, y: 0 };
+      return { x: 0, y: 0 }; // front
+    case 1:
+      return { x: 0, y: 180 }; // back
+
+    case 4:
+      return { x: 0, y: -90 }; // right
+    case 3:
+      return { x: 0, y: 90 }; // left
+
+    case 2:
+      return { x: -90, y: 0 }; // top
+    case 5:
+      return { x: 90, y: 0 }; // bottom
   }
 }
 
-function createDice(value, type) {
+function getSkidResult(value) {
+  switch (value) {
+    case 1:
+      return "hazard";
+    case 2:
+      return "slide";
+    case 3:
+      return "spin";
+    case 4:
+      return "shift";
+    case 5:
+      return "shift";
+    case 6:
+      return "shift";
+  }
+}
+
+function clickDice(wrapper) {
+  console.log(wrapper);
+  const type = wrapper.dataset.type;
+  const value = parseInt(wrapper.dataset.value);
+
+  if (!value) return; // not rolled yet
+
+  if (type !== "skid") return; // only skid dice matter
+
+  const result = getSkidResult(value);
+
+  console.log("Clicked:", result);
+
+  // mark selected
+  wrapper.classList.toggle("selected");
+
+  if (wrapper.classList.contains("selected")) {
+    selectedDice.push({ wrapper, result });
+  } else {
+    selectedDice = selectedDice.filter((d) => d.wrapper !== wrapper);
+  }
+
+  handleCancellation();
+}
+
+function handleCancellation() {
+  const shifts = selectedDice.filter((d) => d.result === "shift");
+  const cancelables = selectedDice.filter(
+    (d) => d.result === "hazard" || d.result === "spin" || d.result === "slide",
+  );
+
+  // number of pairs we can cancel
+  const pairs = Math.min(shifts.length, cancelables.length);
+
+  // reset all
+  selectedDice.forEach((d) => d.wrapper.classList.remove("cancelled"));
+
+  for (let i = 0; i < pairs; i++) {
+    shifts[i].wrapper.classList.add("cancelled");
+    cancelables[i].wrapper.classList.add("cancelled");
+  }
+}
+
+function createDice(type, id) {
   const cube = el("div", { class: "cube" });
 
   const faces = diceTypes[type];
@@ -139,15 +216,26 @@ function createDice(value, type) {
     );
   });
 
-  const wrapper = el("div", { class: "dice3d" }, [cube]);
-
-  cube.style.transform = "rotateX(180deg)";
+  const wrapper = el(
+    "div",
+    {
+      class: "dice3d",
+      id: id,
+      onclick: () => clickDice(wrapper),
+    },
+    [cube],
+  );
 
   return { wrapper, cube };
 }
 
 function animateDice(cube, value, wrapper, type) {
   wrapper.classList.remove("highlight");
+  wrapper.classList.remove("cancelled");
+  wrapper.classList.remove("selected");
+
+  wrapper.dataset.value = value;
+  wrapper.dataset.type = type;
 
   const extraX = 360 * (2 + Math.floor(Math.random() * 4));
   const extraY = 360 * (1 + Math.floor(Math.random() * 4));
