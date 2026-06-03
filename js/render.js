@@ -321,7 +321,7 @@ function createUpgradesTable(team, ti, v, vi) {
       el("tr", {}, [
         el("td", {}, [
           select(
-            allowedUpgradesFull(v, team.sponsor).map((o) => o.utype),
+            allowedUpgradesFull(v, team.sponsor, ui).map((o) => o.utype),
             u.utype,
             (e) => changeUpgrade(ti, vi, ui, e.target.value),
           ),
@@ -527,10 +527,12 @@ export async function render() {
       editDiv.style.display = "none";
       printDiv.style.display = "block";
       headerDiv.style.display = "none";
+      diceDiv.style.display = "none";
     } else {
       editDiv.style.display = "grid";
       printDiv.style.display = "none";
       headerDiv.style.display = "block";
+      diceDiv.style.display = "none";
     }
 
     if (!state.printMode) {

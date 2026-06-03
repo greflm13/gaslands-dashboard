@@ -33,21 +33,32 @@
     <button id="saveButton">Save</button>
     <button id="loadButton">Load</button>
     <input type="file" id="fallbackLoadInput" style="display:none" accept=".json">
+    <button id="d6">Roll Dice</button>
   </div>
 
   <div id="editDiv">
+  </div>
+
+  <div id="diceDiv">
+    <div class="header">
+      <button id="closeD6Button">Close</button>
+    </div>
   </div>
 
   <div id="printDiv" style="display:none;">
     <div class="noprint header" style="margin-bottom:10px;">
       <button id="closePrintButton">Close Print Preview</button>
       <button id="printButton">Print</button>
-      <button id="88x64">88x64</button>
-      <button id="100x70">100x70</button>
+      <button id="88x64">3D Print Template Size (88x64)</button>
+      <button id="100x70">TK Template Size (100x70)</button>
+      <a href="https://www.thingiverse.com/thing:4938687" target="_blank" rel="noopener">3D Print File</a>
     </div>
     <div id="printContent"></div>
   </div>
-  <div id="background-loader"></div>
+  <div id="backgroundLoader">
+    <img src="/img/vehicle-card-background.png" alt="Card background">
+    <img src="/img/vehicle-image-frame.png" alt="Vehicle image frame">
+  </div>
   <script type="module" src="js/app.js"></script>
 </body>
 

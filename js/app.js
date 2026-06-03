@@ -11,6 +11,7 @@ import {
   allWeapons,
   defaultVehicle,
 } from "./data.js";
+import { renderDicePage } from "./dice.js";
 
 let isImporting = false;
 let interactionLock = false;
@@ -178,14 +179,6 @@ export function addUpgrade(ti, vi) {
 
   const base = structuredClone(opts[0]);
 
-  const current = usedSlots(v);
-  const slotVal = base.slots || 0;
-
-  if (current + slotVal > totalSlots(v)) {
-    alert("Not enough slots");
-    return;
-  }
-
   v.upgrades.push(base);
 
   update();
@@ -337,7 +330,7 @@ function upgradeCost(v, u, sponsor) {
   return c;
 }
 
-export function allowedUpgradesFull(v, sponsor) {
+export function allowedUpgradesFull(v, sponsor, currentIndex) {
   return allUpgrades.filter((u) => {
     if (
       u.allowedSponsors &&
@@ -364,7 +357,17 @@ export function allowedUpgradesFull(v, sponsor) {
 
     if (u.utype === "Extra Crewmember") {
       let maxCrew = v.crew * 2;
-      let currentCrew = computeStats(v).crew;
+
+      let upgradesWithoutCurrent = v.upgrades.filter(
+        (_, i) => i !== currentIndex,
+      );
+
+      let tempVehicle = {
+        ...v,
+        upgrades: upgradesWithoutCurrent,
+      };
+
+      let currentCrew = computeStats(tempVehicle).crew;
 
       if (currentCrew >= maxCrew) {
         return false;
@@ -372,7 +375,10 @@ export function allowedUpgradesFull(v, sponsor) {
     }
 
     if (u.limit != null) {
-      let count = v.upgrades.filter((x) => x.utype === u.utype).length;
+      let count = v.upgrades.filter(
+        (x, i) => i !== currentIndex && x.utype === u.utype,
+      ).length;
+
       if (count >= u.limit) {
         return false;
       }
@@ -473,16 +479,6 @@ export function changeUpgrade(ti, vi, ui, type) {
   const base = allUpgrades.find((x) => x.utype === type);
   if (!base) return;
 
-  const current = usedSlots(v);
-
-  const oldSlots = v.upgrades[ui].slots || 0;
-  const newSlots = base.slots || 0;
-
-  if (current - oldSlots + newSlots > totalSlots(v)) {
-    alert("Not enough slots");
-    return;
-  }
-
   v.upgrades[ui] = structuredClone(base);
 
   update();
@@ -496,21 +492,6 @@ export function changeWeapon(ti, vi, wi, newType) {
   if (!baseW) return;
 
   const newWeapon = structuredClone(baseW);
-
-  const currentSlots = usedSlots(v);
-
-  const oldSlots = weaponSlots(v, v.weapons[wi].weapon);
-  const newSlots = weaponSlots(v, newWeapon);
-
-  const oldVal = oldSlots === "-" ? 0 : oldSlots;
-  const newVal = newSlots === "-" ? 0 : newSlots;
-
-  const adjustedSlots = currentSlots - oldVal + newVal;
-
-  if (adjustedSlots > totalSlots(v)) {
-    alert("Not enough slots");
-    return;
-  }
 
   v.weapons[wi].weapon = newWeapon;
 
@@ -923,6 +904,22 @@ function layout100x70() {
   document.getElementById("layoutStylesheet").href = "css/100x70.css";
 }
 
+function loadDicePage() {
+  renderDicePage();
+}
+
+function closeDicePage() {
+  const diceDiv = document.getElementById("diceDiv");
+  const editDiv = document.getElementById("editDiv");
+  const printDiv = document.getElementById("printDiv");
+  const headerDiv = document.getElementById("headerDiv");
+
+  editDiv.style.display = "grid";
+  printDiv.style.display = "none";
+  headerDiv.style.display = "block";
+  diceDiv.style.display = "none";
+}
+
 function init() {
   if (state.initialized) return;
   state.initialized = true;
@@ -943,6 +940,10 @@ function init() {
   document.getElementById("printButton").addEventListener("click", startPrint);
   document.getElementById("88x64").addEventListener("click", layout88x64);
   document.getElementById("100x70").addEventListener("click", layout100x70);
+  document.getElementById("d6").addEventListener("click", loadDicePage);
+  document
+    .getElementById("closeD6Button")
+    .addEventListener("click", closeDicePage);
   window.addEventListener("beforeunload", saveState);
   window.addEventListener("pageshow", () => {
     if (!event.persisted) return;

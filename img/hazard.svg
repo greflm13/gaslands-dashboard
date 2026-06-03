@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   version="1.1"
+   id="svg18"
+   width="20.000008mm"
+   height="20mm"
+   viewBox="0 0 75.590581 75.590549"
+   sodipodi:docname="Gaslands_Skid_Dice_Labels.svg"
+   inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
+   inkscape:dataloss="true"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs22" />
+  <sodipodi:namedview
+     id="namedview20"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="true"
+     inkscape:deskcolor="#d1d1d1"
+     showgrid="false"
+     inkscape:zoom="2.9388713"
+     inkscape:cx="180.00108"
+     inkscape:cy="42.363202"
+     inkscape:window-width="1920"
+     inkscape:window-height="1008"
+     inkscape:window-x="1920"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="g26"
+     inkscape:document-units="mm" />
+  <g
+     id="g26"
+     inkscape:groupmode="layer"
+     inkscape:label="Page 1"
+     transform="matrix(1.3333333,0,0,-1.3333333,-256.77166,1122.88)">
+    <path
+       d="m 202.20523,798.66261 c -0.352,0.352 -0.64,0.81439 -0.64,1.02754 0,0.77327 18.3284,29.67741 18.9423,29.87225 0.3373,0.10706 0.892,0.003 1.2326,-0.23258 0.857,-0.59109 18.5451,-28.89954 18.5451,-29.67991 0,-0.34706 -0.3201,-0.85516 -0.7112,-1.12915 -0.6233,-0.43653 -2.9386,-0.49815 -18.72,-0.49815 -17.5821,0 -18.024,0.0152 -18.6488,0.64 z m 33.408,2.96 c -0.949,1.65183 -14.0683,22.56683 -14.3546,22.88416 -0.2818,0.31239 -1.9745,-2.16165 -7.4541,-10.895 -3.8992,-6.21455 -7.1836,-11.54441 -7.2987,-11.84416 -0.1951,-0.50848 0.7808,-0.545 14.564,-0.545 11.7277,0 14.7258,0.0825 14.5434,0.4 z m -15.8893,2.56 c -0.8959,0.68431 -1.0238,2.01497 -0.2664,2.77227 1.2861,1.28617 3.2277,0.6522 3.2277,-1.05394 0,-1.73961 -1.6671,-2.70696 -2.9613,-1.71833 z m -0.5587,8.50904 c 0,4.80735 6e-4,4.80904 1.76,4.66277 0.528,-0.0439 1.1441,-0.0915 1.369,-0.10586 0.3156,-0.0201 0.3887,-1.03147 0.32,-4.426 l -0.089,-4.4 -1.68,-0.0967 -1.68,-0.0967 z"
+       style="fill:#000000;stroke-width:0.24"
+       id="path1619" />
+  </g>
+</svg>
