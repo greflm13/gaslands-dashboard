@@ -4,7 +4,7 @@ let diceCount = 1;
 let diceCubes = [];
 const resultsDiv = el("div", { class: "diceResults" });
 
-const normalFaces = [
+export const normalFaces = [
   { cls: "front", val: "/img/1.svg" },
   { cls: "back", val: "/img/6.svg" },
   { cls: "right", val: "/img/3.svg" },
@@ -13,7 +13,7 @@ const normalFaces = [
   { cls: "bottom", val: "/img/2.svg" },
 ];
 
-const skidFaces = [
+export const skidFaces = [
   { cls: "front", val: "/img/hazard.svg" },
   { cls: "back", val: "/img/shift.svg" },
   { cls: "right", val: "/img/spin.svg" },
@@ -64,7 +64,7 @@ export function renderDicePage() {
   diceDiv.replaceChildren(diceHeader, diceGrid);
 }
 
-function createDiceSet(title, faces) {
+export function createDiceSet(title, faces) {
   let diceCount = 1;
   let diceCubes = [];
   const resultsDiv = el("div", { class: "diceResults" });

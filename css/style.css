@@ -212,7 +212,7 @@ button:hover {
 }
 
 #editDiv .teamHeader td:nth-child(7) {
-  width: 0px;
+  width: 75px;
 }
 
 #editDiv .teamHeader td:nth-child(8) {
@@ -493,6 +493,65 @@ button,
   padding-bottom: 4px;
 }
 
+/* ==========================================================================
+   Print
+   ========================================================================== */
+
+#printDiv {
+  font-family: "Stardos Stencil", system-ui;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: white;
+}
+
+#printDiv #printContent {
+  display: grid;
+  grid-template-columns: 210mm auto;
+}
+
+#printDiv .teamHeader {
+  display: flex;
+}
+
+#printDiv .teamHeader .teamName {
+  font-weight: bold;
+  font-size: larger;
+}
+
+#printDiv .vehicleCrew {
+  text-align: center;
+}
+
+#printDiv .vehicleCost {
+  text-align: right;
+}
+
+#printDiv .hullContainer {
+  display: grid;
+  grid-template-columns: 6.25px auto;
+  grid-template-rows: auto auto;
+  gap: 2px 8px;
+  margin: 10px 0;
+}
+
+#printDiv .armoryRow {
+  line-height: 1;
+}
+
+.noprint {
+  display: block;
+}
+
+@media print {
+  .noprint {
+    display: none !important;
+  }
+}
+
+/* ==========================================================================
+   Dice
+   ========================================================================== */
+
 #diceDiv {
   display: none;
 }
@@ -593,6 +652,25 @@ button,
   gap: 16px;
   justify-content: center;
   align-items: center;
+}
+
+@media print {
+  body {
+    background: #fff;
+    color: #222;
+  }
+
+  #printDiv .teamHeader div {
+    color: black;
+  }
+
+  #printDiv .hullPoint {
+    background-color: white;
+  }
+
+  #printDiv #printContent {
+    display: block;
+  }
 }
 
 /* ==========================================================================

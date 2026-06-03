@@ -14,9 +14,11 @@ import {
   weaponRules,
   weaponSlots,
 } from "./app";
+import { createDiceSet, normalFaces, skidFaces } from "./dice";
 import { el } from "./render";
+import { state } from "./state";
 
-export async function createPrintTeamCard(team, ti) {
+async function createPrintTeamCard(team, ti) {
   const container = el("div", { class: "teamCard" });
 
   container.appendChild(
@@ -110,6 +112,15 @@ async function createPrintImage(team, ti, v, vi) {
   ]);
 }
 
+function toogleHullPoint(id) {
+  const hullPoint = document.getElementById(id);
+  if (hullPoint.style.backgroundColor == "rgb(17, 17, 17)") {
+    hullPoint.style.backgroundColor = "#fff";
+  } else {
+    hullPoint.style.backgroundColor = "#111";
+  }
+}
+
 async function createPrintVehicleCard(team, ti, v, vi) {
   const container = el("div", { class: "vehicleCard" });
 
@@ -146,8 +157,14 @@ async function createPrintVehicleCard(team, ti, v, vi) {
       el("div", { class: "hullContainer" }, [
         el("div", { text: "Hull", class: "hullLabel" }),
         el("div", { class: "hullPoints" }, [
-          ...Array.from({ length: stats.hull }, () =>
-            el("div", { class: "hullPoint" }),
+          ...Array.from({ length: stats.hull }, (h, hi) =>
+            el("div", {
+              class: "hullPoint",
+              id: `hp_${vi}_${hi}`,
+              onclick: (e) => {
+                toogleHullPoint(`hp_${vi}_${hi}`);
+              },
+            }),
           ),
         ]),
       ]),
@@ -187,4 +204,24 @@ async function createPrintVehicleCard(team, ti, v, vi) {
   }
 
   return container;
+}
+
+function renderDice() {
+  const diceGrid = el("div", { class: "diceGrid noprint" });
+
+  const normalDice = createDiceSet("D6 Dice Roller", normalFaces);
+  const skidDice = createDiceSet("Skid Dice Roller", skidFaces);
+
+  diceGrid.appendChild(normalDice);
+  diceGrid.appendChild(skidDice);
+  return diceGrid;
+}
+
+export async function renderPrint() {
+  const printContent = document.getElementById("printContent");
+
+  printContent.innerHTML = "";
+  let team = state.teams[state.currentTeamIndex];
+  printContent.appendChild(await createPrintTeamCard(team));
+  printContent.appendChild(renderDice());
 }

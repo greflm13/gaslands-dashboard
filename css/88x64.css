@@ -1,27 +1,6 @@
-/* ==========================================================================
-   Print
-   ========================================================================== */
-
-#printDiv {
-  font-family: "Stardos Stencil", system-ui;
-  font-weight: bold;
-  text-transform: uppercase;
-  color: white;
-}
-
-#printDiv .teamHeader {
-  display: flex;
-}
-
 #printDiv .teamHeader div {
   display: inline-block;
   padding: 6px;
-  color: black;
-}
-
-#printDiv .teamHeader .teamName {
-  font-weight: bold;
-  font-size: larger;
 }
 
 #printDiv .teamVehicles {
@@ -89,22 +68,6 @@
   font-size: 8pt;
 }
 
-#printDiv .vehicleCrew {
-  text-align: center;
-}
-
-#printDiv .vehicleCost {
-  text-align: right;
-}
-
-#printDiv .hullContainer {
-  display: grid;
-  grid-template-columns: 6.25px auto;
-  grid-template-rows: auto auto;
-  gap: 2px 8px;
-  margin: 10px 0;
-}
-
 #printDiv .hullLabel {
   grid-column: 1;
   grid-row: 1;
@@ -132,6 +95,7 @@
   width: 4.2mm;
   height: 3.3mm;
   display: inline-flex;
+  cursor: pointer;
 }
 
 #printDiv .armoryContainer {
@@ -151,10 +115,6 @@
   font-size: 8pt;
   font-family: "Stardos Stencil", system-ui;
   font-weight: bold;
-}
-
-#printDiv .armoryRow {
-  line-height: 1;
 }
 
 #printDiv .smallerArmory {
@@ -185,14 +145,4 @@
   left: 10.2mm;
   z-index: 2;
   pointer-events: none;
-}
-
-.noprint {
-  display: block;
-}
-
-@media print {
-  .noprint {
-    display: none !important;
-  }
 }

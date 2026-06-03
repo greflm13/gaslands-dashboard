@@ -39,7 +39,7 @@ import {
   saveState,
   weaponAmmo,
 } from "./app.js";
-import { createPrintTeamCard } from "./print.js";
+import { renderPrint } from "./print.js";
 import { createReference } from "./reference.js";
 
 let isRendering = false;
@@ -163,7 +163,7 @@ async function createTeamCard(team, ti) {
     el("td", { text: "cans" }),
 
     el("td", {}, [
-      el("button", { onclick: () => openPrintPreview(ti) }, ["Print"]),
+      el("button", { onclick: () => openPrintPreview(ti) }, ["Print/Play"]),
     ]),
 
     el("td", {}, [
@@ -521,7 +521,6 @@ export async function render() {
     const editDiv = document.getElementById("editDiv");
     const printDiv = document.getElementById("printDiv");
     const headerDiv = document.getElementById("headerDiv");
-    const printContent = document.getElementById("printContent");
 
     if (state.printMode) {
       editDiv.style.display = "none";
@@ -546,14 +545,7 @@ export async function render() {
       editDiv.replaceChildren(...editPage);
       setFold();
     } else {
-      printContent.innerHTML = "";
-      let team = state.teams[state.currentTeamIndex];
-      printContent.appendChild(await createPrintTeamCard(team));
-
-      document.querySelectorAll("#printDiv .theVehicleImg").forEach((el) => {
-        const randomIndex = Math.floor(Math.random() * 10) + 1; // 1–10
-        el.style.backgroundImage = `url(/img/bg${String(randomIndex).padStart(2, "0")}.png)`;
-      });
+      await renderPrint();
     }
   } finally {
     isRendering = false;
