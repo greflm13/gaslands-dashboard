@@ -167,18 +167,13 @@ function clickDice(wrapper) {
   const type = wrapper.dataset.type;
   const value = parseInt(wrapper.dataset.value);
 
-  if (!value) return; // not rolled yet
+  if (!value) return;
 
-  if (type !== "skid") return; // only skid dice matter
+  if (type !== "skid") return;
 
   const result = getSkidResult(value);
 
-  console.log("Clicked:", result);
-
-  // mark selected
   wrapper.classList.toggle("selected");
-
-  console.log(wrapper.classList);
 
   if (wrapper.classList.contains("selected")) {
     selectedDice.push({ wrapper, result });
@@ -196,10 +191,8 @@ function handleCancellation() {
     (d) => d.result === "hazard" || d.result === "spin" || d.result === "slide",
   );
 
-  // number of pairs we can cancel
   const pairs = Math.min(shifts.length, cancelables.length);
 
-  // reset all
   selectedDice.forEach((d) => d.wrapper.classList.remove("cancelled"));
 
   for (let i = 0; i < pairs; i++) {
