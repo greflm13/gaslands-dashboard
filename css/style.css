@@ -601,7 +601,7 @@ button,
 }
 
 .dice3d.selected {
-  outline: 2px solid blue;
+  opacity: 0.8;
 }
 
 .dice3d.cancelled {

@@ -178,10 +178,13 @@ function clickDice(wrapper) {
   // mark selected
   wrapper.classList.toggle("selected");
 
+  console.log(wrapper.classList);
+
   if (wrapper.classList.contains("selected")) {
     selectedDice.push({ wrapper, result });
   } else {
     selectedDice = selectedDice.filter((d) => d.wrapper !== wrapper);
+    wrapper.classList.remove("cancelled");
   }
 
   handleCancellation();
@@ -236,6 +239,8 @@ function animateDice(cube, value, wrapper, type) {
 
   wrapper.dataset.value = value;
   wrapper.dataset.type = type;
+
+  selectedDice = [];
 
   const extraX = 360 * (2 + Math.floor(Math.random() * 4));
   const extraY = 360 * (1 + Math.floor(Math.random() * 4));
