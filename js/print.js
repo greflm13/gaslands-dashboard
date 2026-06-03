@@ -14,7 +14,7 @@ import {
   weaponRules,
   weaponSlots,
 } from "./app";
-import { createDiceSet, normalFaces, skidFaces } from "./dice";
+import { createDiceSet } from "./dice";
 import { el } from "./render";
 import { state } from "./state";
 
@@ -209,8 +209,8 @@ async function createPrintVehicleCard(team, ti, v, vi) {
 function renderDice() {
   const diceGrid = el("div", { class: "diceGrid noprint" });
 
-  const normalDice = createDiceSet("D6 Dice Roller", normalFaces);
-  const skidDice = createDiceSet("Skid Dice Roller", skidFaces);
+  const normalDice = createDiceSet("D6 Dice Roller", "normal");
+  const skidDice = createDiceSet("Skid Dice Roller", "skid");
 
   diceGrid.appendChild(normalDice);
   diceGrid.appendChild(skidDice);

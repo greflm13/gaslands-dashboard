@@ -4,7 +4,7 @@ let diceCount = 1;
 let diceCubes = [];
 const resultsDiv = el("div", { class: "diceResults" });
 
-export const normalFaces = [
+const normalFaces = [
   { cls: "front", val: "/img/1.svg" },
   { cls: "back", val: "/img/6.svg" },
   { cls: "right", val: "/img/3.svg" },
@@ -13,7 +13,7 @@ export const normalFaces = [
   { cls: "bottom", val: "/img/2.svg" },
 ];
 
-export const skidFaces = [
+const skidFaces = [
   { cls: "front", val: "/img/hazard.svg" },
   { cls: "back", val: "/img/shift.svg" },
   { cls: "right", val: "/img/spin.svg" },
@@ -21,6 +21,11 @@ export const skidFaces = [
   { cls: "top", val: "/img/shift.svg" },
   { cls: "bottom", val: "/img/slide.svg" },
 ];
+
+const diceTypes = {
+  normal: normalFaces,
+  skid: skidFaces,
+};
 
 function closeDicePage() {
   const diceDiv = document.getElementById("diceDiv");
@@ -56,15 +61,15 @@ export function renderDicePage() {
 
   const diceGrid = el("div", { class: "diceGrid" });
 
-  const normalDice = createDiceSet("D6 Dice Roller", normalFaces);
-  const skidDice = createDiceSet("Skid Dice Roller", skidFaces);
+  const normalDice = createDiceSet("D6 Dice Roller", "normal");
+  const skidDice = createDiceSet("Skid Dice Roller", "skid");
 
   diceGrid.appendChild(normalDice);
   diceGrid.appendChild(skidDice);
   diceDiv.replaceChildren(diceHeader, diceGrid);
 }
 
-export function createDiceSet(title, faces) {
+export function createDiceSet(title, type) {
   let diceCount = 1;
   let diceCubes = [];
   const resultsDiv = el("div", { class: "diceResults" });
@@ -74,7 +79,7 @@ export function createDiceSet(title, faces) {
     diceCubes = [];
 
     for (let i = 0; i < diceCount; i++) {
-      const { wrapper, cube } = createDice(6, false, faces);
+      const { wrapper, cube } = createDice(6, type);
       diceCubes.push({ cube, wrapper });
       resultsDiv.appendChild(wrapper);
     }
@@ -83,7 +88,7 @@ export function createDiceSet(title, faces) {
   function rollDice() {
     diceCubes.forEach(({ cube, wrapper }) => {
       const value = Math.floor(Math.random() * 6) + 1;
-      animateDice(cube, value, wrapper);
+      animateDice(cube, value, wrapper, type);
     });
   }
 
@@ -123,8 +128,10 @@ function getRotationAngles(v) {
   }
 }
 
-function createDice(value, animate = true, faces) {
+function createDice(value, type) {
   const cube = el("div", { class: "cube" });
+
+  const faces = diceTypes[type];
 
   faces.forEach((f) => {
     cube.appendChild(
@@ -136,14 +143,12 @@ function createDice(value, animate = true, faces) {
 
   cube.style.transform = "rotateX(180deg)";
 
-  if (animate) {
-    animateDice(cube, value, wrapper);
-  }
-
   return { wrapper, cube };
 }
 
-function animateDice(cube, value, wrapper) {
+function animateDice(cube, value, wrapper, type) {
+  wrapper.classList.remove("highlight");
+
   const extraX = 360 * (2 + Math.floor(Math.random() * 4));
   const extraY = 360 * (1 + Math.floor(Math.random() * 4));
   const extraZ = 360 * Math.floor(Math.random() * 2);
@@ -159,4 +164,12 @@ function animateDice(cube, value, wrapper) {
   cube.style.transition = `transform ${duration}ms cubic-bezier(0.2, 0.8, 0.3, 1)`;
 
   cube.style.transform = `rotateX(${finalX}deg) rotateY(${finalY}deg) rotateZ(${finalZ}deg)`;
+
+  if (type === "normal" && value === 6) {
+    const handler = () => {
+      wrapper.classList.add("highlight");
+      cube.removeEventListener("transitionend", handler);
+    };
+    cube.addEventListener("transitionend", handler);
+  }
 }

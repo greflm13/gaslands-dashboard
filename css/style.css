@@ -625,11 +625,18 @@ button,
   font-size: 125px;
   color: #111;
   overflow: hidden;
+
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 
 .face img {
   width: 64px;
   height: 64px;
+}
+
+.highlight {
+  box-shadow: 0 0 20px 6px gold;
 }
 
 .front {
@@ -779,7 +786,7 @@ button,
   }
 
   #printDiv .teamCard {
-    transform: scale(1.5);
+    transform: scale(1.4);
     transform-origin: top left;
   }
 
@@ -802,7 +809,7 @@ button,
   }
 
   #printDiv .teamCard {
-    transform: scale(1.75);
+    transform: scale(1.6);
     transform-origin: top left;
   }
 }
