@@ -908,18 +908,6 @@ function loadDicePage() {
   renderDicePage();
 }
 
-function closeDicePage() {
-  const diceDiv = document.getElementById("diceDiv");
-  const editDiv = document.getElementById("editDiv");
-  const printDiv = document.getElementById("printDiv");
-  const headerDiv = document.getElementById("headerDiv");
-
-  editDiv.style.display = "grid";
-  printDiv.style.display = "none";
-  headerDiv.style.display = "block";
-  diceDiv.style.display = "none";
-}
-
 function init() {
   if (state.initialized) return;
   state.initialized = true;
@@ -941,9 +929,6 @@ function init() {
   document.getElementById("88x64").addEventListener("click", layout88x64);
   document.getElementById("100x70").addEventListener("click", layout100x70);
   document.getElementById("d6").addEventListener("click", loadDicePage);
-  document
-    .getElementById("closeD6Button")
-    .addEventListener("click", closeDicePage);
   window.addEventListener("beforeunload", saveState);
   window.addEventListener("pageshow", () => {
     if (!event.persisted) return;

@@ -22,6 +22,18 @@ const skidFaces = [
   { cls: "bottom", val: "/img/slide.svg" },
 ];
 
+function closeDicePage() {
+  const diceDiv = document.getElementById("diceDiv");
+  const editDiv = document.getElementById("editDiv");
+  const printDiv = document.getElementById("printDiv");
+  const headerDiv = document.getElementById("headerDiv");
+
+  editDiv.style.display = "grid";
+  printDiv.style.display = "none";
+  headerDiv.style.display = "block";
+  diceDiv.style.display = "none";
+}
+
 export function renderDicePage() {
   const diceDiv = document.getElementById("diceDiv");
   const editDiv = document.getElementById("editDiv");
@@ -33,6 +45,15 @@ export function renderDicePage() {
   headerDiv.style.display = "none";
   diceDiv.style.display = "block";
 
+  const diceHeader = el("div", { class: "header" }, [
+    el("button", {
+      onclick: (e) => {
+        closeDicePage();
+      },
+      text: "Close",
+    }),
+  ]);
+
   const diceGrid = el("div", { class: "diceGrid" });
 
   const normalDice = createDiceSet("D6 Dice Roller", normalFaces);
@@ -40,7 +61,7 @@ export function renderDicePage() {
 
   diceGrid.appendChild(normalDice);
   diceGrid.appendChild(skidDice);
-  diceDiv.appendChild(diceGrid);
+  diceDiv.replaceChildren(diceHeader, diceGrid);
 }
 
 function createDiceSet(title, faces) {
