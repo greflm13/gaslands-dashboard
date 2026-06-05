@@ -11,7 +11,6 @@ import {
   allWeapons,
   defaultVehicle,
 } from "./data.js";
-import { renderDicePage } from "./dice.js";
 
 let isImporting = false;
 let interactionLock = false;
@@ -898,7 +897,8 @@ function layout100x70() {
   document.getElementById("layoutStylesheet").href = "css/100x70.css";
 }
 
-function loadDicePage() {
+async function loadDicePage() {
+  const { renderDicePage } = await import("./dice.js");
   renderDicePage();
 }
 

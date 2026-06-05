@@ -39,10 +39,18 @@ import {
   saveState,
   weaponAmmo,
 } from "./app.js";
-import { renderPrint } from "./print.js";
-import { createReference } from "./reference.js";
 
 let isRendering = false;
+
+async function loadPrint() {
+  const { renderPrint } = await import("./print.js");
+  renderPrint();
+}
+
+async function loadReference() {
+  const { createReference } = await import("./reference.js");
+  return createReference();
+}
 
 export function el(tag, props = {}, children = []) {
   const e = document.createElement(tag);
@@ -541,11 +549,11 @@ export async function render() {
       );
 
       edit.replaceChildren(...cards);
-      const editPage = [edit, createReference()];
+      const editPage = [edit, await loadReference()];
       editDiv.replaceChildren(...editPage);
       setFold();
     } else {
-      await renderPrint();
+      await loadPrint();
     }
   } finally {
     isRendering = false;
