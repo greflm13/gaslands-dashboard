@@ -615,7 +615,7 @@ button,
 }
 
 .dice3d.selected {
-  opacity: 0.9;
+  opacity: 0.8;
 }
 
 .dice3d.cancelled {
@@ -706,6 +706,28 @@ button,
   gap: 16px;
   justify-content: center;
   align-items: center;
+}
+
+.resultNumbers {
+  flex-basis: 100%;
+  display: grid;
+  grid-template-columns: repeat(6, auto);
+  justify-content: center;
+  gap: 10px;
+}
+
+.resultItem {
+  font-weight: bold;
+  padding: 4px 8px;
+}
+
+.resultItem img {
+  width: 32px;
+  height: 32px;
+  background: #e0e0e0;
+  border: 1px solid #999;
+  border-radius: 2.5px;
+  margin-right: 8px;
 }
 
 /* ==========================================================================

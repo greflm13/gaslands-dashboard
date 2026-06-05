@@ -3,7 +3,6 @@ import { el } from "./render";
 let diceCount = 1;
 let diceCubes = [];
 let selectedDice = [];
-const resultsDiv = el("div", { class: "diceResults" });
 
 const normalFaces = [
   { cls: "back", val: "/img/1.svg" },
@@ -98,13 +97,79 @@ export function createDiceSet(title, type) {
       diceCubes.push({ cube, wrapper });
       resultsDiv.appendChild(wrapper);
     }
+    resultsDiv.appendChild(
+      el("div", { class: "resultNumbers", id: `dice_results_${type}` }),
+    );
   }
 
   function rollDice() {
+    let counts;
+
+    if (type === "skid") {
+      counts = { hazard: 0, slide: 0, spin: 0, shift: 0 };
+    } else {
+      counts = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0 };
+    }
+
+    let finished = 0;
+    const total = diceCubes.length;
+
+    const handleDone = () => {
+      finished++;
+      if (finished === total) {
+        renderResults(counts);
+      }
+    };
+
     diceCubes.forEach(({ cube, wrapper }) => {
       const value = Math.floor(Math.random() * 6) + 1;
+
+      if (type === "skid") {
+        const result = getSkidResult(value);
+        counts[result]++;
+      } else {
+        counts[value]++;
+      }
+
+      const onEnd = () => {
+        cube.removeEventListener("transitionend", onEnd);
+        handleDone();
+      };
+
+      cube.addEventListener("transitionend", onEnd);
+
       animateDice(cube, value, wrapper, type);
     });
+
+    document.getElementById(`dice_results_${type}`).textContent = "";
+  }
+
+  function renderResults(counts) {
+    const resultDiv = document.getElementById(`dice_results_${type}`);
+
+    resultDiv.innerHTML = "";
+
+    if (type === "skid") {
+      const order = ["shift", "spin", "slide", "hazard"];
+
+      order.forEach((key) => {
+        resultDiv.appendChild(
+          el("div", { class: "resultItem" }, [
+            el("img", { src: `/img/${key}.svg` }),
+            `${counts[key]}`,
+          ]),
+        );
+      });
+    } else {
+      for (let i = 6; i >= 1; i--) {
+        resultDiv.appendChild(
+          el("div", { class: "resultItem" }, [
+            el("img", { src: `/img/${i}.svg` }),
+            `${counts[i]}`,
+          ]),
+        );
+      }
+    }
   }
 
   renderDiceStatic();
