@@ -911,7 +911,7 @@ async function deleteImageFromDB(id) {
   store.delete(id);
 }
 
-function startPrint() {
+function startPrint(e) {
   if (printing) return;
   printing = true;
 
