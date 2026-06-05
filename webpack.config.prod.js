@@ -34,9 +34,13 @@ module.exports = merge(common, {
     minimizer: [
       new ImageMinimizerPlugin({
         minimizer: {
-          implementation: ImageMinimizerPlugin.imageminGenerate,
+          implementation: ImageMinimizerPlugin.sharpMinify,
           options: {
-            plugins: [["pngquant", { quality: [0.6, 0.8] }]],
+            encodeOptions: {
+              png: {
+                quality: 80,
+              },
+            },
           },
         },
       }),
