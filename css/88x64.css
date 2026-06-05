@@ -134,8 +134,6 @@
   top: -23.3mm;
   left: 63.6mm;
   z-index: 1;
-  background-image: url(/img/bg1.png);
-  background-size: cover;
 }
 
 #printDiv .theFrame {
