@@ -915,15 +915,17 @@ function startPrint() {
   if (printing) return;
   printing = true;
 
+  if (e) {
+    e.preventDefault();
+    e.stopPropagation();
+    e.stopImmediatePropagation();
+  }
+
   console.log("PRINT TRIGGERED", new Error().stack);
-  console.log("#=============#")
+  console.log("#=============#");
 
   window.print();
 }
-
-window.addEventListener("afterprint", () => {
-  printing = false;
-});
 
 function update() {
   saveState();
@@ -965,6 +967,11 @@ function init() {
   document.getElementById("100x70").addEventListener("click", layout100x70);
   document.getElementById("d6").addEventListener("click", loadDicePage);
   window.addEventListener("beforeunload", saveState);
+  window.addEventListener("afterprint", () => {
+    setTimeout(() => {
+      printing = false;
+    }, 300);
+  });
 }
 
 init();
