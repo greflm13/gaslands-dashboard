@@ -42,11 +42,6 @@ import {
 
 let isRendering = false;
 
-async function loadPrint() {
-  const { renderPrint } = await import("./print.js");
-  renderPrint();
-}
-
 async function loadReference() {
   const { createReference } = await import("./reference.js");
   return createReference();
@@ -525,39 +520,19 @@ async function createVehicleCard(team, ti, v, vi) {
   return container;
 }
 
-export async function render() {
+export async function renderFull() {
   if (isRendering) return;
   isRendering = true;
   try {
-    const editDiv = document.getElementById("editDiv");
-    const printDiv = document.getElementById("printDiv");
-    const headerDiv = document.getElementById("headerDiv");
+    const edit = el("div", { class: "editLayout" });
+    const cards = await Promise.all(
+      (state.teams || []).map((team, ti) => createTeamCard(team, ti)),
+    );
 
-    if (state.printMode) {
-      editDiv.style.display = "none";
-      printDiv.style.display = "block";
-      headerDiv.style.display = "none";
-      diceDiv.style.display = "none";
-    } else {
-      editDiv.style.display = "grid";
-      printDiv.style.display = "none";
-      headerDiv.style.display = "block";
-      diceDiv.style.display = "none";
-    }
-
-    if (!state.printMode) {
-      const edit = el("div", { class: "editLayout" });
-      const cards = await Promise.all(
-        (state.teams || []).map((team, ti) => createTeamCard(team, ti)),
-      );
-
-      edit.replaceChildren(...cards);
-      const editPage = [edit, await loadReference()];
-      editDiv.replaceChildren(...editPage);
-      setFold();
-    } else {
-      await loadPrint();
-    }
+    edit.replaceChildren(...cards);
+    const editPage = [edit, await loadReference()];
+    editDiv.replaceChildren(...editPage);
+    setFold();
   } finally {
     isRendering = false;
   }

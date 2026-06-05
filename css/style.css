@@ -138,6 +138,7 @@ button:hover {
 }
 
 #editDiv {
+  display: grid;
   grid-template-columns: 1fr minmax(auto, 610px);
 }
 
@@ -505,6 +506,10 @@ button,
 /* ==========================================================================
    Print
    ========================================================================== */
+
+#printDiv {
+  display: none;
+}
 
 #printDiv {
   font-family: "Stardos Stencil", system-ui;

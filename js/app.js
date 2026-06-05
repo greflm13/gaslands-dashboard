@@ -1,4 +1,4 @@
-import { render } from "./render.js";
+import { renderFull } from "./render.js";
 import { state } from "./state.js";
 import {
   allCargos,
@@ -16,6 +16,11 @@ let saving = false;
 let printing = false;
 let isImporting = false;
 let interactionLock = false;
+
+async function loadPrint() {
+  const { renderPrint } = await import("./print.js");
+  renderPrint();
+}
 
 export function setSponsor(ti, value) {
   const team = state.teams[ti];
@@ -43,15 +48,31 @@ export function changeVehicle(ti, vi, type) {
   update();
 }
 
+function setPrintMode(enabled) {
+  state.printMode = enabled;
+
+  document.getElementById("editDiv").style.display = enabled ? "none" : "grid";
+  document.getElementById("printDiv").style.display = enabled
+    ? "block"
+    : "none";
+  document.getElementById("headerDiv").style.display = enabled
+    ? "none"
+    : "block";
+
+  if (enabled) {
+    loadPrint();
+  } else {
+    renderFull();
+  }
+}
+
 export function openPrintPreview(i) {
-  state.printMode = true;
   state.currentTeamIndex = i;
-  update();
+  setPrintMode(true);
 }
 
 function closePrintPreview() {
-  state.printMode = false;
-  update();
+  setPrintMode(false);
 }
 
 function format0(x) {
@@ -902,7 +923,7 @@ window.addEventListener("afterprint", () => {
 
 function update() {
   saveState();
-  render();
+  renderFull();
 }
 
 function layout88x64() {
@@ -923,7 +944,7 @@ function init() {
   state.initialized = true;
 
   loadState();
-  render();
+  renderFull();
   document.getElementById("addTeamButton").addEventListener("click", addTeam);
   document.getElementById("saveButton").addEventListener("click", saveToFile);
   document
