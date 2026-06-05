@@ -12,6 +12,8 @@ import {
   defaultVehicle,
 } from "./data.js";
 
+let saving = false;
+let printing = false;
 let isImporting = false;
 let interactionLock = false;
 
@@ -620,11 +622,19 @@ async function serializeAll() {
 }
 
 async function saveToFile() {
-  update();
-  if (window.showSaveFilePicker) {
-    await saveUsingFilePicker();
-  } else {
-    await saveUsingDownload();
+  if (saving) return;
+  saving = true;
+
+  try {
+    update();
+
+    if (window.showSaveFilePicker) {
+      await saveUsingFilePicker();
+    } else {
+      await saveUsingDownload();
+    }
+  } finally {
+    saving = false;
   }
 }
 
@@ -881,8 +891,14 @@ async function deleteImageFromDB(id) {
 }
 
 function startPrint() {
+  if (printing) return;
+  printing = true;
   window.print();
 }
+
+window.addEventListener("afterprint", () => {
+  printing = false;
+});
 
 function update() {
   saveState();
@@ -924,11 +940,6 @@ function init() {
   document.getElementById("100x70").addEventListener("click", layout100x70);
   document.getElementById("d6").addEventListener("click", loadDicePage);
   window.addEventListener("beforeunload", saveState);
-  window.addEventListener("pageshow", () => {
-    if (!event.persisted) return;
-    loadState();
-    render();
-  });
 }
 
 init();
