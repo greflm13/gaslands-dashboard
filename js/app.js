@@ -916,6 +916,7 @@ function startPrint() {
   printing = true;
 
   console.log("PRINT TRIGGERED", new Error().stack);
+  console.log("#=============#")
 
   window.print();
 }
