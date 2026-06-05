@@ -424,9 +424,10 @@ function createTrailerSection(team, ti, v, vi) {
 }
 
 async function showHoverImage(ti, v, vi, e) {
+  const imageSrc = (await loadImageFromDB(v.imageID)) || "/img/placeholder.png";
   const hover = el("div", { class: "vehicleImgHover" }, [
     el("img", {
-      src: await loadImageFromDB(v.imageID),
+      src: imageSrc,
       width: "250px",
       height: "250px",
       top: e.clientY + "px",
@@ -446,6 +447,8 @@ async function createVehicleCard(team, ti, v, vi) {
 
   const stats = computeStats(v);
   const free = totalSlots(v) - usedSlots(v);
+
+  const imageSrc = (await loadImageFromDB(v.imageID)) || "/img/placeholder.png";
 
   container.appendChild(
     el("table", { class: "vehicleHeader" }, [
@@ -467,7 +470,7 @@ async function createVehicleCard(team, ti, v, vi) {
         el("td", { id: `img-${ti}-${vi}` }, [
           el("label", { text: "Image: ", for: `imgi-${ti}-${vi}` }),
           el("img", {
-            src: await loadImageFromDB(v.imageID),
+            src: imageSrc,
             class: "vehicleImg",
             width: "25px",
             height: "25px",

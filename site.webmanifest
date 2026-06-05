@@ -1,12 +1,16 @@
 {
-  "short_name": "",
-  "name": "",
-  "icons": [{
-    "src": "icon.png",
-    "type": "image/png",
-    "sizes": "192x192"
-  }],
+  "short_name": "Gaslands",
+  "name": "Gaslands Dashboard Creator",
+  "icons": [
+    {
+      "src": "icon.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    }
+  ],
   "start_url": "/?utm_source=homescreen",
-  "background_color": "#fafafa",
-  "theme_color": "#fafafa"
+  "background_color": "#111",
+  "theme_color": "#eee",
+  "description": "Gaslands Refuelled team builder",
+  "display": "standalone"
 }

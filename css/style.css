@@ -133,6 +133,10 @@ button:hover {
   background: #3a3a3a;
 }
 
+#fallbackLoadInput {
+  display: none;
+}
+
 #editDiv {
   grid-template-columns: 1fr minmax(auto, 610px);
 }
