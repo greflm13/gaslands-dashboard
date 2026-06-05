@@ -163,7 +163,6 @@ function getSkidResult(value) {
 }
 
 function clickDice(wrapper) {
-  console.log(wrapper);
   const type = wrapper.dataset.type;
   const value = parseInt(wrapper.dataset.value);
 
