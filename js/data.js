@@ -355,6 +355,7 @@ export const allWeapons = [
     allowedSponsors: [],
     ruleset: "BASE",
     limit: null,
+    group: "Basic",
   },
   {
     wtype: "Heavy Machine Gun",
@@ -369,6 +370,7 @@ export const allWeapons = [
     allowedSponsors: [],
     ruleset: "BASE",
     limit: null,
+    group: "Basic",
   },
   {
     wtype: "Mini-Gun",
@@ -383,6 +385,7 @@ export const allWeapons = [
     allowedSponsors: [],
     ruleset: "BASE",
     limit: null,
+    group: "Basic",
   },
   // advanced
   {
@@ -398,6 +401,7 @@ export const allWeapons = [
     allowedSponsors: [],
     ruleset: "BASE",
     limit: null,
+    group: "Advanced",
   },
   {
     wtype: "Arc Lightning Projector",
@@ -412,6 +416,7 @@ export const allWeapons = [
     allowedSponsors: ["Mishkin"],
     ruleset: "BASE",
     limit: null,
+    group: "Advanced",
   },
   {
     wtype: "Bazooka",
@@ -426,6 +431,7 @@ export const allWeapons = [
     allowedSponsors: [],
     ruleset: "BASE",
     limit: null,
+    group: "Advanced",
   },
   {
     wtype: "BFG",
@@ -440,6 +446,7 @@ export const allWeapons = [
     allowedSponsors: [],
     ruleset: "BASE",
     limit: null,
+    group: "Advanced",
   },
   {
     wtype: "Combat Laser",
@@ -454,6 +461,7 @@ export const allWeapons = [
     allowedSponsors: [],
     ruleset: "BASE",
     limit: null,
+    group: "Advanced",
   },
   {
     wtype: "Death Ray",
@@ -468,6 +476,7 @@ export const allWeapons = [
     allowedSponsors: ["Mishkin"],
     ruleset: "BASE",
     limit: null,
+    group: "Advanced",
   },
   {
     wtype: "Flamethrower",
@@ -482,6 +491,7 @@ export const allWeapons = [
     allowedSponsors: [],
     ruleset: "BASE",
     limit: null,
+    group: "Advanced",
   },
   {
     wtype: "Grabber Arm",
@@ -496,6 +506,7 @@ export const allWeapons = [
     allowedSponsors: [],
     ruleset: "BASE",
     limit: null,
+    group: "Advanced",
   },
   {
     wtype: "Grav Gun",
@@ -510,6 +521,7 @@ export const allWeapons = [
     allowedSponsors: ["Mishkin"],
     ruleset: "BASE",
     limit: null,
+    group: "Advanced",
   },
   {
     wtype: "Harpoon",
@@ -524,6 +536,7 @@ export const allWeapons = [
     allowedSponsors: [],
     ruleset: "BASE",
     limit: null,
+    group: "Advanced",
   },
   {
     wtype: "Kinetic Super Booster",
@@ -538,6 +551,7 @@ export const allWeapons = [
     allowedSponsors: ["Mishkin"],
     ruleset: "BASE",
     limit: null,
+    group: "Advanced",
   },
   {
     wtype: "Magnetic Jammer",
@@ -552,6 +566,7 @@ export const allWeapons = [
     allowedSponsors: ["Mishkin"],
     ruleset: "BASE",
     limit: null,
+    group: "Advanced",
   },
   {
     wtype: "Mortar",
@@ -566,6 +581,7 @@ export const allWeapons = [
     allowedSponsors: [],
     ruleset: "BASE",
     limit: null,
+    group: "Advanced",
   },
   {
     wtype: "Rockets",
@@ -580,6 +596,7 @@ export const allWeapons = [
     allowedSponsors: [],
     ruleset: "BASE",
     limit: null,
+    group: "Advanced",
   },
   {
     wtype: "Thumper",
@@ -594,6 +611,7 @@ export const allWeapons = [
     allowedSponsors: ["Mishkin"],
     ruleset: "BASE",
     limit: null,
+    group: "Advanced",
   },
   {
     wtype: "Wall Of Amplifiers",
@@ -608,6 +626,7 @@ export const allWeapons = [
     allowedSponsors: [],
     ruleset: "BASE",
     limit: null,
+    group: "Advanced",
   },
   {
     wtype: "Wreck Lobber",
@@ -622,6 +641,7 @@ export const allWeapons = [
     allowedSponsors: [],
     ruleset: "BASE",
     limit: null,
+    group: "Advanced",
   },
   {
     wtype: "Wrecking Ball",
@@ -636,6 +656,7 @@ export const allWeapons = [
     allowedSponsors: [],
     ruleset: "BASE",
     limit: null,
+    group: "Advanced",
   },
   // crew fired
   {
@@ -651,6 +672,7 @@ export const allWeapons = [
     allowedSponsors: [],
     ruleset: "BASE",
     limit: null,
+    group: "Crew fired",
   },
   {
     wtype: "Gas Grenades",
@@ -665,6 +687,7 @@ export const allWeapons = [
     allowedSponsors: [],
     ruleset: "BASE",
     limit: null,
+    group: "Crew fired",
   },
   {
     wtype: "Grenades",
@@ -679,6 +702,7 @@ export const allWeapons = [
     allowedSponsors: [],
     ruleset: "BASE",
     limit: null,
+    group: "Crew fired",
   },
   {
     wtype: "Magnum",
@@ -693,6 +717,7 @@ export const allWeapons = [
     allowedSponsors: [],
     ruleset: "BASE",
     limit: null,
+    group: "Crew fired",
   },
   {
     wtype: "Molotov Cocktails",
@@ -707,6 +732,7 @@ export const allWeapons = [
     allowedSponsors: [],
     ruleset: "BASE",
     limit: null,
+    group: "Crew fired",
   },
   {
     wtype: "Shotgun",
@@ -721,6 +747,7 @@ export const allWeapons = [
     allowedSponsors: [],
     ruleset: "BASE",
     limit: null,
+    group: "Crew fired",
   },
   {
     wtype: "Steel Nets",
@@ -735,6 +762,7 @@ export const allWeapons = [
     allowedSponsors: [],
     ruleset: "BASE",
     limit: null,
+    group: "Crew fired",
   },
   {
     wtype: "Submachine Gun",
@@ -749,6 +777,7 @@ export const allWeapons = [
     allowedSponsors: [],
     ruleset: "BASE",
     limit: null,
+    group: "Crew fired",
   },
   // Dropped
   {
@@ -764,6 +793,7 @@ export const allWeapons = [
     allowedSponsors: [],
     ruleset: "BASE",
     limit: null,
+    group: "Dropped",
   },
   {
     wtype: "Glue Dropper",
@@ -778,6 +808,7 @@ export const allWeapons = [
     allowedSponsors: [],
     ruleset: "BASE",
     limit: null,
+    group: "Dropped",
   },
   {
     wtype: "Mine Dropper",
@@ -792,6 +823,7 @@ export const allWeapons = [
     allowedSponsors: [],
     ruleset: "BASE",
     limit: null,
+    group: "Dropped",
   },
   {
     wtype: "Napalm Dropper",
@@ -806,6 +838,7 @@ export const allWeapons = [
     allowedSponsors: [],
     ruleset: "BASE",
     limit: null,
+    group: "Dropped",
   },
   {
     wtype: "Oil Slick Dropper",
@@ -820,6 +853,7 @@ export const allWeapons = [
     allowedSponsors: [],
     ruleset: "BASE",
     limit: null,
+    group: "Dropped",
   },
   {
     wtype: "RC Car Bombs",
@@ -834,6 +868,7 @@ export const allWeapons = [
     allowedSponsors: [],
     ruleset: "BASE",
     limit: null,
+    group: "Dropped",
   },
   {
     wtype: "Sentry Gun",
@@ -848,6 +883,7 @@ export const allWeapons = [
     allowedSponsors: [],
     ruleset: "BASE",
     limit: null,
+    group: "Dropped",
   },
   {
     wtype: "Smoke Dropper",
@@ -862,6 +898,7 @@ export const allWeapons = [
     allowedSponsors: [],
     ruleset: "BASE",
     limit: null,
+    group: "Dropped",
   },
   // Smash Weapons
   {
@@ -877,6 +914,7 @@ export const allWeapons = [
     allowedSponsors: [],
     ruleset: "BASE",
     limit: null,
+    group: "Smash",
   },
   {
     wtype: "Exploding Ram",
@@ -891,6 +929,7 @@ export const allWeapons = [
     allowedSponsors: [],
     ruleset: "BASE",
     limit: 1,
+    group: "Smash",
   },
 ];
 allWeapons.forEach(

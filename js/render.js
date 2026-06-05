@@ -77,6 +77,85 @@ function select(options, value, onChange) {
   );
 }
 
+function weaponSelect(v, team, selected, onChange) {
+  const weapons = allowedWeaponsFull(v, team.sponsor);
+
+  const groups = {};
+  weapons.forEach((w) => {
+    if (!groups[w.group]) groups[w.group] = [];
+    groups[w.group].push(w);
+  });
+
+  return el(
+    "select",
+    { onchange: onChange },
+    Object.entries(groups).map(([type, ws]) =>
+      el(
+        "optgroup",
+        { label: type },
+        ws.map((w) => {
+          const option = el("option", { value: w.wtype }, [w.wtype]);
+          if (w.wtype === selected) option.selected = true;
+          return option;
+        }),
+      ),
+    ),
+  );
+}
+
+function upgradeSelect(v, team, index, selected, onChange) {
+  const upgrades = allowedUpgradesFull(v, team.sponsor, index);
+
+  const groups = {};
+  upgrades.forEach((w) => {
+    if (!groups[w.allowedSponsors[0] || "All"])
+      groups[w.allowedSponsors[0] || "All"] = [];
+    groups[w.allowedSponsors[0] || "All"].push(w);
+  });
+
+  return el(
+    "select",
+    { onchange: onChange },
+    Object.entries(groups).map(([type, us]) =>
+      el(
+        "optgroup",
+        { label: type },
+        us.map((u) => {
+          const option = el("option", { value: u.utype }, [u.utype]);
+          if (u.utype === selected) option.selected = true;
+          return option;
+        }),
+      ),
+    ),
+  );
+}
+
+function perkSelect(team, selected, onChange) {
+  const perks = allowedPerks(team.sponsor);
+
+  const groups = {};
+  perks.forEach((p) => {
+    if (!groups[p.class]) groups[p.class] = [];
+    groups[p.class].push(p);
+  });
+
+  return el(
+    "select",
+    { onchange: onChange },
+    Object.entries(groups).map(([type, ps]) =>
+      el(
+        "optgroup",
+        { label: type },
+        ps.map((p) => {
+          const option = el("option", { value: p.ptype }, [p.ptype]);
+          if (p.ptype === selected) option.selected = true;
+          return option;
+        }),
+      ),
+    ),
+  );
+}
+
 function toggleFold(ti) {
   const folder = document.getElementById(`folder-${ti}`);
   const foldState = folder.className;
@@ -180,6 +259,12 @@ async function createTeamCard(team, ti) {
 
   container.appendChild(el("table", { class: "teamHeader" }, [headerRow]));
 
+  const cards = await Promise.all(
+    team.vehicles.map((v, vi) => createVehicleCard(team, ti, v, vi)),
+  );
+
+  cards.forEach((card) => container.appendChild(card));
+
   container.appendChild(
     el(
       "button",
@@ -191,12 +276,6 @@ async function createTeamCard(team, ti) {
       ["add Vehicle"],
     ),
   );
-
-  const cards = await Promise.all(
-    team.vehicles.map((v, vi) => createVehicleCard(team, ti, v, vi)),
-  );
-
-  cards.forEach((card) => container.appendChild(card));
 
   return container;
 }
@@ -258,10 +337,8 @@ function createWeaponRow(team, ti, v, vi, w, wi) {
 
   return el("tr", {}, [
     el("td", {}, [
-      select(
-        allowedWeaponsFull(v, team.sponsor).map((o) => o.wtype),
-        w.weapon.wtype,
-        (e) => changeWeapon(ti, vi, wi, e.target.value),
+      weaponSelect(v, team, w.weapon.wtype, (e) =>
+        changeWeapon(ti, vi, wi, e.target.value),
       ),
     ]),
 
@@ -323,10 +400,8 @@ function createUpgradesTable(team, ti, v, vi) {
     table.appendChild(
       el("tr", {}, [
         el("td", {}, [
-          select(
-            allowedUpgradesFull(v, team.sponsor, ui).map((o) => o.utype),
-            u.utype,
-            (e) => changeUpgrade(ti, vi, ui, e.target.value),
+          upgradeSelect(v, team, ui, u.utype, (e) =>
+            changeUpgrade(ti, vi, ui, e.target.value),
           ),
         ]),
         el("td", { text: u.ammo || "-" }),
@@ -367,10 +442,8 @@ function createPerksTable(team, ti, v, vi) {
     table.appendChild(
       el("tr", {}, [
         el("td", {}, [
-          select(
-            allowedPerks(team.sponsor).map((o) => o.ptype),
-            p.ptype,
-            (e) => changePerk(ti, vi, pi, e.target.value),
+          perkSelect(team, p.ptype, (e) =>
+            changePerk(ti, vi, pi, e.target.value),
           ),
         ]),
         el("td", { text: p.rules || "" }),
@@ -389,7 +462,7 @@ function createPerksTable(team, ti, v, vi) {
 }
 
 function createTrailerSection(team, ti, v, vi) {
-  if (team.sponsor !== "Rusty's Bootleggers") return null;
+  if (team.sponsor !== "Rusty's Bootleggers" || v.vtype === "War Rig") return null;
 
   return el("table", { class: "trailerTable" }, [
     el("tr", {}, [

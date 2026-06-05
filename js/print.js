@@ -93,9 +93,14 @@ function createPrintTrailerRow(team, ti, v, vi) {
   if (v.trailer?.ttype == "None" || team.sponsor !== "Rusty's Bootleggers") {
     return null;
   }
+  let text = `Trailer - ${v.trailer.ttype}`;
+  const cargo = v.cargo;
+  if (cargo.ctype !== "None") {
+    text += " - " + cargo.ctype + " - " + cargo.specialRules;
+  }
 
   return el("div", {
-    text: `Trailer - ${v.trailer.ttype} - ${v.cargo?.ctype || "None"}`,
+    text: text,
     class: "armoryRow",
   });
 }
