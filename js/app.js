@@ -642,9 +642,15 @@ async function serializeAll() {
   });
 }
 
-async function saveToFile() {
+async function saveToFile(e) {
   if (saving) return;
   saving = true;
+
+  if (e) {
+    e.preventDefault();
+    e.stopPropagation();
+    e.stopImmediatePropagation();
+  }
 
   try {
     update();
@@ -920,9 +926,6 @@ function startPrint(e) {
     e.stopPropagation();
     e.stopImmediatePropagation();
   }
-
-  console.log("PRINT TRIGGERED", new Error().stack);
-  console.log("#=============#");
 
   window.print();
 }
