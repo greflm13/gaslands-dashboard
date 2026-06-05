@@ -914,6 +914,9 @@ async function deleteImageFromDB(id) {
 function startPrint() {
   if (printing) return;
   printing = true;
+
+  console.log("PRINT TRIGGERED", new Error().stack);
+
   window.print();
 }
 
