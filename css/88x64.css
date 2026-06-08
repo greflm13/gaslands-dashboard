@@ -143,4 +143,6 @@
   left: 10.2mm;
   z-index: 2;
   pointer-events: none;
+  -webkit-user-select: none;
+  user-select: none;
 }
