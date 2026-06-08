@@ -117,7 +117,7 @@ function referenceWeapons() {
         el("td", { text: w.range }),
         el("td", { text: w.ammo }),
         el("td", { text: w.slots }),
-        el("td", { text: w.crewFired }),
+        el("td", { text: w.crewFired ? "Yes" : "No" }),
         el("td", { text: w.specialRules }),
         el("td", { text: w.cost }),
         el("td", { text: w.allowedSponsors }),
