@@ -526,6 +526,7 @@ async function createVehicleCard(team, ti, v, vi) {
           el("input", {
             value: v.vehicleName,
             onchange: (e) => (v.vehicleName = e.target.value),
+            maxlength: 24
           }),
         ]),
 
