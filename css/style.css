@@ -619,18 +619,18 @@ button,
 #diceDiv .diceGrid {
   display: grid;
   grid-template-columns: 50% 50%;
-}
-
-.diceContainer {
-  padding: 20px;
-  text-align: center;
-  font-family: "Rubik Dirt", system-ui;
   -webkit-user-drag: none;
   user-drag: none;
   -moz-user-select: none;
   -webkit-user-select: none;
   -ms-user-select: none;
   user-select: none;
+}
+
+.diceContainer {
+  padding: 20px;
+  text-align: center;
+  font-family: "Rubik Dirt", system-ui;
 }
 
 .dice3d {
