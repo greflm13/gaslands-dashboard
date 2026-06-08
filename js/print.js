@@ -138,12 +138,12 @@ async function createPrintVehicleCard(team, ti, v, vi) {
         text: v.vehicleName,
         class: "vehicleName",
       }),
-      el("div", { text: "Max gear", class: "vehicleMaxGear" }),
       el("div", { text: v.vtype, class: "vehicleType" }),
       el("div", {
         text: `${v.weight}wheight`,
         class: "vehicleWeight",
       }),
+      el("div", { text: "Max gear", class: "vehicleMaxGear" }),
       el("div", { text: `${stats.maxGear}`, class: "vehicleGear" }),
     ]),
   );
@@ -161,6 +161,7 @@ async function createPrintVehicleCard(team, ti, v, vi) {
       }),
       el("div", { class: "hullContainer" }, [
         el("div", { text: "Hull", class: "hullLabel" }),
+        el("div", { class: "visually-hidden", text: stats.hull }),
         el("div", { class: "hullPoints" }, [
           ...Array.from({ length: stats.hull }, (h, hi) =>
             el("div", {
