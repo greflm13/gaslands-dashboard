@@ -428,7 +428,7 @@ button:hover {
   padding: 4px;
 }
 
-#editDiv tr:nth-child(even) td {
+#editDiv tr:nth-child(even):not(.tableHighlight) td {
   background: #1b1b1b;
 }
 
@@ -515,6 +515,15 @@ button,
 
 #editDiv th[data-sort="desc"]::after {
   content: "↓";
+}
+
+#editDiv .tableHighlight {
+  background-color: #938553;
+}
+
+#editDiv tr[data-group="true"].tableHighlight td {
+  background: #4a3f00;
+  font-weight: bold;
 }
 
 /* ==========================================================================

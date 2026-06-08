@@ -11,6 +11,94 @@ import {
 } from "./data";
 import { el } from "./render";
 
+function clearHighlights() {
+  document.querySelectorAll(".tableHighlight").forEach((el) => {
+    el.classList.remove("tableHighlight");
+  });
+}
+
+function highlightRow(row) {
+  row.classList.add("tableHighlight");
+}
+
+function getKeywordsFromCell(cell) {
+  if (!cell) return [];
+  return cell.textContent
+    .split(",")
+    .map((k) => k.trim())
+    .filter(Boolean);
+}
+
+function highlightInTable(table, columnIndex, keywords) {
+  const rows = table.querySelectorAll("tbody tr");
+
+  let currentGroupHeader = null;
+
+  rows.forEach((row) => {
+    const isGroup = row.dataset.group === "true";
+
+    if (isGroup) {
+      currentGroupHeader = row;
+
+      const headerText = row.textContent.trim();
+
+      const headerMatch = keywords.some((k) => headerText.includes(k));
+
+      if (headerMatch) {
+        row.classList.add("tableHighlight");
+
+        let next = row.nextElementSibling;
+        while (next && next.dataset.group !== "true") {
+          next.classList.add("tableHighlight");
+          next = next.nextElementSibling;
+        }
+      }
+
+      return;
+    }
+
+    const cell = row.children[columnIndex];
+    if (!cell) return;
+
+    const text = cell.textContent;
+
+    const match = keywords.some((k) => text.includes(k));
+
+    if (match) {
+      row.classList.add("tableHighlight");
+
+      // ✅ ALSO highlight its group header
+      if (currentGroupHeader) {
+        currentGroupHeader.classList.add("tableHighlight");
+      }
+    }
+  });
+}
+
+function enableRowLinking(table, keywordColumns, targets) {
+  const rows = table.querySelectorAll("tbody tr");
+
+  rows.forEach((row) => {
+    if (row.dataset.group === "true") return;
+
+    row.style.cursor = "pointer";
+
+    row.addEventListener("click", () => {
+      clearHighlights();
+
+      row.classList.add("tableHighlight");
+
+      const keywords = keywordColumns.flatMap((colIndex) =>
+        getKeywordsFromCell(row.children[colIndex]),
+      );
+
+      targets.forEach((t) => {
+        highlightInTable(t.table, t.column, keywords);
+      });
+    });
+  });
+}
+
 function enableTableSorting(table) {
   const tbody = table.tBodies[0];
   table.tHead.style.cursor = "pointer";
@@ -185,6 +273,12 @@ function referenceVehicles() {
         ),
     ),
   ]);
+
+  enableRowLinking(
+    vehiclesTable,
+    [7],
+    [{ table: vehiclesKeywordTable, column: 0 }],
+  );
 
   referenceTables.replaceChildren(
     vehiclesTable,
@@ -361,6 +455,15 @@ function referenceSponsors() {
   });
 
   enableTableSorting(perksTable);
+
+  enableRowLinking(
+    sponsorsTable,
+    [1, 2],
+    [
+      { table: sponsorsKeywordsTable, column: 0 },
+      { table: perksTable, column: 0 },
+    ],
+  );
 
   referenceTables.replaceChildren(
     sponsorsTable,
