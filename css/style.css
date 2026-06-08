@@ -493,6 +493,12 @@ button,
   margin-top: 10px;
 }
 
+#editDiv .referenceTable thead {
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
 #editDiv td[colspan] {
   background: #111;
   color: #fff;
@@ -501,6 +507,14 @@ button,
   border-bottom: 1px solid #555;
   padding-top: 8px;
   padding-bottom: 4px;
+}
+
+#editDiv th[data-sort="asc"]::after {
+  content: "↑";
+}
+
+#editDiv th[data-sort="desc"]::after {
+  content: "↓";
 }
 
 /* ==========================================================================
