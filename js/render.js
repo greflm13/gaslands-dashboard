@@ -77,8 +77,8 @@ function select(options, value, onChange) {
   );
 }
 
-function weaponSelect(v, team, selected, onChange) {
-  const weapons = allowedWeaponsFull(v, team.sponsor);
+function weaponSelect(v, team, index, selected, onChange) {
+  const weapons = allowedWeaponsFull(v, team.sponsor, index);
 
   const groups = {};
   weapons.forEach((w) => {
@@ -130,8 +130,8 @@ function upgradeSelect(v, team, index, selected, onChange) {
   );
 }
 
-function perkSelect(team, selected, onChange) {
-  const perks = allowedPerks(team.sponsor);
+function perkSelect(team, v, index, selected, onChange) {
+  const perks = allowedPerks(v, team.sponsor, index);
 
   const groups = {};
   perks.forEach((p) => {
@@ -337,7 +337,7 @@ function createWeaponRow(team, ti, v, vi, w, wi) {
 
   return el("tr", {}, [
     el("td", {}, [
-      weaponSelect(v, team, w.weapon.wtype, (e) =>
+      weaponSelect(v, team, wi, w.weapon.wtype, (e) =>
         changeWeapon(ti, vi, wi, e.target.value),
       ),
     ]),
@@ -442,7 +442,7 @@ function createPerksTable(team, ti, v, vi) {
     table.appendChild(
       el("tr", {}, [
         el("td", {}, [
-          perkSelect(team, p.ptype, (e) =>
+          perkSelect(team, v, pi, p.ptype, (e) =>
             changePerk(ti, vi, pi, e.target.value),
           ),
         ]),
@@ -462,7 +462,8 @@ function createPerksTable(team, ti, v, vi) {
 }
 
 function createTrailerSection(team, ti, v, vi) {
-  if (team.sponsor !== "Rusty's Bootleggers" || v.vtype === "War Rig") return null;
+  if (team.sponsor !== "Rusty's Bootleggers" || v.vtype === "War Rig")
+    return null;
 
   return el("table", { class: "trailerTable" }, [
     el("tr", {}, [
@@ -586,7 +587,7 @@ async function createVehicleCard(team, ti, v, vi) {
 
   container.appendChild(createUpgradesTable(team, ti, v, vi));
 
-  if (allowedPerks(team.sponsor).length) {
+  if (allowedPerks(v, team.sponsor).length) {
     container.appendChild(createPerksTable(team, ti, v, vi));
   }
 

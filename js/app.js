@@ -346,13 +346,43 @@ function upgradeCost(v, u, sponsor) {
   return c;
 }
 
+function buildTypeCounts(items, getType, excludeIndex) {
+  const counts = {};
+
+  for (let i = 0; i < items.length; i++) {
+    if (i === excludeIndex) continue;
+
+    const type = getType(items[i]);
+    counts[type] = (counts[type] || 0) + 1;
+  }
+
+  return counts;
+}
+
+function passesLimit(item, counts, getType) {
+  if (item.limit == null) return true;
+
+  const type = getType(item);
+  return (counts[type] || 0) < item.limit;
+}
+
 export function allowedUpgradesFull(v, sponsor, currentIndex) {
+  const counts = buildTypeCounts(v.upgrades, (x) => x.utype, currentIndex);
+
+  const upgradesWithoutCurrent = v.upgrades.filter(
+    (_, i) => i !== currentIndex,
+  );
+
+  const tempVehicle = {
+    ...v,
+    upgrades: upgradesWithoutCurrent,
+  };
+
+  const currentCrew = computeStats(tempVehicle).crew;
+  const maxCrew = v.crew * 2;
+
   return allUpgrades.filter((u) => {
-    if (
-      u.allowedSponsors &&
-      u.allowedSponsors.length > 0 &&
-      !u.allowedSponsors.includes(sponsor)
-    ) {
+    if (u.allowedSponsors?.length && !u.allowedSponsors.includes(sponsor)) {
       return false;
     }
 
@@ -371,33 +401,12 @@ export function allowedUpgradesFull(v, sponsor, currentIndex) {
       return false;
     }
 
-    if (u.utype === "Extra Crewmember") {
-      let maxCrew = v.crew * 2;
-
-      let upgradesWithoutCurrent = v.upgrades.filter(
-        (_, i) => i !== currentIndex,
-      );
-
-      let tempVehicle = {
-        ...v,
-        upgrades: upgradesWithoutCurrent,
-      };
-
-      let currentCrew = computeStats(tempVehicle).crew;
-
-      if (currentCrew >= maxCrew) {
-        return false;
-      }
+    if (u.utype === "Extra Crewmember" && currentCrew >= maxCrew) {
+      return false;
     }
 
-    if (u.limit != null) {
-      let count = v.upgrades.filter(
-        (x, i) => i !== currentIndex && x.utype === u.utype,
-      ).length;
-
-      if (count >= u.limit) {
-        return false;
-      }
+    if (!passesLimit(u, counts, (x) => x.utype)) {
+      return false;
     }
 
     return true;
@@ -528,23 +537,31 @@ export function setWeaponFacing(ti, vi, wi, facing) {
   update();
 }
 
-export function allowedPerks(sponsorName) {
+export function allowedPerks(v, sponsorName, currentIndex) {
   const sponsor = allSponsors.find((s) => s.name === sponsorName);
 
-  if (!sponsor) return [];
+  if (!sponsor || sponsor.name === "None") return [];
 
-  if (sponsor.name === "None") {
-    return [];
-  }
+  const counts = buildTypeCounts(v.perks, (x) => x.ptype, currentIndex);
 
-  return allPerks.filter((p) => sponsor.perkClasses.includes(p.class));
+  return allPerks.filter((p) => {
+    if (!sponsor.perkClasses.includes(p.class)) {
+      return false;
+    }
+
+    if (!passesLimit(p, counts, (x) => x.ptype)) {
+      return false;
+    }
+
+    return true;
+  });
 }
 
 export function addPerk(ti, vi) {
   const team = state.teams[ti];
   const v = team.vehicles[vi];
 
-  const opts = allowedPerks(team.sponsor);
+  const opts = allowedPerks(v, team.sponsor);
   if (!opts.length) return;
 
   const base = structuredClone(
@@ -576,13 +593,24 @@ export function removePerk(ti, vi, pi) {
   update();
 }
 
-export function allowedWeaponsFull(v, sponsor) {
+export function allowedWeaponsFull(v, sponsor, currentIndex) {
+  const counts = buildTypeCounts(
+    v.weapons,
+    (x) => x.weapon.wtype,
+    currentIndex,
+  );
+
+  const weaponCounts = {};
+
+  v.weapons.forEach((x, i) => {
+    if (i === currentIndex) return;
+
+    const type = x.weapon.wtype;
+    weaponCounts[type] = (weaponCounts[type] || 0) + 1;
+  });
+
   return allWeapons.filter((w) => {
-    if (
-      w.allowedSponsors &&
-      w.allowedSponsors.length > 0 &&
-      !w.allowedSponsors.includes(sponsor)
-    ) {
+    if (w.allowedSponsors?.length > 0 && !w.allowedSponsors.includes(sponsor)) {
       return false;
     }
 
@@ -590,15 +618,8 @@ export function allowedWeaponsFull(v, sponsor) {
       return false;
     }
 
-    if (w.limit != null) {
-      let count = v.weapons.reduce((c, entry) => {
-        if (!entry || !entry.weapon) return c;
-        return entry.weapon.wtype === w.wtype ? c + 1 : c;
-      }, 0);
-
-      if (count >= w.limit) {
-        return false;
-      }
+    if (!passesLimit(w, counts, (x) => x.wtype)) {
+      return false;
     }
 
     return true;
