@@ -233,8 +233,16 @@ button:hover {
     font-size: 7pt;
   }
 
+  #printDiv #printContent {
+    grid-template-columns: 100vw !important;
+  }
+
+  #printDiv .teamVehicles {
+    grid-template-columns: 100vw !important;
+  }
+
   #printDiv .teamCard {
-    transform: scale(0.9);
+    transform: scale(0.75);
     transform-origin: top left;
   }
 }
