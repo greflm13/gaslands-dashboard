@@ -192,14 +192,14 @@ button:hover {
   clear: both;
 }
 
-/* ==========================================================================
-   EXAMPLE Media Queries for Responsive Design.
-   These examples override the primary ('mobile first') styles.
-   Modify as content requires.
-   ========================================================================== */
+@media only screen and (max-width: 1678px) {
+  #printDiv #printContent {
+    grid-template-columns: auto 1fr;
+  }
 
-@media only screen and (min-width: 35em) {
-  /* Style adjustments for viewports that meet the condition */
+  #printDiv .teamVehicles {
+    grid-template-columns: 1fr !important;
+  }
 }
 
 @media only screen and (max-width: 1106px) {
@@ -208,16 +208,11 @@ button:hover {
   }
 
   #printDiv #printContent {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr !important;
   }
 
   #printDiv .teamVehicles {
     grid-template-columns: 1fr !important;
-  }
-
-  #printDiv .teamCard {
-    transform: scale(1.4);
-    transform-origin: top left;
   }
 
   #printDiv .diceGrid {
@@ -239,7 +234,7 @@ button:hover {
   }
 
   #printDiv .teamCard {
-    transform: scale(1.6);
+    transform: scale(0.9);
     transform-origin: top left;
   }
 }
