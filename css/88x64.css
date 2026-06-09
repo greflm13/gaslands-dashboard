@@ -1,148 +1,84 @@
 #printDiv .teamHeader div {
-  display: inline-block;
   padding: 6px;
 }
 
 #printDiv .teamVehicles {
-  display: grid;
   grid-template-columns: 92mm 92mm;
-  overflow: visible;
 }
 
 #printDiv .vehicleCard {
-  margin: 2.5mm 0;
   width: 88mm;
   height: 64mm;
-  background-image: url("/img/vehicle-card-background.png");
-  background-size: cover;
 }
 
 #printDiv .vehicleHeader {
-  display: grid;
   grid-template-columns: 38mm 20mm 16.75mm;
-  grid-template-rows: 4mm 4mm;
-  gap: 2px 8px;
   margin: 4mm 0 0 4.25mm;
 }
 
 #printDiv .vehicleName {
-  grid-column: 1 / -2;
-  font-weight: bold;
   font-size: 11pt;
 }
 
 #printDiv .vehicleType {
-  grid-column: 1;
-  grid-row: 2;
   font-size: 8pt;
 }
 
 #printDiv .vehicleWeight {
-  grid-column: 2;
-  grid-row: 2;
   font-size: 6pt;
-  text-align: right;
-  padding-top: 1mm;
 }
 
 #printDiv .vehicleMaxGear {
-  grid-column: 3;
-  grid-row: 1;
   font-size: 8pt;
-  padding-top: 1.75mm;
-  text-align: center;
 }
 
 #printDiv .vehicleGear {
-  grid-column: 3;
-  grid-row: 2;
   font-size: 26pt;
-  text-align: center;
 }
 
 #printDiv .vehicleStats {
   margin: 1.25mm 0 0 4.25mm;
-  display: grid;
   grid-template-columns: 20mm 20mm 20mm;
   grid-template-rows: 8.9mm 4mm;
   font-size: 8pt;
 }
 
 #printDiv .hullLabel {
-  grid-column: 1;
-  grid-row: 1;
   transform: rotate(-90deg) translate(-2px, 0);
-  width: 25px;
   font-size: 8pt;
 }
 
 #printDiv .hullPoints {
-  grid-column: 2;
-  grid-row: 1;
-  width: min-content;
-  display: grid;
-  grid-template-rows: repeat(2, auto);
-  grid-auto-flow: column;
   grid-auto-columns: 3.95mm;
   gap: 2.5px;
   margin-left: 3.4mm;
 }
 
 #printDiv .hullPoint {
-  background-color: white;
-  border: 0 solid black;
-  border-radius: 1px;
   width: 4.2mm;
   height: 3.3mm;
-  display: inline-flex;
-  cursor: pointer;
 }
 
 #printDiv .armoryContainer {
-  display: grid;
   grid-template-columns: 5.25mm 73mm;
-  font-family: "Agdasima", sans-serif;
-  font-size: 6pt;
   margin: 10.5mm 0 0 4.25mm;
   height: 22mm;
 }
 
 #printDiv .armoryLabel {
-  grid-column: 1;
-  grid-row: 1;
-  width: 25mm;
   transform: rotate(-90deg) translate(1.75mm, -1.75mm);
   font-size: 8pt;
-  font-family: "Stardos Stencil", system-ui;
-  font-weight: bold;
 }
 
 #printDiv .smallerArmory {
   grid-template-columns: 5.25mm 50mm;
 }
 
-#printDiv .vehicleImg {
-  position: relative;
-}
 
 #printDiv .theVehicleImg {
-  position: absolute;
-  width: 19.5mm;
-  height: 19.5mm;
-  object-fit: cover;
-  transform: rotate(16.5deg);
-  top: -23.3mm;
   left: 63.6mm;
-  z-index: 1;
 }
 
 #printDiv .theFrame {
-  position: absolute;
-  width: 80mm;
-  top: -53mm;
   left: 10.2mm;
-  z-index: 2;
-  pointer-events: none;
-  -webkit-user-select: none;
-  user-select: none;
 }

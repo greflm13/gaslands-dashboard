@@ -541,9 +541,127 @@ button,
   color: white;
 }
 
+#printDiv .teamHeader div {
+  display: inline-block;
+}
+
+#printDiv .teamVehicles {
+  display: grid;
+  overflow: visible;
+}
+
+#printDiv .vehicleCard {
+  margin: 2.5mm 0;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-image: url("/img/vehicle-card-background.png");
+}
+
+#printDiv .vehicleHeader {
+  display: grid;
+  grid-template-rows: 4mm 4mm;
+  gap: 2px 8px;
+}
+
+#printDiv .vehicleName {
+  grid-column: 1 / -2;
+  font-weight: bold;
+}
+
+#printDiv .vehicleType {
+  grid-column: 1;
+  grid-row: 2;
+}
+
+#printDiv .vehicleWeight {
+  grid-column: 2;
+  grid-row: 2;
+  text-align: right;
+  padding-top: 1mm;
+}
+
+#printDiv .vehicleMaxGear {
+  grid-column: 3;
+  grid-row: 1;
+  padding-top: 1.75mm;
+  text-align: center;
+}
+
+#printDiv .vehicleGear {
+  grid-column: 3;
+  grid-row: 2;
+  text-align: center;
+}
+
+#printDiv .vehicleStats {
+  display: grid;
+}
+
+#printDiv .hullLabel {
+  grid-column: 1;
+  grid-row: 1;
+  width: 25px;
+}
+
+#printDiv .hullPoints {
+  grid-column: 2;
+  grid-row: 1;
+  width: min-content;
+  display: grid;
+  grid-template-rows: repeat(2, auto);
+  grid-auto-flow: column;
+}
+
+#printDiv .hullPoint {
+  background-color: white;
+  border: 0 solid black;
+  border-radius: 1px;
+  display: inline-flex;
+  cursor: pointer;
+}
+
+#printDiv .armoryContainer {
+  display: grid;
+  font-family: "Agdasima", sans-serif;
+  font-size: 6pt;
+}
+
+#printDiv .armoryLabel {
+  grid-column: 1;
+  grid-row: 1;
+  width: 25mm;
+  font-family: "Stardos Stencil", system-ui;
+  font-weight: bold;
+}
+
+#printDiv .vehicleImg {
+  position: relative;
+}
+
+#printDiv .theVehicleImg {
+  position: absolute;
+  width: 19.5mm;
+  height: 19.5mm;
+  object-fit: cover;
+  transform: rotate(16.5deg);
+  top: -23.3mm;
+  z-index: 1;
+  background-size: cover;
+}
+
+#printDiv .theFrame {
+  position: absolute;
+  width: 80mm;
+  top: -53mm;
+  z-index: 2;
+  pointer-events: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
 #printDiv #printContent {
   display: grid;
-  grid-template-columns: 210mm auto;
+  grid-template-columns: minmax(auto, 210mm) 1fr;
 }
 
 #printDiv .teamHeader {
@@ -581,6 +699,10 @@ button,
 }
 
 @media print {
+  @page {
+    margin: 6mm;
+  }
+
   .noprint {
     display: none !important;
   }
@@ -857,11 +979,13 @@ button,
 
   #printDiv .teamVehicles {
     grid-template-columns: 1fr !important;
+    display: flex;
+    justify-content: center;
   }
 
   #printDiv .teamCard {
     transform: scale(1.4);
-    transform-origin: top left;
+    transform-origin: center;
   }
 
   #printDiv .diceGrid {
@@ -884,6 +1008,6 @@ button,
 
   #printDiv .teamCard {
     transform: scale(1.6);
-    transform-origin: top left;
+    transform-origin: center;
   }
 }
