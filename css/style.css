@@ -204,7 +204,7 @@ button:hover {
 
 @media only screen and (max-width: 1106px) {
   #editDiv {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr !important;
   }
 
   #printDiv #printContent {
