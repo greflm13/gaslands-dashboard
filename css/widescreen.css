@@ -1,0 +1,103 @@
+#printDiv .teamHeader div {
+  padding: 12px;
+}
+
+#printDiv .teamVehicles {
+  grid-template-columns: 184mm 184mm;
+}
+
+#printDiv .vehicleCard {
+  margin: 5mm 0;
+  width: 176mm;
+  height: 128mm;
+}
+
+#printDiv .vehicleHeader {
+  grid-template-columns: 76mm 40mm 33.5mm;
+  margin: 8mm 0 0 8.5mm;
+  grid-template-rows: 8mm 8mm;
+  gap: 4px 16px;
+}
+
+#printDiv .vehicleName {
+  font-size: 22pt;
+}
+
+#printDiv .vehicleType {
+  font-size: 16pt;
+}
+
+#printDiv .vehicleWeight {
+  font-size: 12pt;
+  padding-top: 2mm;
+}
+
+#printDiv .vehicleMaxGear {
+  font-size: 16pt;
+  padding-top: 3.5mm;
+}
+
+#printDiv .vehicleGear {
+  font-size: 52pt;
+}
+
+#printDiv .vehicleStats {
+  margin: 2.5mm 0 0 8.5mm;
+  grid-template-columns: 40mm 40mm 40mm;
+  grid-template-rows: 17.8mm 8mm;
+  font-size: 16pt;
+}
+
+#printDiv .hullContainer {
+  grid-template-columns: 12.5px auto;
+  gap: 4px 16px;
+  margin: 20px 0;
+}
+
+#printDiv .hullLabel {
+  transform: rotate(-90deg) translate(-4px, 0);
+  width: 50px;
+  font-size: 16pt;
+}
+
+#printDiv .hullPoints {
+  grid-auto-columns: 7.9mm;
+  gap: 5px;
+  margin-left: 6.8mm;
+}
+
+#printDiv .hullPoint {
+  border-radius: 2px;
+  width: 8.4mm;
+  height: 6.6mm;
+}
+
+#printDiv .armoryContainer {
+  grid-template-columns: 10.5mm 146mm;
+  margin: 21mm 0 0 8.5mm;
+  height: 22mm;
+  font-size: 12pt;
+}
+
+#printDiv .armoryLabel {
+  transform: rotate(-90deg) translate(-7mm, -14mm);
+  font-size: 16pt;
+  width: 50mm;
+}
+
+#printDiv .smallerArmory {
+  grid-template-columns: 10.5mm 100mm;
+}
+
+#printDiv .theVehicleImg {
+  left: 127.2mm;
+  width: 39mm;
+  top: -23.5mm;
+  height: 39mm;
+}
+
+#printDiv .theFrame {
+  left: 20.4mm;
+  width: 160mm;
+  top: -82mm;
+}

@@ -956,12 +956,14 @@ function update() {
   renderFull();
 }
 
-function layout88x64() {
+function layout88x64(e) {
   document.getElementById("layoutStylesheet").href = "css/88x64.css";
+  startPrint(e)
 }
 
-function layout100x70() {
+function layout100x70(e) {
   document.getElementById("layoutStylesheet").href = "css/100x70.css";
+  startPrint(e)
 }
 
 async function loadDicePage() {
@@ -986,7 +988,7 @@ function init() {
   document
     .getElementById("closePrintButton")
     .addEventListener("click", closePrintPreview);
-  document.getElementById("printButton").addEventListener("click", startPrint);
+  // document.getElementById("printButton").addEventListener("click", startPrint);
   document.getElementById("88x64").addEventListener("click", layout88x64);
   document.getElementById("100x70").addEventListener("click", layout100x70);
   document.getElementById("d6").addEventListener("click", loadDicePage);

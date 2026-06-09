@@ -1,0 +1,186 @@
+/* ==========================================================================
+   Print
+   ========================================================================== */
+
+#printDiv {
+  display: none;
+}
+
+#printDiv {
+  font-family: "Stardos Stencil", system-ui;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: white;
+}
+
+#printDiv .teamHeader div {
+  display: inline-block;
+}
+
+#printDiv .teamVehicles {
+  display: grid;
+  overflow: visible;
+}
+
+#printDiv .vehicleCard {
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-image: url("/img/vehicle-card-background.png");
+}
+
+#printDiv .vehicleHeader {
+  display: grid;
+}
+
+#printDiv .vehicleName {
+  grid-column: 1 / -2;
+  font-weight: bold;
+}
+
+#printDiv .vehicleType {
+  grid-column: 1;
+  grid-row: 2;
+}
+
+#printDiv .vehicleWeight {
+  grid-column: 2;
+  grid-row: 2;
+  text-align: right;
+}
+
+#printDiv .vehicleMaxGear {
+  grid-column: 3;
+  grid-row: 1;
+  text-align: center;
+}
+
+#printDiv .vehicleGear {
+  grid-column: 3;
+  grid-row: 2;
+  text-align: center;
+}
+
+#printDiv .vehicleStats {
+  display: grid;
+}
+
+#printDiv .hullLabel {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+#printDiv .hullPoints {
+  grid-column: 2;
+  grid-row: 1;
+  width: min-content;
+  display: grid;
+  grid-template-rows: repeat(2, auto);
+  grid-auto-flow: column;
+}
+
+#printDiv .hullPoint {
+  background-color: white;
+  border: 0 solid black;
+  display: inline-flex;
+  cursor: pointer;
+}
+
+#printDiv .armoryContainer {
+  display: grid;
+  font-family: "Agdasima", sans-serif;
+}
+
+#printDiv .armoryLabel {
+  grid-column: 1;
+  grid-row: 1;
+  font-family: "Stardos Stencil", system-ui;
+  font-weight: bold;
+}
+
+#printDiv .vehicleImg {
+  position: relative;
+}
+
+#printDiv .theVehicleImg {
+  position: absolute;
+  object-fit: cover;
+  transform: rotate(16.5deg);
+  z-index: 1;
+  background-size: cover;
+}
+
+#printDiv .theFrame {
+  position: absolute;
+  z-index: 2;
+  pointer-events: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+#printDiv #printContent {
+  display: grid;
+  grid-template-columns: auto 1fr;
+}
+
+#printDiv .teamHeader {
+  display: flex;
+  font-family: "Rubik Dirt", system-ui;
+}
+
+#printDiv .teamHeader .teamName {
+  font-weight: bold;
+  font-size: larger;
+}
+
+#printDiv .vehicleCrew {
+  text-align: center;
+}
+
+#printDiv .vehicleCost {
+  text-align: right;
+}
+
+#printDiv .hullContainer {
+  display: grid;
+  grid-template-rows: auto auto;
+}
+
+#printDiv .armoryRow {
+  line-height: 1;
+}
+
+.noprint {
+  display: block;
+}
+
+@media print {
+  @page {
+    margin: 6mm;
+  }
+
+  .noprint {
+    display: none !important;
+  }
+
+  body {
+    background: #fff;
+    color: #222;
+  }
+
+  #printDiv .teamHeader div {
+    color: black;
+  }
+
+  #printDiv .hullPoint {
+    background-color: white !important;
+  }
+
+  #printDiv #printContent {
+    display: block !important;
+  }
+
+  #printDiv .teamCard {
+    transform: scale(1);
+    transform-origin: top left;
+  }
+}

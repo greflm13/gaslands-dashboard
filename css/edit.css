@@ -1,0 +1,392 @@
+/* ==========================================================================
+   Edit
+   ========================================================================== */
+
+#editDiv {
+  display: grid;
+  grid-template-columns: 1fr minmax(auto, 610px);
+}
+
+#editDiv .teamCard {
+  margin: 10px;
+  border: 1px solid #333;
+  background: #181818;
+}
+
+#editDiv .expensive {
+  color: #ff4444;
+}
+
+#editDiv .cheap {
+  color: #44ff44;
+}
+
+#editDiv .teamHeader {
+  width: 100%;
+  border-collapse: collapse;
+  background: linear-gradient(#222, #111);
+}
+
+#editDiv .teamHeader td {
+  padding: 6px;
+}
+
+#editDiv .teamHeader .unfolded {
+  width: 20px;
+  transform: rotate(90deg);
+  cursor: pointer;
+  content: url("/img/arrow.svg");
+  padding: 0;
+}
+
+#editDiv .teamHeader .folded {
+  width: 20px;
+  cursor: pointer;
+  content: url("/img/arrow.svg");
+  padding: 0;
+}
+
+#editDiv .teamHeader input,
+#editDiv .teamHeader select {
+  background: #111;
+  color: white;
+  border: 1px solid #555;
+  padding: 2px 6px;
+}
+
+#editDiv .teamHeader td:nth-child(1) {
+  width: 20px;
+}
+
+#editDiv .teamHeader td:nth-child(2) {
+  width: 170px;
+}
+
+#editDiv .teamHeader td:nth-child(4) {
+  font-weight: bold;
+  text-align: right;
+  width: 100px;
+}
+
+#editDiv .teamHeader td:nth-child(4)::after {
+  content: " /";
+  color: white;
+  font-weight: normal;
+}
+
+#editDiv .teamHeader td:nth-child(5) {
+  width: 40px;
+}
+
+#editDiv .teamHeader td:nth-child(5) input {
+  width: 40px;
+}
+
+#editDiv .teamHeader td:nth-child(6) {
+  width: 40px;
+}
+
+#editDiv .teamHeader td:nth-child(7) {
+  width: 75px;
+}
+
+#editDiv .teamHeader td:nth-child(8) {
+  width: 0px;
+}
+
+#editDiv .addVehicle {
+  margin: 6px;
+}
+
+#editDiv .vehicleHeader td:nth-child(1) {
+  width: 170px;
+}
+
+#editDiv .vehicleHeader td:nth-child(2) {
+  width: 120px;
+}
+
+#editDiv .vehicleHeader td:nth-child(4) {
+  width: 50px;
+}
+
+#editDiv .vehicleHeader td:nth-child(5) {
+  width: 0px;
+}
+
+#editDiv .trailerTable td:nth-child(1) {
+  width: 150px;
+}
+
+#editDiv .trailerTable td:nth-child(2) {
+  width: 150px;
+}
+
+#editDiv .trailerTable td:nth-child(3) {
+  text-align: right;
+}
+
+#editDiv .trailerTable td:last-child {
+  width: 150px;
+}
+
+#editDiv .trailerTable td:last-child select {
+  width: 150px;
+}
+
+#editDiv .weaponsTable td:nth-child(1) {
+  width: 150px;
+}
+
+#editDiv .weaponsTable td:nth-child(2) {
+  width: 70px;
+}
+
+#editDiv .weaponsTable td:nth-child(3) {
+  width: 70px;
+}
+
+#editDiv .weaponsTable td:nth-last-child(8) {
+  width: 70px;
+}
+
+#editDiv .weaponsTable td:nth-last-child(7) {
+  width: 50px;
+}
+
+#editDiv .weaponsTable td:nth-last-child(6) {
+  width: 150px;
+}
+
+#editDiv .weaponsTable td:nth-last-child(4) {
+  width: 30px;
+  text-align: center;
+}
+
+#editDiv .weaponsTable td:nth-last-child(3) {
+  width: 30px;
+  text-align: center;
+}
+
+#editDiv .weaponsTable td:nth-last-child(2) {
+  width: 30px;
+  text-align: center;
+}
+
+#editDiv .weaponsTable td:last-child {
+  width: 0px;
+  text-align: center;
+}
+
+#editDiv .upgradesTable th:nth-child(1),
+#editDiv .upgradesTable td:nth-child(1) {
+  width: 170px;
+}
+
+#editDiv .upgradesTable th:nth-child(2),
+#editDiv .upgradesTable td:nth-child(2) {
+  width: 30px;
+  text-align: center;
+}
+
+#editDiv .upgradesTable th:nth-child(3),
+#editDiv .upgradesTable td:nth-child(3) {
+  width: 30px;
+  text-align: center;
+}
+
+#editDiv .upgradesTable th:nth-last-child(2),
+#editDiv .upgradesTable td:nth-last-child(2) {
+  width: 30px;
+  text-align: center;
+}
+
+#editDiv .upgradesTable th:last-child,
+#editDiv .upgradesTable td:last-child {
+  width: 0px;
+  text-align: center;
+}
+
+#editDiv .perksTable th:nth-child(1),
+#editDiv .perksTable td:nth-child(1) {
+  width: 170px;
+}
+
+#editDiv .perksTable th:nth-last-child(2),
+#editDiv .perksTable td:nth-last-child(2) {
+  width: 30px;
+  text-align: center;
+}
+
+#editDiv .perksTable th:last-child,
+#editDiv .perksTable td:last-child {
+  width: 0px;
+}
+
+#editDiv .vehicleCard {
+  margin: 8px;
+  padding: 8px;
+  border: 1px solid #444;
+  background: #202020;
+}
+
+#editDiv .vehicleCard input,
+#editDiv .vehicleCard select {
+  background: #111;
+  color: #fff;
+  border: 1px solid #666;
+  padding: 3px 6px;
+}
+
+#editDiv .vehicleCard table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 6px;
+  margin-bottom: 6px;
+}
+
+#editDiv .vehicleCard td {
+  padding: 4px 6px;
+  font-size: 12px;
+}
+
+#editDiv .vehicleStats {
+  text-align: center;
+}
+
+#editDiv .imagePicker {
+  font-size: 8px;
+}
+
+#editDiv .vehicleImg {
+  margin-left: 7px;
+  object-fit: cover;
+}
+
+#editDiv .vehicleImgHover {
+  position: absolute;
+  padding: 10px;
+  background-color: #1b1b1b;
+  object-fit: cover;
+}
+
+#editDiv .vehicleImgHover img {
+  object-fit: cover;
+}
+
+#editDiv table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+#editDiv th {
+  background: #2a2a2a;
+  color: #ddd;
+  border-bottom: 1px solid #555;
+  text-align: left;
+  padding: 4px;
+  font-weight: normal;
+}
+
+#editDiv td {
+  border-bottom: 1px solid #333;
+  padding: 4px;
+}
+
+#editDiv tr:nth-child(even):not(.tableHighlight) td {
+  background: #1b1b1b;
+}
+
+#editDiv .vehicleCard table tr:first-child th:last-child {
+  text-align: right;
+}
+
+#editDiv .vehicleCard table button {
+  padding: 2px 6px;
+}
+
+.removeButton {
+  cursor: pointer;
+  content: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAOxAAADsQBlSsOGwAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAFGSURBVDiNnZO9TgJBFIW/AZX/zmZbSgoaKUkmUJLwBPoQ22pM/Im+hK0+AqGloaThDei2s2B3FoKRazHssuuGRbzJJPN3zz3nzhkFFB14rsB1Dc4VCDkhoAx8reDDgwcceL2DYAsifxxbkFsIHHihCYtTkpMgTVgUylBSSY6uC1pnuWttz3ahgDKUaIEXI7uuiIhIEIhova+otd0TsXd2+y3wzlJVZjPwfWg0YDyG4RA2GxiNoFaDMIT5PM0sxQBEul2R5dJWW61EwtDOjRHp9VJ9aIGXBYhAjJE41utMcgRQOPjgSuWvcyX4/l5CxMQYkX7/iIRkcqQ52ZNfIFkJnQ7U62AMDAYwmcB0al/DGKhWod0+IsF10x5IeiHhgVjCf638vbNysQyXn3DVh4sDfc6EAPdgZvCmsN/5qQI3J37ndw8efwCti3bEgmgKyQAAAABJRU5ErkJggg==");
+}
+
+.addButton {
+  cursor: pointer;
+  content: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAOxAAADsQBlSsOGwAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAEZSURBVDiNzZM/bsIwFIc/B0dI/JEyJFJXryyII5QTZAcp7B3KDZqiHqBLdyN6gJ6gF2CALlmzNZXIwECRUJDcpSDSpAjEwjf9rOf3/H62nwAqNBkh6WFjIzAcwyDIyMh4ZcWDpMmIDvfcUkccTT0sAu8MmYGFpFeWrByF9jXa1yhH5YMC6FLHpm8hqZad7NZcgnZA0A5wa25xgwAkVevEpv/l4gJyJ5Sjcq22vFapBkjXKfEy/l15JIQYPdfmVPRcG0IMHsnFFgQeCXfclFnQvgZg8DYgWkRFCy987e8gXsYHvvJEi4jp57Q0dg3PuGWDgb+/MV2njD/Ge13AAFs2ggZPdBjSPXuYvpnxLIAKDR6x6Z85zhNWhD+vjYJnJRxgmwAAAABJRU5ErkJggg==");
+}
+
+a,
+.add-link {
+  color: #59a6ff;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+#editDiv .vehicleCard td,
+#editDiv .vehicleCard th {
+  font-size: 12px;
+}
+
+#editDiv .vehicleCard td strong {
+  color: #6fcf97;
+}
+
+button,
+.add-link {
+  color: #4da3ff;
+}
+
+#editDiv select {
+  font-size: 12px;
+}
+
+#backgroundLoader img {
+  position: absolute;
+  top: -64mm;
+  left: -88mm;
+  height: 64mm;
+  width: 88mm;
+}
+
+#editDiv .referenceButtons {
+  display: grid;
+  grid-template-columns: auto auto auto auto auto;
+}
+
+#editDiv .referenceTable {
+  font-size: 7pt;
+  margin-top: 10px;
+}
+
+#editDiv .referenceTable thead {
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+#editDiv td[colspan] {
+  background: #111;
+  color: #fff;
+  font-weight: bold;
+  border-top: 1px solid #555;
+  border-bottom: 1px solid #555;
+  padding-top: 8px;
+  padding-bottom: 4px;
+}
+
+#editDiv th[data-sort="asc"]::after {
+  content: "↑";
+}
+
+#editDiv th[data-sort="desc"]::after {
+  content: "↓";
+}
+
+#editDiv .tableHighlight {
+  background-color: #938553;
+}
+
+#editDiv tr[data-group="true"].tableHighlight td {
+  background: #4a3f00;
+  font-weight: bold;
+}
