@@ -25,6 +25,12 @@ async function loadPrint() {
 export function setSponsor(ti, value) {
   const team = state.teams[ti];
   team.sponsor = value;
+  if (value != "Rusty's Bootleggers") {
+    team.vehicles.forEach((v) => {
+      v.trailer.ttype = "None";
+      v.cargo = "None";
+    });
+  }
 
   update();
 }
@@ -958,12 +964,12 @@ function update() {
 
 function layout88x64(e) {
   document.getElementById("layoutStylesheet").href = "css/88x64.css";
-  startPrint(e)
+  startPrint(e);
 }
 
 function layout100x70(e) {
   document.getElementById("layoutStylesheet").href = "css/100x70.css";
-  startPrint(e)
+  startPrint(e);
 }
 
 async function loadDicePage() {

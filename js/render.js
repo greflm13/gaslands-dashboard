@@ -281,45 +281,57 @@ async function createTeamCard(team, ti) {
 }
 
 function createDefaultWeaponRow(v) {
-  return el("tr", {}, [
-    el("td", { text: "Handgun" }),
-    el("td", { text: "360" }),
-    ...(allowedLocations(v).length > 1 ? [el("td")] : []),
-    el("td", { text: "Shooting" }),
-    el("td", { text: "1D6" }),
-    el("td", { text: "Medium" }),
-    el("td", { text: "Blitz" }),
-    el("td", { text: "-" }),
-    el("td", { text: "-" }),
-    el("td", { text: "-" }),
-    el("td"),
-  ]);
+  const locs = allowedLocations(v);
+  return el(
+    "div",
+    { class: `weaponsRow ${locs.length > 1 ? "yesLocation" : "noLocation"}` },
+    [
+      el("div", { class: "weaponType", text: "Handgun" }),
+      el("div", { class: "weaponFacing", text: "360" }),
+      ...(locs.length > 1 ? [el("div", { class: "weaponLocation" })] : []),
+      el("div", { class: "weaponAttackType", text: "Shooting" }),
+      el("div", { class: "weaponAttack", text: "1D6" }),
+      el("div", { class: "weaponRange", text: "Medium" }),
+      el("div", { class: "weaponRules", text: "Blitz" }),
+      el("div", { class: "weaponAmmo", text: "-" }),
+      el("div", { class: "weaponSlots", text: "-" }),
+      el("div", { class: "weaponCost", text: "-" }),
+      el("div", { class: "weaponAdd" }),
+    ],
+  );
 }
 
 function createWeaponsTable(team, ti, v, vi) {
-  const table = el("table", { class: "weaponsTable" });
+  const table = el("div", { class: "weaponsTable" });
+  const locs = allowedLocations(v);
 
   table.appendChild(
-    el("tr", {}, [
-      el("th", { text: "Weapon" }),
-      el("th", { text: "Facing" }),
-      ...(allowedLocations(v).length > 1
-        ? [el("th", { text: "Location" })]
-        : []),
-      el("th", { text: "Type" }),
-      el("th", { text: "Attack" }),
-      el("th", { text: "Range" }),
-      el("th", { text: "Special Rules" }),
-      el("th", { text: "Ammo" }),
-      el("th", { text: "Slots" }),
-      el("th", { text: "Cost" }),
-      el("th", {}, [
-        el("img", {
-          onclick: () => addWeapon(ti, vi),
-          class: "addButton",
-        }),
-      ]),
-    ]),
+    el(
+      "div",
+      {
+        class: `weaponsHeader ${locs.length > 1 ? "yesLocation" : "noLocation"}`,
+      },
+      [
+        el("div", { class: "weaponType", text: "Weapon" }),
+        el("div", { class: "weaponFacing", text: "Facing" }),
+        ...(locs.length > 1
+          ? [el("div", { class: "weaponLocation", text: "Location" })]
+          : []),
+        el("div", { class: "weaponAttackType", text: "Type" }),
+        el("div", { class: "weaponAttack", text: "Attack" }),
+        el("div", { class: "weaponRange", text: "Range" }),
+        el("div", { class: "weaponRules", text: "Special Rules" }),
+        el("div", { class: "weaponAmmo", text: "Ammo" }),
+        el("div", { class: "weaponSlots", text: "Slots" }),
+        el("div", { class: "weaponCost", text: "Cost" }),
+        el("div", { class: "weaponAdd" }, [
+          el("img", {
+            onclick: () => addWeapon(ti, vi),
+            class: "addButton",
+          }),
+        ]),
+      ],
+    ),
   );
 
   table.appendChild(createDefaultWeaponRow(v));
@@ -335,59 +347,63 @@ function createWeaponRow(team, ti, v, vi, w, wi) {
   const facings = allowedFacings(v, w.weapon);
   const locs = allowedLocations(v);
 
-  return el("tr", {}, [
-    el("td", {}, [
-      weaponSelect(v, team, wi, w.weapon.wtype, (e) =>
-        changeWeapon(ti, vi, wi, e.target.value),
-      ),
-    ]),
+  return el(
+    "div",
+    { class: `weaponsRow ${locs.length > 1 ? "yesLocation" : "noLocation"}` },
+    [
+      el("div", { class: "weaponType" }, [
+        weaponSelect(v, team, wi, w.weapon.wtype, (e) =>
+          changeWeapon(ti, vi, wi, e.target.value),
+        ),
+      ]),
 
-    el("td", {}, [
-      facings.length === 1
-        ? document.createTextNode(facings[0])
-        : select(facings, w.facing, (e) =>
-            setWeaponFacing(ti, vi, wi, e.target.value),
-          ),
-    ]),
-
-    ...(locs.length > 1
-      ? [
-          el("td", {}, [
-            select(locs, w.location, (e) =>
-              setWeaponLocation(ti, vi, wi, e.target.value),
+      el("div", { class: "weaponFacing" }, [
+        facings.length === 1
+          ? document.createTextNode(facings[0])
+          : select(facings, w.facing, (e) =>
+              setWeaponFacing(ti, vi, wi, e.target.value),
             ),
-          ]),
-        ]
-      : []),
+      ]),
 
-    el("td", { text: w.weapon.attackType }),
-    el("td", { text: weaponAttack(v, w.weapon) }),
-    el("td", { text: weaponRange(v, w.weapon) }),
-    el("td", { text: weaponRules(v, w.weapon) }),
-    el("td", { text: weaponAmmo(v, w.weapon) }),
-    el("td", { text: weaponSlots(v, w.weapon) }),
-    el("td", { text: weaponCost(v, w) }),
+      ...(locs.length > 1
+        ? [
+            el("div", { class: "weaponLocation" }, [
+              select(locs, w.location, (e) =>
+                setWeaponLocation(ti, vi, wi, e.target.value),
+              ),
+            ]),
+          ]
+        : []),
 
-    el("td", {}, [
-      el("img", {
-        onclick: () => removeWeapon(ti, vi, wi),
-        class: "removeButton",
-      }),
-    ]),
-  ]);
+      el("div", { class: "weaponAttackType", text: w.weapon.attackType }),
+      el("div", { class: "weaponAttack", text: weaponAttack(v, w.weapon) }),
+      el("div", { class: "weaponRange", text: weaponRange(v, w.weapon) }),
+      el("div", { class: "weaponRules", text: weaponRules(v, w.weapon) }),
+      el("div", { class: "weaponAmmo", text: weaponAmmo(v, w.weapon) }),
+      el("div", { class: "weaponSlots", text: weaponSlots(v, w.weapon) }),
+      el("div", { class: "weaponCost", text: weaponCost(v, w) }),
+
+      el("div", { class: "weaponRemove" }, [
+        el("img", {
+          onclick: () => removeWeapon(ti, vi, wi),
+          class: "removeButton",
+        }),
+      ]),
+    ],
+  );
 }
 
 function createUpgradesTable(team, ti, v, vi) {
-  const table = el("table", { class: "upgradesTable" });
+  const table = el("div", { class: "upgradesTable" });
 
   table.appendChild(
-    el("tr", {}, [
-      el("th", { text: "Upgrade" }),
-      el("th", { text: "Ammo" }),
-      el("th", { text: "Slots" }),
-      el("th", { text: "Special Rules" }),
-      el("th", { text: "Cost" }),
-      el("th", {}, [
+    el("div", { class: "upgradesHeader" }, [
+      el("div", { class: "upgradesHeadType", text: "Upgrade" }),
+      el("div", { class: "upgradesHeadAmmo", text: "Ammo" }),
+      el("div", { class: "upgradesHeadSlots", text: "Slots" }),
+      el("div", { class: "upgradesHeadRules", text: "Special Rules" }),
+      el("div", { class: "upgradesHeadCost", text: "Cost" }),
+      el("div", { class: "upgradesHeadAdd" }, [
         el("img", {
           onclick: () => addUpgrade(ti, vi),
           class: "addButton",
@@ -398,17 +414,17 @@ function createUpgradesTable(team, ti, v, vi) {
 
   v.upgrades.forEach((u, ui) => {
     table.appendChild(
-      el("tr", {}, [
-        el("td", {}, [
+      el("div", { class: "upgradesRow" }, [
+        el("div", { class: "upgradeType" }, [
           upgradeSelect(v, team, ui, u.utype, (e) =>
             changeUpgrade(ti, vi, ui, e.target.value),
           ),
         ]),
-        el("td", { text: u.ammo || "-" }),
-        el("td", { text: u.slots || "-" }),
-        el("td", { text: u.specialRules || "" }),
-        el("td", { text: u.cost || 0 }),
-        el("td", {}, [
+        el("div", { class: "upgradeAmmo", text: u.ammo || "-" }),
+        el("div", { class: "upgradeSlots", text: u.slots || "-" }),
+        el("div", { class: "upgradeRules", text: u.specialRules || "" }),
+        el("div", { class: "upgradeCost", text: u.cost || 0 }),
+        el("div", { class: "upgradeRemove" }, [
           el("img", {
             onclick: () => removeUpgrade(ti, vi, ui),
             class: "removeButton",
@@ -422,14 +438,14 @@ function createUpgradesTable(team, ti, v, vi) {
 }
 
 function createPerksTable(team, ti, v, vi) {
-  const table = el("table", { class: "perksTable" });
+  const table = el("div", { class: "perksTable" });
 
   table.appendChild(
-    el("tr", {}, [
-      el("th", { text: "Perk" }),
-      el("th", { text: "Special Rules" }),
-      el("th", { text: "Cost" }),
-      el("th", {}, [
+    el("div", { class: "perksHeader" }, [
+      el("div", { class: "perkHeadType", text: "Perk" }),
+      el("div", { class: "perkHeadRules", text: "Special Rules" }),
+      el("div", { class: "perkHeadCost", text: "Cost" }),
+      el("div", { class: "perkHeadAdd" }, [
         el("img", {
           onclick: () => addPerk(ti, vi),
           class: "addButton",
@@ -440,15 +456,15 @@ function createPerksTable(team, ti, v, vi) {
 
   v.perks.forEach((p, pi) => {
     table.appendChild(
-      el("tr", {}, [
-        el("td", {}, [
+      el("div", { class: "perksRow" }, [
+        el("div", { class: "perkType" }, [
           perkSelect(team, v, pi, p.ptype, (e) =>
             changePerk(ti, vi, pi, e.target.value),
           ),
         ]),
-        el("td", { text: p.rules || "" }),
-        el("td", { text: p.cost || 0 }),
-        el("td", {}, [
+        el("div", { class: "perkRules", text: p.rules || "" }),
+        el("div", { class: "perkCost", text: p.cost || 0 }),
+        el("div", { class: "perkRemove" }, [
           el("img", {
             onclick: () => removePerk(ti, vi, pi),
             class: "removeButton",

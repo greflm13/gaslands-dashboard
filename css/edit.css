@@ -22,7 +22,6 @@
 }
 
 #editDiv .teamHeader {
-  width: 100%;
   border-collapse: collapse;
   background: linear-gradient(#222, #111);
   display: grid;
@@ -48,23 +47,10 @@
   padding: 0;
 }
 
-#editDiv .teamHeader input,
-#editDiv .teamHeader select {
-  background: #111;
-  color: white;
-  border: 1px solid #555;
-  padding: 2px 6px;
-}
-
-#editDiv .teamHeader .teamHeadName input {
-  width: 170px;
-}
-
 #editDiv .teamHeader .teamHeadCost {
   font-weight: bold;
   text-align: right;
-  width: 60px;
-  padding-top: 8px;
+  padding-top: 10px;
 }
 
 #editDiv .teamHeader .teamHeadCost::after {
@@ -78,12 +64,10 @@
 }
 
 #editDiv .teamHeader .teamHeadCans {
-  width: 40px;
-  padding-top: 8px;
+  padding-top: 10px;
 }
 
 #editDiv .teamHeader .teamHeadRemove {
-  width: 10px;
   padding-top: 8px;
 }
 
@@ -98,13 +82,9 @@
   padding: 4px;
 }
 
-#editDiv .vehicleHeader .vehicleHeadName input {
-  width: 170px;
-}
-
 #editDiv .trailerTable {
   display: grid;
-  grid-template-columns: 50px 162px auto 162px;
+  grid-template-columns: 50px 162px auto 182px;
   border-bottom: 1px solid #333;
   padding: 4px;
 }
@@ -118,106 +98,105 @@
   padding-top: 8px;
 }
 
-#editDiv .trailerTable .trailerType select {
-  width: 150px;
-}
-
 #editDiv .trailerTable .trailerCargo {
   text-align: right;
   padding-top: 8px;
 }
 
-#editDiv .trailerTable .trailerCargoType select {
+#editDiv .weaponsTable .weaponsRow,
+#editDiv .upgradesTable .upgradesRow,
+#editDiv .perksTable .perksRow {
+  display: grid;
+  border-bottom: 1px solid #333;
+  font-size: 12px;
+  height: 28px;
+}
+
+#editDiv .weaponsTable .weaponsRow div,
+#editDiv .upgradesTable .upgradesRow div,
+#editDiv .perksTable .perksRow div {
+  padding: 4px;
+}
+
+#editDiv .weaponsTable .noLocation {
+  grid-template-columns: 158px 78px 78px 58px 158px 1fr 48px 38px 38px 26px;
+}
+
+#editDiv .weaponsTable .yesLocation {
+  grid-template-columns: 158px 78px 78px 78px 58px 158px 1fr 48px 38px 38px 26px;
+}
+
+#editDiv .weaponsTable .weaponsHeader,
+#editDiv .upgradesTable .upgradesHeader,
+#editDiv .perksTable .perksHeader {
+  background: #2a2a2a;
+  color: #ddd;
+  border-bottom: 1px solid #555;
+  font-weight: normal;
+  display: grid;
+  font-size: 12px;
+  margin-top: 8px;
+}
+
+#editDiv .weaponsTable .weaponsHeader div,
+#editDiv .upgradesTable .upgradesHeader div,
+#editDiv .perksTable .perksHeader div {
+  padding: 4px;
+}
+
+#editDiv .weaponsTable .weaponType select,
+#editDiv .upgradesTable .upgradeType select,
+#editDiv .perksTable .perkType select {
   width: 150px;
 }
 
-#editDiv .weaponsTable td:nth-child(1) {
-  width: 150px;
-}
-
-#editDiv .weaponsTable td:nth-child(2) {
-  width: 70px;
-}
-
-#editDiv .weaponsTable td:nth-child(3) {
-  width: 70px;
-}
-
-#editDiv .weaponsTable td:nth-last-child(8) {
-  width: 70px;
-}
-
-#editDiv .weaponsTable td:nth-last-child(7) {
-  width: 50px;
-}
-
-#editDiv .weaponsTable td:nth-last-child(6) {
-  width: 150px;
-}
-
-#editDiv .weaponsTable td:nth-last-child(4) {
-  width: 30px;
+#editDiv .weaponsTable .weaponAmmo,
+#editDiv .upgradesTable .upgradeAmmo {
   text-align: center;
 }
 
-#editDiv .weaponsTable td:nth-last-child(3) {
-  width: 30px;
+#editDiv .weaponsTable .weaponSlots,
+#editDiv .upgradesTable .upgradeSlots {
   text-align: center;
 }
 
-#editDiv .weaponsTable td:nth-last-child(2) {
-  width: 30px;
+#editDiv .weaponsTable .weaponCost,
+#editDiv .upgradesTable .upgradeCost,
+#editDiv .perksTable .perkCost {
   text-align: center;
 }
 
-#editDiv .weaponsTable td:last-child {
-  width: 0px;
-  text-align: center;
+#editDiv .weaponsTable .weaponAdd,
+#editDiv .upgradesTable .upgradeAdd,
+#editDiv .perksTable .perkAdd {
+  margin-top: -2px;
 }
 
-#editDiv .upgradesTable th:nth-child(1),
-#editDiv .upgradesTable td:nth-child(1) {
-  width: 170px;
+#editDiv .weaponsTable .weaponsRow:nth-child(even),
+#editDiv .upgradesTable .upgradesRow:nth-child(even),
+#editDiv .perksTable .perksRow:nth-child(even) {
+  background: #1b1b1b;
 }
 
-#editDiv .upgradesTable th:nth-child(2),
-#editDiv .upgradesTable td:nth-child(2) {
-  width: 30px;
-  text-align: center;
+#editDiv .weaponsTable .weaponsRow select,
+#editDiv .upgradesTable .upgradesRow select,
+#editDiv .perksTable .perksRow select {
+  font-size: 10px;
+  padding: 2px;
+  margin: -4px;
+  border: none;
 }
 
-#editDiv .upgradesTable th:nth-child(3),
-#editDiv .upgradesTable td:nth-child(3) {
-  width: 30px;
-  text-align: center;
+#editDiv .upgradesTable .upgradesRow,
+#editDiv .upgradesTable .upgradesHeader {
+  display: grid;
+  grid-template-columns: 158px 48px 38px auto 38px 26px;
 }
 
-#editDiv .upgradesTable th:nth-last-child(2),
-#editDiv .upgradesTable td:nth-last-child(2) {
-  width: 30px;
-  text-align: center;
-}
-
-#editDiv .upgradesTable th:last-child,
-#editDiv .upgradesTable td:last-child {
-  width: 0px;
-  text-align: center;
-}
-
-#editDiv .perksTable th:nth-child(1),
-#editDiv .perksTable td:nth-child(1) {
-  width: 170px;
-}
-
-#editDiv .perksTable th:nth-last-child(2),
-#editDiv .perksTable td:nth-last-child(2) {
-  width: 30px;
-  text-align: center;
-}
-
-#editDiv .perksTable th:last-child,
-#editDiv .perksTable td:last-child {
-  width: 0px;
+#editDiv .perksTable .perksRow,
+#editDiv .perksTable .perksHeader {
+  display: grid;
+  grid-template-columns: 158px auto 38px 26px;
 }
 
 #editDiv .vehicleCard {
@@ -227,24 +206,19 @@
   background: #202020;
 }
 
-#editDiv .vehicleCard input,
-#editDiv .vehicleCard select {
-  background: #111;
+#editDiv input {
+  background: #333;
   color: #fff;
-  border: 1px solid #666;
+  border: none;
   padding: 3px 6px;
 }
 
-#editDiv .vehicleCard table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 6px;
-  margin-bottom: 6px;
-}
-
-#editDiv .vehicleCard td {
+#editDiv input[type="file"],
+#editDiv select {
+  background: #333;
+  color: #fff;
+  border: none;
   padding: 4px 6px;
-  font-size: 12px;
 }
 
 #editDiv .vehicleStats {
@@ -298,14 +272,6 @@
   background: #1b1b1b;
 }
 
-#editDiv .vehicleCard table tr:first-child th:last-child {
-  text-align: right;
-}
-
-#editDiv .vehicleCard table button {
-  padding: 2px 6px;
-}
-
 .removeButton {
   cursor: pointer;
   content: url(/img/rem.svg);
@@ -323,15 +289,6 @@ a,
   color: #59a6ff;
   cursor: pointer;
   font-size: 12px;
-}
-
-#editDiv .vehicleCard td,
-#editDiv .vehicleCard th {
-  font-size: 12px;
-}
-
-#editDiv .vehicleCard td strong {
-  color: #6fcf97;
 }
 
 button,
