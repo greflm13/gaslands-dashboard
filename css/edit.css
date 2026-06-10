@@ -25,9 +25,11 @@
   width: 100%;
   border-collapse: collapse;
   background: linear-gradient(#222, #111);
+  display: grid;
+  grid-template-columns: 32px 194px auto 72px 64px 52px 87px 32px;
 }
 
-#editDiv .teamHeader td {
+#editDiv .teamHeader div {
   padding: 6px;
 }
 
@@ -54,83 +56,78 @@
   padding: 2px 6px;
 }
 
-#editDiv .teamHeader td:nth-child(1) {
-  width: 20px;
-}
-
-#editDiv .teamHeader td:nth-child(2) {
+#editDiv .teamHeader .teamHeadName input {
   width: 170px;
 }
 
-#editDiv .teamHeader td:nth-child(4) {
+#editDiv .teamHeader .teamHeadCost {
   font-weight: bold;
   text-align: right;
-  width: 100px;
+  width: 60px;
+  padding-top: 8px;
 }
 
-#editDiv .teamHeader td:nth-child(4)::after {
+#editDiv .teamHeader .teamHeadCost::after {
   content: " /";
   color: white;
   font-weight: normal;
 }
 
-#editDiv .teamHeader td:nth-child(5) {
+#editDiv .teamHeader .teamHeadMaxCost input {
   width: 40px;
 }
 
-#editDiv .teamHeader td:nth-child(5) input {
+#editDiv .teamHeader .teamHeadCans {
   width: 40px;
+  padding-top: 8px;
 }
 
-#editDiv .teamHeader td:nth-child(6) {
-  width: 40px;
-}
-
-#editDiv .teamHeader td:nth-child(7) {
-  width: 75px;
-}
-
-#editDiv .teamHeader td:nth-child(8) {
-  width: 0px;
+#editDiv .teamHeader .teamHeadRemove {
+  width: 10px;
+  padding-top: 8px;
 }
 
 #editDiv .addVehicle {
   margin: 6px;
 }
 
-#editDiv .vehicleHeader td:nth-child(1) {
+#editDiv .vehicleHeader {
+  display: grid;
+  grid-template-columns: 194px 132px auto 62px 22px;
+  border-bottom: 1px solid #333;
+  padding: 4px;
+}
+
+#editDiv .vehicleHeader .vehicleHeadName input {
   width: 170px;
 }
 
-#editDiv .vehicleHeader td:nth-child(2) {
-  width: 120px;
+#editDiv .trailerTable {
+  display: grid;
+  grid-template-columns: 50px 162px auto 162px;
+  border-bottom: 1px solid #333;
+  padding: 4px;
 }
 
-#editDiv .vehicleHeader td:nth-child(4) {
-  width: 50px;
+#editDiv .trailerTable div {
+  padding: 4px 6px;
+  font-size: 12px;
 }
 
-#editDiv .vehicleHeader td:nth-child(5) {
-  width: 0px;
+#editDiv .trailerTable .trailerTrailer {
+  padding-top: 8px;
 }
 
-#editDiv .trailerTable td:nth-child(1) {
+#editDiv .trailerTable .trailerType select {
   width: 150px;
 }
 
-#editDiv .trailerTable td:nth-child(2) {
-  width: 150px;
-}
-
-#editDiv .trailerTable td:nth-child(3) {
+#editDiv .trailerTable .trailerCargo {
   text-align: right;
+  padding-top: 8px;
 }
 
-#editDiv .trailerTable td:last-child {
-  width: 150px;
-}
-
-#editDiv .trailerTable td:last-child select {
+#editDiv .trailerTable .trailerCargoType select {
   width: 150px;
 }
 
@@ -252,6 +249,10 @@
 
 #editDiv .vehicleStats {
   text-align: center;
+  display: grid;
+  grid-template-columns: auto auto auto auto auto auto;
+  border-bottom: 1px solid #333;
+  padding: 4px;
 }
 
 #editDiv .imagePicker {
@@ -307,12 +308,14 @@
 
 .removeButton {
   cursor: pointer;
-  content: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAOxAAADsQBlSsOGwAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAFGSURBVDiNnZO9TgJBFIW/AZX/zmZbSgoaKUkmUJLwBPoQ22pM/Im+hK0+AqGloaThDei2s2B3FoKRazHssuuGRbzJJPN3zz3nzhkFFB14rsB1Dc4VCDkhoAx8reDDgwcceL2DYAsifxxbkFsIHHihCYtTkpMgTVgUylBSSY6uC1pnuWttz3ahgDKUaIEXI7uuiIhIEIhova+otd0TsXd2+y3wzlJVZjPwfWg0YDyG4RA2GxiNoFaDMIT5PM0sxQBEul2R5dJWW61EwtDOjRHp9VJ9aIGXBYhAjJE41utMcgRQOPjgSuWvcyX4/l5CxMQYkX7/iIRkcqQ52ZNfIFkJnQ7U62AMDAYwmcB0al/DGKhWod0+IsF10x5IeiHhgVjCf638vbNysQyXn3DVh4sDfc6EAPdgZvCmsN/5qQI3J37ndw8efwCti3bEgmgKyQAAAABJRU5ErkJggg==");
+  content: url(/img/rem.svg);
+  width: 18px;
 }
 
 .addButton {
   cursor: pointer;
-  content: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAOxAAADsQBlSsOGwAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAEZSURBVDiNzZM/bsIwFIc/B0dI/JEyJFJXryyII5QTZAcp7B3KDZqiHqBLdyN6gJ6gF2CALlmzNZXIwECRUJDcpSDSpAjEwjf9rOf3/H62nwAqNBkh6WFjIzAcwyDIyMh4ZcWDpMmIDvfcUkccTT0sAu8MmYGFpFeWrByF9jXa1yhH5YMC6FLHpm8hqZad7NZcgnZA0A5wa25xgwAkVevEpv/l4gJyJ5Sjcq22vFapBkjXKfEy/l15JIQYPdfmVPRcG0IMHsnFFgQeCXfclFnQvgZg8DYgWkRFCy987e8gXsYHvvJEi4jp57Q0dg3PuGWDgb+/MV2njD/Ge13AAFs2ggZPdBjSPXuYvpnxLIAKDR6x6Z85zhNWhD+vjYJnJRxgmwAAAABJRU5ErkJggg==");
+  content: url(/img/add.svg);
+  width: 18px;
 }
 
 a,

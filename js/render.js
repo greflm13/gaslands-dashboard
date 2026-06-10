@@ -205,59 +205,59 @@ function setFold() {
 }
 
 async function createTeamCard(team, ti) {
-  const container = el("div", { class: "teamCard", id: `team-${ti}` });
+  const container = el("div", { class: "teamCard", id: `team-${ti}` }, [
+    el("div", { class: "teamHeader" }, [
+      el("div", { class: "teamHeadFold" }, [
+        el("img", {
+          class: team.folded ? "folded" : "unfolded",
+          id: `folder-${ti}`,
+          onclick: () => toggleFold(ti),
+        }),
+      ]),
+      el("div", { class: "teamHeadName" }, [
+        el("input", {
+          value: team.teamName,
+          onchange: (e) => (team.teamName = e.target.value),
+        }),
+      ]),
 
-  const headerRow = el("tr", {}, [
-    el("td", {}, [
-      el("img", {
-        class: team.folded ? "folded" : "unfolded",
-        id: `folder-${ti}`,
-        onclick: () => toggleFold(ti),
+      el("div", { class: "teamHeadSponsor" }, [
+        select(
+          allSponsors.map((s) => s.name),
+          team.sponsor,
+          (e) => setSponsor(ti, e.target.value),
+        ),
+      ]),
+
+      el("div", {
+        text: teamCost(team),
+        class:
+          "teamHeadCost " +
+          `${teamCost(team) <= team.maxCost ? "cheap" : "expensive"}`,
       }),
-    ]),
-    el("td", {}, [
-      el("input", {
-        value: team.teamName,
-        onchange: (e) => (team.teamName = e.target.value),
-      }),
-    ]),
 
-    el("td", {}, [
-      select(
-        allSponsors.map((s) => s.name),
-        team.sponsor,
-        (e) => setSponsor(ti, e.target.value),
-      ),
-    ]),
+      el("div", { class: "teamHeadMaxCost" }, [
+        el("input", {
+          value: team.maxCost,
+          onchange: (e) => (team.maxCost = e.target.value),
+        }),
+      ]),
 
-    el("td", {
-      text: teamCost(team),
-      class: teamCost(team) <= team.maxCost ? "cheap" : "expensive",
-    }),
+      el("div", { class: "teamHeadCans", text: "cans" }),
 
-    el("td", {}, [
-      el("input", {
-        value: team.maxCost,
-        onchange: (e) => (team.maxCost = e.target.value),
-      }),
-    ]),
+      el("div", { class: "teamHeadPrintPlay" }, [
+        el("button", { onclick: () => openPrintPreview(ti) }, ["Print/Play"]),
+      ]),
 
-    el("td", { text: "cans" }),
-
-    el("td", {}, [
-      el("button", { onclick: () => openPrintPreview(ti) }, ["Print/Play"]),
-    ]),
-
-    el("td", {}, [
-      el("img", {
-        onclick: () => removeTeam(ti),
-        class: "removeButton",
-        class: "removeButton",
-      }),
+      el("div", { class: "teamHeadRemove" }, [
+        el("img", {
+          onclick: () => removeTeam(ti),
+          class: "removeButton",
+          class: "removeButton",
+        }),
+      ]),
     ]),
   ]);
-
-  container.appendChild(el("table", { class: "teamHeader" }, [headerRow]));
 
   const cards = await Promise.all(
     team.vehicles.map((v, vi) => createVehicleCard(team, ti, v, vi)),
@@ -465,29 +465,25 @@ function createTrailerSection(team, ti, v, vi) {
   if (team.sponsor !== "Rusty's Bootleggers" || v.vtype === "War Rig")
     return null;
 
-  return el("table", { class: "trailerTable" }, [
-    el("tr", {}, [
-      el("td", { text: "Trailer:" }),
-      el("td", {}, [
-        select(
-          allTrailers.map((t) => t.ttype),
-          v.trailer?.ttype || "None",
-          (e) => setTrailer(ti, vi, e.target.value),
-        ),
-      ]),
+  return el("div", { class: "trailerTable" }, [
+    el("div", { class: "trailerTrailer", text: "Trailer:" }),
+    el("div", { class: "trailerType" }, [
+      select(
+        allTrailers.map((t) => t.ttype),
+        v.trailer?.ttype || "None",
+        (e) => setTrailer(ti, vi, e.target.value),
+      ),
+    ]),
 
-      el("td", { text: "Cargo:" }),
-      el("td", {}, [
-        (v.trailer?.ttype || "None") !== "None"
-          ? select(
-              allCargos.map((c) => c.ctype),
-              v.cargo?.ctype || "None",
-              (e) => setCargo(ti, vi, e.target.value),
-            )
-          : el("select", {}, [
-              el("option", { selected: "selected" }, ["None"]),
-            ]),
-      ]),
+    el("div", { class: "trailerCargo", text: "Cargo:" }),
+    el("div", { class: "trailerCargoType" }, [
+      (v.trailer?.ttype || "None") !== "None"
+        ? select(
+            allCargos.map((c) => c.ctype),
+            v.cargo?.ctype || "None",
+            (e) => setCargo(ti, vi, e.target.value),
+          )
+        : el("select", {}, [el("option", { selected: "selected" }, ["None"])]),
     ]),
   ]);
 }
@@ -520,64 +516,63 @@ async function createVehicleCard(team, ti, v, vi) {
   const imageSrc = (await loadImageFromDB(v.imageID)) || "/img/placeholder.png";
 
   container.appendChild(
-    el("table", { class: "vehicleHeader" }, [
-      el("tr", {}, [
-        el("td", {}, [
-          el("input", {
-            value: v.vehicleName,
-            onchange: (e) => (v.vehicleName = e.target.value),
-            maxlength: 24
-          }),
-        ]),
+    el("div", { class: "vehicleHeader" }, [
+      el("div", { class: "vehicleHeadName" }, [
+        el("input", {
+          value: v.vehicleName,
+          onchange: (e) => (v.vehicleName = e.target.value),
+          maxlength: 24,
+        }),
+      ]),
 
-        el("td", {}, [
-          select(
-            allVehicles.map((x) => x.vtype),
-            v.vtype,
-            (e) => changeVehicle(ti, vi, e.target.value),
-          ),
-        ]),
-        el("td", { id: `img-${ti}-${vi}` }, [
-          el("label", { text: "Image: ", for: `imgi-${ti}-${vi}` }),
-          el("img", {
-            src: imageSrc,
-            class: "vehicleImg",
-            width: "25px",
-            height: "25px",
-            onmouseenter: (e) => showHoverImage(ti, v, vi, e),
-            onmouseleave: (e) => removeHoverImage(ti, vi, e),
-          }),
-          el("input", {
-            type: "File",
-            accept: "image/*",
-            id: `imgi-${ti}-${vi}`,
-            class: "imagePicker",
-            onchange: (e) => addImage(ti, vi, e),
-          }),
-        ]),
+      el("div", { class: "vehicleHeadType" }, [
+        select(
+          allVehicles.map((x) => x.vtype),
+          v.vtype,
+          (e) => changeVehicle(ti, vi, e.target.value),
+        ),
+      ]),
+      el("div", { class: "vehicleHeadImg", id: `img-${ti}-${vi}` }, [
+        el("label", { text: "Image: ", for: `imgi-${ti}-${vi}` }),
+        el("img", {
+          src: imageSrc,
+          class: "vehicleImg",
+          width: "25px",
+          height: "25px",
+          onmouseenter: (e) => showHoverImage(ti, v, vi, e),
+          onmouseleave: (e) => removeHoverImage(ti, vi, e),
+        }),
+        el("input", {
+          type: "File",
+          accept: "image/*",
+          id: `imgi-${ti}-${vi}`,
+          class: "imagePicker",
+          onchange: (e) => addImage(ti, vi, e),
+        }),
+      ]),
 
-        el("td", { text: `${vehicleCost(v, team.sponsor)} cans` }),
+      el("div", {
+        class: "vehicleHeadCost",
+        text: `${vehicleCost(v, team.sponsor)} cans`,
+      }),
 
-        el("td", {}, [
-          el("img", {
-            onclick: () => removeVehicle(ti, vi),
-            class: "removeButton",
-          }),
-        ]),
+      el("div", { class: "vehicleHeadRemove" }, [
+        el("img", {
+          onclick: () => removeVehicle(ti, vi),
+          class: "removeButton",
+        }),
       ]),
     ]),
   );
 
   container.appendChild(
-    el("table", { class: "vehicleStats" }, [
-      el("tr", {}, [
-        el("td", { text: `Weight: ${v.weight}` }),
-        el("td", { text: `Hull: ${stats.hull}` }),
-        el("td", { text: `Handling: ${stats.handling}` }),
-        el("td", { text: `Max gear: ${stats.maxGear}` }),
-        el("td", { text: `Crew: ${stats.crew}` }),
-        el("td", { text: `Free slots: ${free}` }),
-      ]),
+    el("div", { class: "vehicleStats" }, [
+      el("div", { text: `Weight: ${v.weight}` }),
+      el("div", { text: `Hull: ${stats.hull}` }),
+      el("div", { text: `Handling: ${stats.handling}` }),
+      el("div", { text: `Max gear: ${stats.maxGear}` }),
+      el("div", { text: `Crew: ${stats.crew}` }),
+      el("div", { text: `Free slots: ${free}` }),
     ]),
   );
 
