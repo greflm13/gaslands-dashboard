@@ -37,6 +37,9 @@
   .teamHeadCostContainer::before {
     content: "Team Cost";
   }
+  .teamHeadRemove::before {
+    content: "";
+  }
 
   #editDiv .vehicleHeader {
     display: flex;
@@ -75,6 +78,9 @@
   }
   .vehicleHeadImg::before {
     content: "Vehicle Image";
+  }
+  .vehicleHeadRemove::before {
+    content: "";
   }
 
   .vehicleHeadImg > label {
@@ -174,7 +180,10 @@
   #editDiv .upgradesTable .upgradesRow > div:last-child,
   #editDiv .upgradesTable .upgradesRow > div:nth-last-child(2),
   #editDiv .perksTable .perksRow > div:last-child,
-  #editDiv .perksTable .perksRow > div:nth-last-child(2) {
+  #editDiv .perksTable .perksRow > div:nth-last-child(2),
+  #editDiv .vehicleHeader > div:last-child,
+  #editDiv .vehicleHeader > div:nth-last-child(2),
+  #editDiv .teamHeader > div:nth-last-child(2) {
     border-bottom: none;
   }
 
@@ -209,6 +218,9 @@
   .weaponCost::before {
     content: "Cost";
   }
+  .weaponRemove::before {
+    content: "";
+  }
   .upgradeType::before {
     content: "Upgrade";
   }
@@ -224,6 +236,9 @@
   .upgradeCost::before {
     content: "Cost";
   }
+  .upgradeRemove::before {
+    content: "";
+  }
   .perkType::before {
     content: "Perk";
   }
@@ -232,6 +247,9 @@
   }
   .perkCost::before {
     content: "Cost";
+  }
+  .perkRemove::before {
+    content: "";
   }
 
   /* shared label styling */
