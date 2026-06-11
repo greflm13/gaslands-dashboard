@@ -93,7 +93,6 @@
     display: flex;
   }
 
-  /* card container */
   #editDiv .weaponsTable .weaponsRow,
   #editDiv .upgradesTable .upgradesRow,
   #editDiv .perksTable .perksRow {
@@ -164,7 +163,6 @@
     content: "Perks";
   }
 
-  /* each field row */
   #editDiv .weaponsTable .weaponsRow > div,
   #editDiv .upgradesTable .upgradesRow > div,
   #editDiv .perksTable .perksRow > div {
@@ -187,7 +185,6 @@
     border-bottom: none;
   }
 
-  /* labels via class names */
   .weaponType::before {
     content: "Weapon";
   }
@@ -252,7 +249,6 @@
     content: "";
   }
 
-  /* shared label styling */
   #editDiv .weaponsTable .weaponsRow > div::before,
   #editDiv .upgradesTable .upgradesRow > div::before,
   #editDiv .perksTable .perksRow > div::before {
@@ -262,16 +258,9 @@
     flex-shrink: 0;
   }
 
-  /* improve inputs for mobile */
   #editDiv .weaponsRow select,
   #editDiv .upgradesRow select,
   #editDiv .perksRow select {
     width: 60% !important;
   }
 }
-
-/* @media only screen and (max-width: 508px) {
-  #editDiv .vehicleStats {
-    grid-template-columns: 1fr;
-  }
-} */
