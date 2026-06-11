@@ -228,23 +228,24 @@ async function createTeamCard(team, ti) {
           (e) => setSponsor(ti, e.target.value),
         ),
       ]),
+      el("div", { class: "teamHeadCostContainer" }, [
+        el("div", {}, [
+          el("div", {
+            text: teamCost(team),
+            class:
+              "teamHeadCost " +
+              `${teamCost(team) <= team.maxCost ? "cheap" : "expensive"}`,
+          }),
 
-      el("div", {
-        text: teamCost(team),
-        class:
-          "teamHeadCost " +
-          `${teamCost(team) <= team.maxCost ? "cheap" : "expensive"}`,
-      }),
-
-      el("div", { class: "teamHeadMaxCost" }, [
-        el("input", {
-          value: team.maxCost,
-          onchange: (e) => (team.maxCost = e.target.value),
-        }),
+          el("div", { class: "teamHeadMaxCost" }, [
+            el("input", {
+              value: team.maxCost,
+              onchange: (e) => (team.maxCost = e.target.value),
+            }),
+          ]),
+          el("div", { class: "teamHeadCans", text: "cans" }),
+        ]),
       ]),
-
-      el("div", { class: "teamHeadCans", text: "cans" }),
-
       el("div", { class: "teamHeadPrintPlay" }, [
         el("button", { onclick: () => openPrintPreview(ti) }, ["Print/Play"]),
       ]),
@@ -312,19 +313,19 @@ function createWeaponsTable(team, ti, v, vi) {
         class: `weaponsHeader ${locs.length > 1 ? "yesLocation" : "noLocation"}`,
       },
       [
-        el("div", { class: "weaponType", text: "Weapon" }),
-        el("div", { class: "weaponFacing", text: "Facing" }),
+        el("div", { class: "weaponsHeadType", text: "Weapon" }),
+        el("div", { class: "weaponsHeadFacing", text: "Facing" }),
         ...(locs.length > 1
-          ? [el("div", { class: "weaponLocation", text: "Location" })]
+          ? [el("div", { class: "weaponsHeadLocation", text: "Location" })]
           : []),
-        el("div", { class: "weaponAttackType", text: "Type" }),
-        el("div", { class: "weaponAttack", text: "Attack" }),
-        el("div", { class: "weaponRange", text: "Range" }),
-        el("div", { class: "weaponRules", text: "Special Rules" }),
-        el("div", { class: "weaponAmmo", text: "Ammo" }),
-        el("div", { class: "weaponSlots", text: "Slots" }),
-        el("div", { class: "weaponCost", text: "Cost" }),
-        el("div", { class: "weaponAdd" }, [
+        el("div", { class: "weaponsHeadAttackType", text: "Type" }),
+        el("div", { class: "weaponsHeadAttack", text: "Attack" }),
+        el("div", { class: "weaponsHeadRange", text: "Range" }),
+        el("div", { class: "weaponsHeadRules", text: "Special Rules" }),
+        el("div", { class: "weaponsHeadAmmo", text: "Ammo" }),
+        el("div", { class: "weaponsHeadSlots", text: "Slots" }),
+        el("div", { class: "weaponsHeadCost", text: "Cost" }),
+        el("div", { class: "weaponsHeadAdd" }, [
           el("img", {
             onclick: () => addWeapon(ti, vi),
             class: "addButton",
@@ -442,10 +443,10 @@ function createPerksTable(team, ti, v, vi) {
 
   table.appendChild(
     el("div", { class: "perksHeader" }, [
-      el("div", { class: "perkHeadType", text: "Perk" }),
-      el("div", { class: "perkHeadRules", text: "Special Rules" }),
-      el("div", { class: "perkHeadCost", text: "Cost" }),
-      el("div", { class: "perkHeadAdd" }, [
+      el("div", { class: "perksHeadType", text: "Perk" }),
+      el("div", { class: "perksHeadRules", text: "Special Rules" }),
+      el("div", { class: "perksHeadCost", text: "Cost" }),
+      el("div", { class: "perksHeadAdd" }, [
         el("img", {
           onclick: () => addPerk(ti, vi),
           class: "addButton",

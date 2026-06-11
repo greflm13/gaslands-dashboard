@@ -1,0 +1,259 @@
+@media only screen and (max-width: 768px) {
+  #editDiv select {
+    font-size: 6pt !important;
+  }
+
+  #editDiv .teamHeader {
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    background: #222;
+  }
+
+  #editDiv .teamHeader > div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 4px 6px;
+    border-bottom: 1px solid #333;
+  }
+
+  .teamHeadName::before,
+  .teamHeadSponsor::before,
+  .teamHeadCostContainer::before {
+    font-weight: bold;
+    color: #aaa;
+    margin-right: 10px;
+    flex-shrink: 0;
+    font-size: 16px;
+  }
+
+  .teamHeadName::before {
+    content: "Team Name";
+  }
+  .teamHeadSponsor::before {
+    content: "Team Sponsor";
+  }
+  .teamHeadCostContainer::before {
+    content: "Team Cost";
+  }
+
+  #editDiv .vehicleHeader {
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    background: #222;
+  }
+
+  #editDiv .vehicleHeader > div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 4px 6px;
+    border-bottom: 1px solid #333;
+  }
+
+  .vehicleHeadName::before,
+  .vehicleHeadType::before,
+  .vehicleHeadCost::before,
+  .vehicleHeadImg::before {
+    font-weight: bold;
+    color: #aaa;
+    margin-right: 10px;
+    flex-shrink: 0;
+    font-size: 12px;
+  }
+
+  .vehicleHeadName::before {
+    content: "Vehicle Name";
+  }
+  .vehicleHeadType::before {
+    content: "Vehicle Type";
+  }
+  .vehicleHeadCost::before {
+    content: "Vehicle Cost";
+  }
+  .vehicleHeadImg::before {
+    content: "Vehicle Image";
+  }
+
+  .vehicleHeadImg > label {
+    display: none;
+  }
+
+  #editDiv .weaponsTable .weaponsHeader,
+  #editDiv .upgradesTable .upgradesHeader,
+  #editDiv .perksTable .perksHeader {
+    display: flex;
+  }
+
+  /* card container */
+  #editDiv .weaponsTable .weaponsRow,
+  #editDiv .upgradesTable .upgradesRow,
+  #editDiv .perksTable .perksRow {
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    margin: 8px 0;
+    padding: 6px;
+    border: 1px solid #444;
+    background: #222;
+    border-radius: 6px;
+  }
+
+  .weaponsHeadType,
+  .weaponsHeadFacing,
+  .weaponsHeadLocation,
+  .weaponsHeadAttackType,
+  .weaponsHeadAttack,
+  .weaponsHeadRange,
+  .weaponsHeadRules,
+  .weaponsHeadAmmo,
+  .weaponsHeadSlots,
+  .weaponsHeadCost,
+  .upgradesHeadType,
+  .upgradesHeadAmmo,
+  .upgradesHeadSlots,
+  .upgradesHeadRules,
+  .upgradesHeadCost,
+  .perksHeadType,
+  .perksHeadRules,
+  .perksHeadCost {
+    display: none;
+  }
+
+  .weaponsHeadAdd,
+  .upgradesHeadAdd,
+  .perksHeadAdd {
+    display: flex;
+    align-items: center;
+    width: 100%;
+  }
+
+  .weaponsHeadAdd img,
+  .upgradesHeadAdd img,
+  .perksHeadAdd img {
+    margin-left: auto;
+  }
+
+  .weaponsHeadAdd::before,
+  .upgradesHeadAdd::before,
+  .perksHeadAdd::before {
+    font-weight: bold;
+    color: #aaa;
+    margin-right: 10px;
+    flex-shrink: 0;
+    font-size: 16px;
+  }
+
+  .weaponsHeadAdd::before {
+    content: "Weapons";
+  }
+
+  .upgradesHeadAdd::before {
+    content: "Upgrades";
+  }
+
+  .perksHeadAdd::before {
+    content: "Perks";
+  }
+
+  /* each field row */
+  #editDiv .weaponsTable .weaponsRow > div,
+  #editDiv .upgradesTable .upgradesRow > div,
+  #editDiv .perksTable .perksRow > div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 4px 6px;
+    border-bottom: 1px solid #333;
+  }
+
+  #editDiv .weaponsTable .weaponsRow > div:last-child,
+  #editDiv .weaponsTable .weaponsRow > div:nth-last-child(2),
+  #editDiv .upgradesTable .upgradesRow > div:last-child,
+  #editDiv .upgradesTable .upgradesRow > div:nth-last-child(2),
+  #editDiv .perksTable .perksRow > div:last-child,
+  #editDiv .perksTable .perksRow > div:nth-last-child(2) {
+    border-bottom: none;
+  }
+
+  /* labels via class names */
+  .weaponType::before {
+    content: "Weapon";
+  }
+  .weaponFacing::before {
+    content: "Facing";
+  }
+  .weaponLocation::before {
+    content: "Location";
+  }
+  .weaponAttackType::before {
+    content: "Type";
+  }
+  .weaponAttack::before {
+    content: "Attack";
+  }
+  .weaponRange::before {
+    content: "Range";
+  }
+  .weaponRules::before {
+    content: "Special Rules";
+  }
+  .weaponAmmo::before {
+    content: "Ammo";
+  }
+  .weaponSlots::before {
+    content: "Slots";
+  }
+  .weaponCost::before {
+    content: "Cost";
+  }
+  .upgradeType::before {
+    content: "Upgrade";
+  }
+  .upgradeAmmo::before {
+    content: "Ammo";
+  }
+  .upgradeSlots::before {
+    content: "Slots";
+  }
+  .upgradeRules::before {
+    content: "Special Rules";
+  }
+  .upgradeCost::before {
+    content: "Cost";
+  }
+  .perkType::before {
+    content: "Perk";
+  }
+  .perkRules::before {
+    content: "Special Rules";
+  }
+  .perkCost::before {
+    content: "Cost";
+  }
+
+  /* shared label styling */
+  #editDiv .weaponsTable .weaponsRow > div::before,
+  #editDiv .upgradesTable .upgradesRow > div::before,
+  #editDiv .perksTable .perksRow > div::before {
+    font-weight: bold;
+    color: #aaa;
+    margin-right: 10px;
+    flex-shrink: 0;
+  }
+
+  /* improve inputs for mobile */
+  #editDiv .weaponsRow select,
+  #editDiv .upgradesRow select,
+  #editDiv .perksRow select {
+    width: 60% !important;
+  }
+}
+
+/* @media only screen and (max-width: 508px) {
+  #editDiv .vehicleStats {
+    grid-template-columns: 1fr;
+  }
+} */
