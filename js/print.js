@@ -14,6 +14,7 @@ import {
   weaponRules,
   weaponSlots,
 } from "./app";
+import { vehicleKeywords } from "./data";
 import { createDiceSet } from "./dice";
 import { el } from "./render";
 import { state } from "./state";
@@ -117,6 +118,14 @@ async function createPrintImage(team, ti, v, vi) {
   ]);
 }
 
+function createPrintKeywordRow(k) {
+  const keyword = vehicleKeywords.find((vk) => vk.ktype === k);
+  return el("div", {
+    text: keyword.ktype + " - " + keyword.rules,
+    class: "armoryRow",
+  });
+}
+
 function toogleHullPoint(id) {
   const hullPoint = document.getElementById(id);
   if (hullPoint.style.backgroundColor == "rgb(17, 17, 17)") {
@@ -193,7 +202,18 @@ async function createPrintVehicleCard(team, ti, v, vi) {
   });
 
   v.upgrades.forEach((u, ui) => {
-    armory.appendChild(createPrintUpgradesRow(team, ti, v, vi, u, ui));
+    if (
+      u.utype != "Armour Plating" &&
+      u.utype != "Extra Crewmember" &&
+      u.utype != "Tank tracks" &&
+      u.utype != "MicroPlate Armour"
+    ) {
+      armory.appendChild(createPrintUpgradesRow(team, ti, v, vi, u, ui));
+    }
+  });
+
+  v.keywords.forEach((k) => {
+    armory.appendChild(createPrintKeywordRow(k));
   });
 
   v.perks.forEach((p, pi) => {

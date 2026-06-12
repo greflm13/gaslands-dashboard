@@ -75,12 +75,12 @@
 #printDiv .armoryContainer {
   grid-template-columns: 10.5mm 146mm;
   margin: 21mm 0 0 8.5mm;
-  height: 22mm;
+  height: 44mm;
   font-size: 12pt;
 }
 
 #printDiv .armoryLabel {
-  transform: rotate(-90deg) translate(-7mm, -14mm);
+  transform: rotate(-90deg) translate(4mm, -3.5mm);
   font-size: 16pt;
   width: 50mm;
 }

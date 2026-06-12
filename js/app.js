@@ -27,10 +27,16 @@ export function setSponsor(ti, value) {
   team.sponsor = value;
   if (value != "Rusty's Bootleggers") {
     team.vehicles.forEach((v) => {
-      v.trailer.ttype = "None";
-      v.cargo = "None";
+      if (v.trailer != undefined) {
+        v.trailer.ttype = "None";
+        v.cargo = "None";
+      }
     });
   }
+
+  team.vehicles.forEach((v) => {
+    v.perks = [];
+  });
 
   update();
 }
