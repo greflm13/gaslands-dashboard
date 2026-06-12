@@ -154,6 +154,11 @@
 }
 
 @media print {
+  * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
   @page {
     margin: 6mm;
   }
