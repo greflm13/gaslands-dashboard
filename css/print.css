@@ -25,13 +25,13 @@
 #printDiv .vehicleCard {
   background-size: contain;
   background-repeat: no-repeat;
-  background-image: url("/img/vehicle-card-background_new.png");
+  background-image: url("/img/vehicle-card-background.png");
 }
 
 #printDiv .vehicleCardContinued {
   background-size: contain;
   background-repeat: no-repeat;
-  background-image: url("/img/vehicle-card-background_new-cont.png");
+  background-image: url("/img/vehicle-card-background-cont.png");
 }
 
 #printDiv .vehicleHeader {
