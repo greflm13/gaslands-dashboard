@@ -252,14 +252,7 @@ async function createPrintVehicleCard(team, ti, v, vi) {
   });
 
   v.upgrades.forEach((u, ui) => {
-    if (
-      u.utype != "Armour Plating" &&
-      u.utype != "Extra Crewmember" &&
-      u.utype != "Tank tracks" &&
-      u.utype != "MicroPlate Armour"
-    ) {
-      armoryRows.push(createPrintUpgradesRow(team, ti, v, vi, u, ui));
-    }
+    armoryRows.push(createPrintUpgradesRow(team, ti, v, vi, u, ui));
   });
 
   v.keywords.forEach((k) => {

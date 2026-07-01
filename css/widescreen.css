@@ -99,7 +99,7 @@
 }
 
 #printDiv .armoryLabelContinued {
-  transform: rotate(-90deg) translate(15mm, 3.5mm);
+  transform: rotate(-90deg) translate(15mm, 3mm);
   font-size: 16pt;
   width: 100mm;
 }

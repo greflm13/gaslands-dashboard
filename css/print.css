@@ -25,13 +25,13 @@
 #printDiv .vehicleCard {
   background-size: contain;
   background-repeat: no-repeat;
-  background-image: url("/img/vehicle-card-background.png");
+  background-image: url("/img/vehicle-card-background_new.png");
 }
 
 #printDiv .vehicleCardContinued {
   background-size: contain;
   background-repeat: no-repeat;
-  background-image: url("/img/vehicle-card-background-cont.png");
+  background-image: url("/img/vehicle-card-background_new-cont.png");
 }
 
 #printDiv .vehicleHeader {
@@ -155,6 +155,7 @@
 
 #printDiv .armoryRow {
   line-height: 1;
+  margin-bottom: 0.5ex;
 }
 
 .noprint {
