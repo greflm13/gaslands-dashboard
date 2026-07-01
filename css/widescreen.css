@@ -6,7 +6,8 @@
   grid-template-columns: 184mm 184mm;
 }
 
-#printDiv .vehicleCard {
+#printDiv .vehicleCard,
+#printDiv .vehicleCardContinued {
   margin: 5mm 0;
   width: 176mm;
   height: 128mm;
@@ -62,7 +63,8 @@
 
 #printDiv .hullPoints {
   grid-auto-columns: 7.9mm;
-  gap: 5px;
+  row-gap: 4px;
+  column-gap: 5px;
   margin-left: 6.8mm;
 }
 
@@ -79,10 +81,27 @@
   font-size: 12pt;
 }
 
+#printDiv .armoryContainerContinued {
+  grid-template-columns: 10.5mm 146mm;
+  margin: 11mm 0 0 8.5mm;
+  height: 107mm;
+  font-size: 12pt;
+}
+
+#printDiv .vehicleArmory {
+  height: 44mm;
+}
+
 #printDiv .armoryLabel {
   transform: rotate(-90deg) translate(4mm, -3.5mm);
   font-size: 16pt;
   width: 50mm;
+}
+
+#printDiv .armoryLabelContinued {
+  transform: rotate(-90deg) translate(15mm, 3.5mm);
+  font-size: 16pt;
+  width: 100mm;
 }
 
 #printDiv .smallerArmory {

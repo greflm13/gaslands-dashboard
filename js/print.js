@@ -38,7 +38,9 @@ async function createPrintTeamCard(team, ti) {
     team.vehicles.map((v, vi) => createPrintVehicleCard(team, ti, v, vi)),
   );
 
-  cards.forEach((card) => vehicles.appendChild(card));
+  cards.forEach((card) => {
+    card.forEach((car) => vehicles.appendChild(car));
+  });
 
   container.appendChild(vehicles);
 
@@ -135,6 +137,57 @@ function toogleHullPoint(id) {
   }
 }
 
+function getMeasurementRoot() {
+  let root = document.getElementById("measure-root");
+
+  if (!root) {
+    const printDiv = document.getElementById("printDiv");
+    root = document.createElement("div");
+    root.id = "measure-root";
+
+    root.style.position = "absolute";
+    root.style.left = "-99999px";
+    root.style.top = "0";
+    root.style.visibility = "hidden";
+    root.style.pointerEvents = "none";
+
+    printDiv.appendChild(root);
+  }
+
+  return root;
+}
+
+function createTempArmory(img) {
+  const armoryContainer = el(
+    "div",
+    { class: img ? "armoryContainer smallerArmory" : "armoryContainer" },
+    [el("div", { class: "armoryLabel", text: "Armory/Perks" })],
+  );
+
+  const armory = el("div", { class: "vehicleArmory" });
+
+  armoryContainer.appendChild(armory);
+
+  return { armoryContainer, armory };
+}
+
+function createPrintVehicleCardContinued(chunk) {
+  const container = el("div", { class: "vehicleCardContinued" });
+  const armoryContainer2 = el("div", { class: "armoryContainerContinued" }, [
+    el("div", {
+      class: "armoryLabelContinued",
+      text: "Armory/Perks (cont.)",
+    }),
+  ]);
+
+  const armory2 = el("div", { class: "vehicleArmoryContinued" });
+  chunk.forEach((row) => armory2.appendChild(row));
+
+  armoryContainer2.appendChild(armory2);
+  container.appendChild(armoryContainer2);
+  return container;
+}
+
 async function createPrintVehicleCard(team, ti, v, vi) {
   const container = el("div", { class: "vehicleCard" });
 
@@ -186,19 +239,16 @@ async function createPrintVehicleCard(team, ti, v, vi) {
     ]),
   );
 
-  const armoryContainer = el("div", { class: "armoryContainer" }, [
-    el("div", { class: "armoryLabel", text: "Armory/Perks" }),
-  ]);
-
-  const armory = el("div", { class: "vehicleArmory" });
+  const armoryRows = [];
+  const img = await createPrintImage(team, ti, v, vi);
 
   const trailer = createPrintTrailerRow(team, ti, v, vi);
-  if (trailer) armory.appendChild(trailer);
+  if (trailer) armoryRows.push(trailer);
 
-  armory.appendChild(createDefaultWeaponRow());
+  armoryRows.push(createDefaultWeaponRow());
 
   v.weapons.forEach((w, wi) => {
-    armory.appendChild(createPrintWeaponRow(team, ti, v, vi, w, wi));
+    armoryRows.push(createPrintWeaponRow(team, ti, v, vi, w, wi));
   });
 
   v.upgrades.forEach((u, ui) => {
@@ -208,28 +258,71 @@ async function createPrintVehicleCard(team, ti, v, vi) {
       u.utype != "Tank tracks" &&
       u.utype != "MicroPlate Armour"
     ) {
-      armory.appendChild(createPrintUpgradesRow(team, ti, v, vi, u, ui));
+      armoryRows.push(createPrintUpgradesRow(team, ti, v, vi, u, ui));
     }
   });
 
   v.keywords.forEach((k) => {
-    armory.appendChild(createPrintKeywordRow(k));
+    armoryRows.push(createPrintKeywordRow(k));
   });
 
   v.perks.forEach((p, pi) => {
-    armory.appendChild(createPrintPerksRow(team, ti, v, vi, p, pi));
+    armoryRows.push(createPrintPerksRow(team, ti, v, vi, p, pi));
   });
 
-  armoryContainer.appendChild(armory);
-  container.appendChild(armoryContainer);
+  const measureRoot = getMeasurementRoot();
+  const { armoryContainer, armory } = createTempArmory(img);
 
-  const img = await createPrintImage(team, ti, v, vi);
-  if (img) {
-    container.appendChild(img);
-    armoryContainer.className = "armoryContainer smallerArmory";
+  measureRoot.appendChild(armoryContainer);
+
+  const MAX_HEIGHT = armory.clientHeight;
+
+  const firstChunk = [];
+  let splitIndex = armoryRows.length;
+
+  for (let i = 0; i < armoryRows.length; i++) {
+    const row = armoryRows[i];
+
+    armory.appendChild(row);
+
+    if (armory.scrollHeight > MAX_HEIGHT) {
+      armory.removeChild(row);
+
+      splitIndex = i;
+      break;
+    }
+
+    firstChunk.push(row);
   }
 
-  return container;
+  const secondChunk = armoryRows.slice(splitIndex);
+  measureRoot.removeChild(armoryContainer);
+
+  const armoryContainer1 = el("div", { class: "armoryContainer" }, [
+    el("div", { class: "armoryLabel", text: "Armory/Perks" }),
+  ]);
+
+  const armory1 = el("div", { class: "vehicleArmory" });
+  firstChunk.forEach((row) => armory1.appendChild(row));
+
+  armoryContainer1.appendChild(armory1);
+  container.appendChild(armoryContainer1);
+
+  if (img) {
+    container.appendChild(img);
+    armoryContainer1.className = "armoryContainer smallerArmory";
+  }
+
+  let container2;
+
+  if (secondChunk.length > 0) {
+    container2 = createPrintVehicleCardContinued(secondChunk);
+  }
+
+  if (container2) {
+    return [container, container2];
+  }
+  return [container];
 }
 
 function renderDice() {

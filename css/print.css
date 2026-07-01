@@ -28,6 +28,12 @@
   background-image: url("/img/vehicle-card-background.png");
 }
 
+#printDiv .vehicleCardContinued {
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-image: url("/img/vehicle-card-background-cont.png");
+}
+
 #printDiv .vehicleHeader {
   display: grid;
 }
@@ -85,12 +91,14 @@
   cursor: pointer;
 }
 
-#printDiv .armoryContainer {
+#printDiv .armoryContainer,
+#printDiv .armoryContainerContinued {
   display: grid;
   font-family: "Agdasima", sans-serif;
 }
 
-#printDiv .armoryLabel {
+#printDiv .armoryLabel,
+#printDiv .armoryLabelContinued {
   grid-column: 1;
   grid-row: 1;
   font-family: "Stardos Stencil", system-ui;
