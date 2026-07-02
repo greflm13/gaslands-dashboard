@@ -232,6 +232,7 @@ async function createTeamCard(team, ti) {
         el("div", {}, [
           el("div", {
             text: teamCost(team),
+            id: `team-cost-${ti}`,
             class:
               "teamHeadCost " +
               `${teamCost(team) <= team.maxCost ? "cheap" : "expensive"}`,
@@ -240,7 +241,13 @@ async function createTeamCard(team, ti) {
           el("div", { class: "teamHeadMaxCost" }, [
             el("input", {
               value: team.maxCost,
-              onchange: (e) => (team.maxCost = e.target.value),
+              onchange: (e) => {
+                team.maxCost = e.target.value;
+                document.getElementById(`team-cost-${ti}`).classList =
+                  teamCost(team) <= team.maxCost
+                    ? "teamHeadCost cheap"
+                    : "teamHeadCost expensive";
+              },
             }),
           ]),
           el("div", { class: "teamHeadCans", text: "cans" }),
