@@ -400,9 +400,9 @@ function createUpgradesTable(team, ti, v, vi) {
   table.appendChild(
     el("div", { class: "upgradesHeader" }, [
       el("div", { class: "upgradesHeadType", text: "Upgrade" }),
+      el("div", { class: "upgradesHeadRules", text: "Special Rules" }),
       el("div", { class: "upgradesHeadAmmo", text: "Ammo" }),
       el("div", { class: "upgradesHeadSlots", text: "Slots" }),
-      el("div", { class: "upgradesHeadRules", text: "Special Rules" }),
       el("div", { class: "upgradesHeadCost", text: "Cost" }),
       el("div", { class: "upgradesHeadAdd" }, [
         el("img", {
@@ -421,9 +421,9 @@ function createUpgradesTable(team, ti, v, vi) {
             changeUpgrade(ti, vi, ui, e.target.value),
           ),
         ]),
+        el("div", { class: "upgradeRules", text: u.specialRules || "" }),
         el("div", { class: "upgradeAmmo", text: u.ammo || "-" }),
         el("div", { class: "upgradeSlots", text: u.slots || "-" }),
-        el("div", { class: "upgradeRules", text: u.specialRules || "" }),
         el("div", { class: "upgradeCost", text: u.cost || 0 }),
         el("div", { class: "upgradeRemove" }, [
           el("img", {

@@ -207,7 +207,7 @@
 #editDiv .upgradesTable .upgradesRow,
 #editDiv .upgradesTable .upgradesHeader {
   display: grid;
-  grid-template-columns: 158px 48px 38px auto 38px 26px;
+  grid-template-columns: 158px auto 48px 38px 38px 26px;
 }
 
 #editDiv .perksTable .perksRow,
