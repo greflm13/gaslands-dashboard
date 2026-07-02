@@ -1,0 +1,19 @@
+@font-face {
+  font-family: "Rubik Dirt";
+  src: url("../font/RubikDirt-Regular.ttf");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Agdasima";
+  src: url("../font/Agdasima-Bold.ttf");
+  font-weight: 700;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Stardos Stencil";
+  src: url("../font/StardosStencil-Bold.ttf");
+  font-weight: 700;
+  font-display: swap;
+}

@@ -17,11 +17,11 @@ module.exports = merge(common, {
           from: "img",
           to: "img",
           globOptions: {
-            ignore: ["**/*.xcf"],
+            ignore: ["**/*.xcf", "**/.gitkeep"],
           },
         },
         { from: "css", to: "css" },
-        { from: "js/vendor", to: "js/vendor" },
+        { from: "font", to: "font" },
         { from: "icon.svg", to: "icon.svg" },
         { from: "favicon.ico", to: "favicon.ico" },
         { from: "robots.txt", to: "robots.txt" },
@@ -34,17 +34,8 @@ module.exports = merge(common, {
     new GenerateSW({
       clientsClaim: true,
       skipWaiting: true,
-
-      runtimeCaching: [
-        {
-          urlPattern: /\.(?:png|jpg|jpeg|svg|gif)$/i,
-          handler: "CacheFirst",
-        },
-        {
-          urlPattern: /\.(?:js|css|html)$/i,
-          handler: "StaleWhileRevalidate",
-        },
-      ],
+      cleanupOutdatedCaches: true,
+      navigateFallback: "/index.html",
     }),
   ],
   optimization: {
