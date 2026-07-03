@@ -9,8 +9,9 @@
     }
   ],
   "start_url": "/?utm_source=homescreen",
+  "id": "/?utm_source=homescreen",
   "background_color": "#111",
   "theme_color": "#eee",
-  "description": "Gaslands Refuelled team builder",
+  "description": "Create and print custom Gaslands dashboards.",
   "display": "standalone"
 }
