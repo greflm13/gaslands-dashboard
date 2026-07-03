@@ -36,6 +36,7 @@ module.exports = merge(common, {
       skipWaiting: true,
       cleanupOutdatedCaches: true,
       navigateFallback: "/index.html",
+      exclude: [/\.htaccess$/],
     }),
   ],
   optimization: {
