@@ -98,7 +98,7 @@ function getVehicleKeywords(v) {
   return [...new Set([...base, ...upgradeKeywords])];
 }
 
-function setWeaponLocation(ti, vi, wi, loc) {
+export function setWeaponLocation(ti, vi, wi, loc) {
   const v = state.teams[ti].vehicles[vi];
   v.weapons[wi].location = loc;
 

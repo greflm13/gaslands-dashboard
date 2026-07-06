@@ -1,8 +1,8 @@
 import { state } from "./state.js";
 import { allSponsors, allVehicles, allTrailers, allCargos } from "./data.js";
 import {
-  addPerk,
   addImage,
+  addPerk,
   addUpgrade,
   addVehicle,
   addWeapon,
@@ -23,21 +23,22 @@ import {
   removeUpgrade,
   removeVehicle,
   removeWeapon,
+  saveState,
   setCargo,
   setSponsor,
   setTrailer,
   setWeaponFacing,
+  setWeaponLocation,
   teamCost,
   totalSlots,
   usedSlots,
   vehicleCost,
+  weaponAmmo,
   weaponAttack,
   weaponCost,
   weaponRange,
   weaponRules,
   weaponSlots,
-  saveState,
-  weaponAmmo,
 } from "./app.js";
 
 let isRendering = false;
