@@ -80,6 +80,7 @@ function setPrintMode(enabled) {
 
 export function openPrintPreview(i) {
   state.currentTeamIndex = i;
+  saveState();
   setPrintMode(true);
 }
 
