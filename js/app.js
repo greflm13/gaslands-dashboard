@@ -60,7 +60,7 @@ export function changeVehicle(ti, vi, type) {
   update();
 }
 
-function setPrintMode(enabled) {
+async function setPrintMode(enabled) {
   state.printMode = enabled;
 
   document.getElementById("editDiv").style.display = enabled ? "none" : "grid";
@@ -72,16 +72,16 @@ function setPrintMode(enabled) {
     : "block";
 
   if (enabled) {
-    loadPrint();
+    await loadPrint();
   } else {
     renderFull();
   }
 }
 
-export function openPrintPreview(i) {
+export async function openPrintPreview(i) {
   state.currentTeamIndex = i;
   saveState();
-  setPrintMode(true);
+  await setPrintMode(true);
 }
 
 function closePrintPreview() {
@@ -974,8 +974,6 @@ async function layout88x64(e) {
   layoutStylesheet.href = "css/88x64.css";
   await loadPrint();
   startPrint(e);
-  layoutStylesheet.href = "css/widescreen.css";
-  await loadPrint();
 }
 
 async function layout100x70(e) {
@@ -983,8 +981,6 @@ async function layout100x70(e) {
   layoutStylesheet.href = "css/100x70.css";
   await loadPrint();
   startPrint(e);
-  layoutStylesheet.href = "css/widescreen.css";
-  await loadPrint();
 }
 
 async function loadDicePage() {
@@ -1013,7 +1009,11 @@ function init() {
   document.getElementById("100x70").addEventListener("click", layout100x70);
   document.getElementById("d6").addEventListener("click", loadDicePage);
   window.addEventListener("beforeunload", saveState);
-  window.addEventListener("afterprint", () => {
+  window.addEventListener("afterprint", async () => {
+    document.getElementById("layoutStylesheet").href = "css/widescreen.css";
+
+    await loadPrint();
+
     setTimeout(() => {
       printing = false;
     }, 300);
