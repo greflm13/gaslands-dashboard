@@ -15,7 +15,7 @@
   }
 
   #printDiv .vehicleHeader {
-    grid-template-columns: 43.5mm 20mm 18.9mm;
+    grid-template-columns: 42mm 21.5mm 18.9mm;
     margin: 5.25mm 0 0 4.75mm;
     grid-template-rows: 4mm 4mm;
     gap: 2px 8px;
@@ -82,7 +82,6 @@
     font-size: 6pt;
   }
 
-
   #printDiv .armoryContainerContinued {
     grid-template-columns: 5.25mm 80mm;
     margin: 6mm 0 0 5.1mm;
@@ -99,7 +98,6 @@
     font-size: 9pt;
     width: 25mm;
   }
-
 
   #printDiv .armoryLabelContinued {
     transform: rotate(-90deg) translate(6mm, 3mm);
