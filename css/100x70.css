@@ -1,4 +1,4 @@
-/* @media print { */
+@media print {
   #printDiv .teamHeader div {
     padding: 10px;
   }
@@ -123,4 +123,4 @@
     left: 16.5mm;
     top: -53mm;
   }
-/* } */
+}

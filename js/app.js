@@ -970,16 +970,12 @@ function update() {
 }
 
 async function layout88x64(e) {
-  const layoutStylesheet = document.getElementById("layoutStylesheet");
-  layoutStylesheet.href = "css/88x64.css";
-  await loadPrint();
+  document.getElementById("layoutStylesheet").href = "css/88x64.css";
   startPrint(e);
 }
 
 async function layout100x70(e) {
-  const layoutStylesheet = document.getElementById("layoutStylesheet");
-  layoutStylesheet.href = "css/100x70.css";
-  await loadPrint();
+  document.getElementById("layoutStylesheet").href = "css/100x70.css";
   startPrint(e);
 }
 
@@ -1009,11 +1005,7 @@ function init() {
   document.getElementById("100x70").addEventListener("click", layout100x70);
   document.getElementById("d6").addEventListener("click", loadDicePage);
   window.addEventListener("beforeunload", saveState);
-  window.addEventListener("afterprint", async () => {
-    document.getElementById("layoutStylesheet").href = "css/widescreen.css";
-
-    await loadPrint();
-
+  window.addEventListener("afterprint", () => {
     setTimeout(() => {
       printing = false;
     }, 300);
