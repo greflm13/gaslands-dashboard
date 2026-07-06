@@ -896,6 +896,8 @@ function loadState() {
 
     state.currentTeamIndex = parsed.currentTeamIndex || 0;
 
+    state.printMode = parsed.printMode;
+
     return true;
   } catch (e) {
     console.error("Load failed", e);

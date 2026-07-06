@@ -10,6 +10,7 @@ import {
   vehicleKeywords,
 } from "./data";
 import { el } from "./render";
+import { state } from "./state";
 
 function clearHighlights() {
   document.querySelectorAll(".tableHighlight").forEach((el) => {
@@ -192,7 +193,8 @@ function enableTableSorting(table) {
   });
 }
 
-function referenceVehicles() {
+export function referenceVehicles() {
+  state.reference = "vehicles";
   const referenceTables = document.getElementById("referenceTables");
   const vehiclesTable = el("table", { class: "referenceTable" }, [
     el("thead", {}, [
@@ -287,7 +289,8 @@ function referenceVehicles() {
   );
 }
 
-function referenceWeapons() {
+export function referenceWeapons() {
+  state.reference = "weapons";
   const referenceTables = document.getElementById("referenceTables");
   const weaponsTable = el("table", { class: "referenceTable" }, [
     el("thead", {}, [
@@ -329,7 +332,8 @@ function referenceWeapons() {
   referenceTables.replaceChildren(weaponsTable);
 }
 
-function referenceUpgrades() {
+export function referenceUpgrades() {
+  state.reference = "upgrades";
   const referenceTables = document.getElementById("referenceTables");
   const upgradesTable = el("table", { class: "referenceTable" }, [
     el("thead", {}, [
@@ -364,7 +368,8 @@ function referenceUpgrades() {
   referenceTables.replaceChildren(upgradesTable);
 }
 
-function referenceSponsors() {
+export function referenceSponsors() {
+  state.reference = "sponsors";
   const referenceTables = document.getElementById("referenceTables");
   const sponsorsTable = el("table", { class: "referenceTable" }, [
     el("thead", {}, [
@@ -472,7 +477,8 @@ function referenceSponsors() {
   );
 }
 
-function referenceCargos() {
+export function referenceCargos() {
+  state.reference = "cargos";
   const referenceTables = document.getElementById("referenceTables");
   const cargosTable = el("table", { class: "referenceTable" }, [
     el("thead", {}, [

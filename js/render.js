@@ -48,6 +48,33 @@ async function loadReference() {
   return createReference();
 }
 
+async function setReference() {
+  const {
+    referenceVehicles,
+    referenceWeapons,
+    referenceUpgrades,
+    referenceSponsors,
+    referenceCargos,
+  } = await import("./reference.js");
+  switch (state.reference) {
+    case "vehicles":
+      referenceVehicles();
+      break;
+    case "weapons":
+      referenceWeapons();
+      break;
+    case "upgrades":
+      referenceUpgrades();
+      break;
+    case "sponsors":
+      referenceSponsors();
+      break;
+    case "cargos":
+      referenceCargos();
+      break;
+  }
+}
+
 export function el(tag, props = {}, children = []) {
   const e = document.createElement(tag);
 
@@ -628,6 +655,7 @@ export async function renderFull() {
     const editPage = [edit, await loadReference()];
     editDiv.replaceChildren(...editPage);
     setFold();
+    setReference();
   } finally {
     isRendering = false;
   }

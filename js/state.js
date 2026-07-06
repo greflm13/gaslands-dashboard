@@ -6,4 +6,5 @@ export const state = {
   DB_VERSION: 1,
   STORE_NAME: "images",
   initialized: false,
+  reference: undefined,
 };
