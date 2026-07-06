@@ -19,7 +19,7 @@ let interactionLock = false;
 
 async function loadPrint() {
   const { renderPrint } = await import("./print.js");
-  renderPrint();
+  await renderPrint();
 }
 
 export function setSponsor(ti, value) {
@@ -969,21 +969,21 @@ function update() {
 }
 
 async function layout88x64(e) {
-  document.getElementById("layoutStylesheet").href = "css/88x64.css";
-  const { renderPrint } = await import("./print.js");
-  await renderPrint();
+  const layoutStylesheet = document.getElementById("layoutStylesheet");
+  layoutStylesheet.href = "css/88x64.css";
+  await loadPrint();
   startPrint(e);
-  document.getElementById("layoutStylesheet").href = "css/widescreen.css";
-  await renderPrint();
+  layoutStylesheet.href = "css/widescreen.css";
+  await loadPrint();
 }
 
 async function layout100x70(e) {
-  document.getElementById("layoutStylesheet").href = "css/100x70.css";
-  const { renderPrint } = await import("./print.js");
-  await renderPrint();
+  const layoutStylesheet = document.getElementById("layoutStylesheet");
+  layoutStylesheet.href = "css/100x70.css";
+  await loadPrint();
   startPrint(e);
-  document.getElementById("layoutStylesheet").href = "css/widescreen.css";
-  await renderPrint();
+  layoutStylesheet.href = "css/widescreen.css";
+  await loadPrint();
 }
 
 async function loadDicePage() {
