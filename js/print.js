@@ -19,8 +19,6 @@ import { createDiceSet } from "./dice";
 import { el } from "./render";
 import { state } from "./state";
 
-let printRendering = false;
-
 async function createPrintTeamCard(team, ti) {
   const container = el("div", { class: "teamCard" });
 
@@ -332,16 +330,10 @@ function renderDice() {
 }
 
 export async function renderPrint() {
-  if (printRendering) return;
-  printRendering = true;
-  try {
-    const printContent = document.getElementById("printContent");
+  const printContent = document.getElementById("printContent");
 
-    printContent.innerHTML = "";
-    let team = state.teams[state.currentTeamIndex];
-    printContent.appendChild(await createPrintTeamCard(team));
-    printContent.appendChild(renderDice());
-  } finally {
-    printRendering = false;
-  }
+  printContent.innerHTML = "";
+  let team = state.teams[state.currentTeamIndex];
+  printContent.appendChild(await createPrintTeamCard(team));
+  printContent.appendChild(renderDice());
 }
