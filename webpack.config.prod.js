@@ -50,6 +50,7 @@ module.exports = merge(common, {
         { from: "css", to: "css" },
         { from: "font", to: "font" },
         { from: "icon.svg", to: "icon.svg" },
+        { from: "og-image.png", to: "og-image.png" },
         { from: "robots.txt", to: "robots.txt" },
         { from: "404.html", to: "404.html" },
         { from: ".htaccess", to: ".htaccess", toType: "file" },
