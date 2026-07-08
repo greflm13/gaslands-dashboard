@@ -239,7 +239,10 @@ async function createTeamCard(team, ti) {
         el("img", {
           class: team.folded ? "folded" : "unfolded",
           id: `folder-${ti}`,
-          onclick: () => toggleFold(ti),
+          onclick: (e) => {
+            toggleFold(ti);
+            e.stopPropagation();
+          },
         }),
       ]),
       el("div", { class: "teamHeadName" }, [
