@@ -93,10 +93,10 @@ export function el(tag, props = {}, children = []) {
   return e;
 }
 
-function select(options, value, onChange) {
+function select(options, value, onChange, onClick) {
   return el(
     "select",
-    { onchange: onChange },
+    { onchange: onChange, onclick: onClick },
     options.map((opt) => {
       const option = el("option", { value: opt }, [opt]);
       if (opt === value) option.selected = true;
@@ -234,7 +234,7 @@ function setFold() {
 
 async function createTeamCard(team, ti) {
   const container = el("div", { class: "teamCard", id: `team-${ti}` }, [
-    el("div", { class: "teamHeader" }, [
+    el("div", { class: "teamHeader", onclick: () => toggleFold(ti) }, [
       el("div", { class: "teamHeadFold" }, [
         el("img", {
           class: team.folded ? "folded" : "unfolded",
@@ -246,6 +246,7 @@ async function createTeamCard(team, ti) {
         el("input", {
           value: team.teamName,
           onchange: (e) => (team.teamName = e.target.value),
+          onclick: (e) => e.stopPropagation(),
         }),
       ]),
 
@@ -254,6 +255,7 @@ async function createTeamCard(team, ti) {
           allSponsors.map((s) => s.name),
           team.sponsor,
           (e) => setSponsor(ti, e.target.value),
+          (e) => e.stopPropagation(),
         ),
       ]),
       el("div", { class: "teamHeadCostContainer" }, [
@@ -264,6 +266,7 @@ async function createTeamCard(team, ti) {
             class:
               "teamHeadCost " +
               `${teamCost(team) <= team.maxCost ? "cheap" : "expensive"}`,
+            onclick: (e) => e.stopPropagation(),
           }),
 
           el("div", { class: "teamHeadMaxCost" }, [
@@ -276,13 +279,16 @@ async function createTeamCard(team, ti) {
                     ? "teamHeadCost cheap"
                     : "teamHeadCost expensive";
               },
+              onclick: (e) => e.stopPropagation(),
             }),
           ]),
           el("div", { class: "teamHeadCans", text: "cans" }),
         ]),
       ]),
       el("div", { class: "teamHeadPrintPlay" }, [
-        el("button", { onclick: () => openPrintPreview(ti) }, ["Print/Play"]),
+        el("button", { onclick: (e) => openPrintPreview(e, ti) }, [
+          "Print/Play",
+        ]),
       ]),
 
       el("div", { class: "teamHeadRemove" }, [
@@ -542,21 +548,33 @@ function createTrailerSection(team, ti, v, vi) {
 
 async function showHoverImage(ti, v, vi, e) {
   const imageSrc = (await loadImageFromDB(v.imageID)) || "/img/placeholder.svg";
-  const hover = el("div", { class: "vehicleImgHover" }, [
-    el("img", {
-      src: imageSrc,
-      width: "250px",
-      height: "250px",
-      top: e.clientY + "px",
-      left: e.clentX + "px",
-    }),
-  ]);
-  document.getElementById(`img-${ti}-${vi}`).appendChild(hover);
+  const hover = el(
+    "div",
+    { class: "vehicleImgHover", id: `imgh-${ti}-${vi}` },
+    [
+      el("img", {
+        src: imageSrc,
+        width: "250px",
+        height: "250px",
+        top: e.clientY + "px",
+        left: e.clientX + "px",
+        onmouseleave: (e) => removeHoverImage(ti, vi, e),
+      }),
+    ],
+  );
+  if (document.getElementById(`imgh-${ti}-${vi}`) === null) {
+    document.getElementById(`img-${ti}-${vi}`).appendChild(hover);
+  }
+  e.stopPropagation();
 }
 
 function removeHoverImage(ti, vi, e) {
-  parent = document.getElementById(`img-${ti}-${vi}`);
-  parent.removeChild(parent.lastElementChild);
+  const par = document.getElementById(`img-${ti}-${vi}`);
+  const chi = document.getElementById(`imgh-${ti}-${vi}`);
+  console.log(e);
+  if (chi != null) {
+    par.removeChild(chi);
+  }
 }
 
 async function createVehicleCard(team, ti, v, vi) {
