@@ -78,8 +78,7 @@ async function setPrintMode(enabled) {
   }
 }
 
-export async function openPrintPreview(e, i) {
-  e.stopPropagation();
+export async function openPrintPreview(i) {
   state.currentTeamIndex = i;
   saveState();
   await setPrintMode(true);

@@ -286,14 +286,24 @@ async function createTeamCard(team, ti) {
         ]),
       ]),
       el("div", { class: "teamHeadPrintPlay" }, [
-        el("button", { onclick: (e) => openPrintPreview(e, ti) }, [
-          "Print/Play",
-        ]),
+        el(
+          "button",
+          {
+            onclick: (e) => {
+              e.stopPropagation();
+              openPrintPreview(ti);
+            },
+          },
+          ["Print/Play"],
+        ),
       ]),
 
       el("div", { class: "teamHeadRemove" }, [
         el("img", {
-          onclick: () => removeTeam(ti),
+          onclick: (e) => {
+            e.stopPropagation();
+            removeTeam(ti);
+          },
           class: "removeButton",
           class: "removeButton",
         }),
