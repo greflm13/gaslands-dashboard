@@ -325,6 +325,21 @@ button,
   width: 88mm;
 }
 
+#backgroundLoader span {
+  position: absolute;
+  top: -64mm;
+  left: -88mm;
+}
+
+#backgroundLoader .preloadStardosStencil {
+  font-family: "Stardos Stencil", system-ui;
+  font-weight: bold;
+}
+
+#backgroundloader .preloadAgdasima {
+  font-family: "Agdasima", sans-serif;
+}
+
 #editDiv .referenceButtons {
   display: grid;
   grid-template-columns: auto auto auto auto auto;

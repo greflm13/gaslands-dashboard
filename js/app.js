@@ -976,12 +976,6 @@ function preloadAssets() {
   fetch("css/100x70.css", {
     cache: "force-cache",
   });
-  fetch("font/agdasima/PN_0Rfyxp2f1fUCgAPCGgCzU3v0.woff2", {
-    cache: "force-cache",
-  });
-  fetch("font/stardosstencil/X7n44bcuGPC8hrvEOHXOgaKCc2TpU3tjuQWs.woff2", {
-    cache: "force-cache",
-  });
 }
 
 function update() {
