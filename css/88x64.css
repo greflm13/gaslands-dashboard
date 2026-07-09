@@ -106,7 +106,7 @@
   }
 
   #printDiv .smallerArmory {
-    grid-template-columns: 5.25mm 50mm;
+    grid-template-columns: 5.25mm 49mm;
   }
 
   #printDiv .theVehicleImg {

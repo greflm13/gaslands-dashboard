@@ -966,16 +966,16 @@ function startPrint(e) {
   window.print();
 }
 
+function createPreload(href) {
+  const link = document.createElement("link");
+  link.rel = "preload";
+  link.href = href;
+  link.as = "style";
+  document.head.appendChild(link);
+}
+
 function preloadAssets() {
-  fetch("css/print.css", {
-    cache: "force-cache",
-  });
-  fetch("css/88x64.css", {
-    cache: "force-cache",
-  });
-  fetch("css/100x70.css", {
-    cache: "force-cache",
-  });
+  createPreload("css/100x70.css");
 }
 
 function update() {
