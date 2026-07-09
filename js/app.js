@@ -966,6 +966,24 @@ function startPrint(e) {
   window.print();
 }
 
+function preloadAssets() {
+  fetch("css/print.css", {
+    cache: "force-cache",
+  });
+  fetch("css/88x64.css", {
+    cache: "force-cache",
+  });
+  fetch("css/100x70.css", {
+    cache: "force-cache",
+  });
+  fetch("font/agdasima/PN_0Rfyxp2f1fUCgAPCGgCzU3v0.woff2", {
+    cache: "force-cache",
+  });
+  fetch("font/stardosstencil/X7n44bcuGPC8hrvEOHXOgaKCc2TpU3tjuQWs.woff2", {
+    cache: "force-cache",
+  });
+}
+
 function update() {
   saveState();
   renderFull();
@@ -992,6 +1010,7 @@ function init() {
 
   loadState();
   renderFull();
+  preloadAssets();
   document.getElementById("addTeamButton").addEventListener("click", addTeam);
   document.getElementById("saveButton").addEventListener("click", saveToFile);
   document
