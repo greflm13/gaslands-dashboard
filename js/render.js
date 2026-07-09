@@ -248,6 +248,7 @@ async function createTeamCard(team, ti) {
       el("div", { class: "teamHeadName" }, [
         el("input", {
           value: team.teamName,
+          type: "text",
           onchange: (e) => (team.teamName = e.target.value),
           onclick: (e) => e.stopPropagation(),
         }),
@@ -275,6 +276,7 @@ async function createTeamCard(team, ti) {
           el("div", { class: "teamHeadMaxCost" }, [
             el("input", {
               value: team.maxCost,
+              type: "text",
               onchange: (e) => {
                 team.maxCost = e.target.value;
                 document.getElementById(`team-cost-${ti}`).classList =
@@ -603,6 +605,7 @@ async function createVehicleCard(team, ti, v, vi) {
       el("div", { class: "vehicleHeadName" }, [
         el("input", {
           value: v.vehicleName,
+          type: "text",
           onchange: (e) => (v.vehicleName = e.target.value),
           maxlength: 24,
         }),

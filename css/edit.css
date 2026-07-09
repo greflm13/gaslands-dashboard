@@ -99,6 +99,10 @@
   padding: 4px;
 }
 
+#editDiv .vehicleHeadName {
+  padding-right: 12px;
+}
+
 #editDiv .trailerTable {
   display: grid;
   grid-template-columns: 50px 162px auto 182px;

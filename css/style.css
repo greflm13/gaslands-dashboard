@@ -115,6 +115,18 @@ button:hover {
   display: none;
 }
 
+input {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
+  box-sizing: border-box;
+  height: 25px;
+}
+
+input[type="text"] {
+  width: 100%;
+}
 /* ==========================================================================
    Helper classes
    ========================================================================== */
