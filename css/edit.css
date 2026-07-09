@@ -333,10 +333,9 @@ button,
 
 #backgroundLoader .preloadStardosStencil {
   font-family: "Stardos Stencil", system-ui;
-  font-weight: bold;
 }
 
-#backgroundloader .preloadAgdasima {
+#backgroundLoader .preloadAgdasima {
   font-family: "Agdasima", sans-serif;
 }
 

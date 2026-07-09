@@ -95,6 +95,7 @@
 #printDiv .armoryContainerContinued {
   display: grid;
   font-family: "Agdasima", sans-serif;
+  text-transform: none;
 }
 
 #printDiv .armoryLabel,
@@ -103,6 +104,7 @@
   grid-row: 1;
   font-family: "Stardos Stencil", system-ui;
   font-weight: bold;
+  text-transform: uppercase;
 }
 
 #printDiv .vehicleImg {
