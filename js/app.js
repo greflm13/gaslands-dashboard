@@ -885,7 +885,7 @@ export function saveState() {
   }
 }
 
-function loadState() {
+async function loadState() {
   try {
     const raw = localStorage.getItem("gaslandsDashboard");
     if (!raw) return false;
@@ -896,9 +896,7 @@ function loadState() {
 
     state.currentTeamIndex = parsed.currentTeamIndex || 0;
 
-    state.currentTeamIndex = parsed.currentTeamIndex;
-
-    setPrintMode(parsed.printMode);
+    await setPrintMode(parsed.printMode);
 
     return true;
   } catch (e) {
@@ -1000,11 +998,16 @@ async function loadDicePage() {
   renderDicePage();
 }
 
-function init() {
-  if (state.initialized) return;
+async function init() {
+  if (state.initialized) {
+    return;
+  }
   state.initialized = true;
 
-  loadState();
+  console.log("init", state.initialized);
+  console.trace("init");
+
+  await loadState();
   preloadAssets();
   document.getElementById("addTeamButton").addEventListener("click", addTeam);
   document.getElementById("saveButton").addEventListener("click", saveToFile);
