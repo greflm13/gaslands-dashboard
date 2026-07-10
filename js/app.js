@@ -896,7 +896,9 @@ function loadState() {
 
     state.currentTeamIndex = parsed.currentTeamIndex || 0;
 
-    state.printMode = parsed.printMode;
+    state.currentTeamIndex = parsed.currentTeamIndex;
+
+    setPrintMode(parsed.printMode);
 
     return true;
   } catch (e) {
@@ -1003,7 +1005,6 @@ function init() {
   state.initialized = true;
 
   loadState();
-  renderFull();
   preloadAssets();
   document.getElementById("addTeamButton").addEventListener("click", addTeam);
   document.getElementById("saveButton").addEventListener("click", saveToFile);
