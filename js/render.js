@@ -586,7 +586,6 @@ async function showHoverImage(ti, v, vi, e) {
 function removeHoverImage(ti, vi, e) {
   const par = document.getElementById(`img-${ti}-${vi}`);
   const chi = document.getElementById(`imgh-${ti}-${vi}`);
-  console.log(e);
   if (chi != null) {
     par.removeChild(chi);
   }

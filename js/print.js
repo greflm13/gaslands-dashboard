@@ -330,12 +330,10 @@ function renderDice() {
 }
 
 export async function renderPrint() {
-  console.log("start render")
   const printContent = document.getElementById("printContent");
 
   printContent.innerHTML = "";
   let team = state.teams[state.currentTeamIndex];
   printContent.appendChild(await createPrintTeamCard(team));
   printContent.appendChild(renderDice());
-  console.log("stop render")
 }

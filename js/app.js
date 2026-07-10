@@ -1004,9 +1004,6 @@ async function init() {
   }
   state.initialized = true;
 
-  console.log("init", state.initialized);
-  console.trace("init");
-
   await loadState();
   preloadAssets();
   document.getElementById("addTeamButton").addEventListener("click", addTeam);
