@@ -234,6 +234,9 @@ function addHazard(ti, vi) {
   const vehicle = state.teams[ti].vehicles[vi];
   vehicle.currHazard++;
   display.innerHTML = vehicle.currHazard;
+  if (vehicle.currHazard >= 6) {
+    display.classList = "vehicleGear expensive";
+  }
 }
 
 function remHazard(ti, vi) {
@@ -242,6 +245,10 @@ function remHazard(ti, vi) {
   if (vehicle.currHazard > 0) {
     vehicle.currHazard--;
     display.innerHTML = vehicle.currHazard;
+  }
+
+  if (vehicle.currHazard < 6) {
+    display.classList = "vehicleGear";
   }
 }
 
