@@ -281,7 +281,7 @@ function createPrintPlayState(ti, vi) {
       }),
       el("div", {
         id: `haz_${ti}_${vi}`,
-        class: "vehicleGear",
+        class: `vehicleGear ${state.teams[ti].vehicles[vi].currHazard >= 6 ? "expensive" : ""}`,
         text: state.teams[ti].vehicles[vi].currHazard,
       }),
       el("button", {
