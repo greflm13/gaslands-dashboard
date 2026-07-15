@@ -128,12 +128,35 @@ function createPrintKeywordRow(k) {
   });
 }
 
-function toogleHullPoint(id) {
+function toogleHullPoint(ti, vi, hi) {
+  const id = `hp_${ti}_${vi}_${hi}`;
   const hullPoint = document.getElementById(id);
-  if (hullPoint.style.backgroundColor == "rgb(17, 17, 17)") {
-    hullPoint.style.backgroundColor = "#fff";
+  if (getHullPoint(ti, vi, hi)) {
+    hullPoint.classList = "hullPoint dead";
+    state.teams[ti].vehicles[vi].hullpoints[hi] = false;
   } else {
-    hullPoint.style.backgroundColor = "#111";
+    hullPoint.classList = "hullPoint alive";
+    state.teams[ti].vehicles[vi].hullpoints[hi] = true;
+  }
+}
+
+function getHullPoint(ti, vi, hi) {
+  return state.teams[ti].vehicles[vi].hullpoints[hi];
+}
+
+function createPlayState(ti, vi, hp) {
+  if (state.teams[ti].vehicles[vi].hullpoints === undefined) {
+    state.teams[ti].vehicles[vi].hullpoints = [
+      ...Array.from({ length: hp }, () => {
+        return true;
+      }),
+    ];
+  }
+  if (state.teams[ti].vehicles[vi].currGear === undefined) {
+    state.teams[ti].vehicles[vi].currGear = 1;
+  }
+  if (state.teams[ti].vehicles[vi].currHazard === undefined) {
+    state.teams[ti].vehicles[vi].currHazard = 0;
   }
 }
 
@@ -188,11 +211,90 @@ function createPrintVehicleCardContinued(chunk) {
   return container;
 }
 
+function addGear(ti, vi) {
+  const display = document.getElementById(`gear_${ti}_${vi}`);
+  const vehicle = state.teams[ti].vehicles[vi];
+  if (vehicle.currGear < vehicle.maxGear) {
+    vehicle.currGear++;
+    display.innerHTML = vehicle.currGear;
+  }
+}
+
+function remGear(ti, vi) {
+  const display = document.getElementById(`gear_${ti}_${vi}`);
+  const vehicle = state.teams[ti].vehicles[vi];
+  if (vehicle.currGear > 1) {
+    vehicle.currGear--;
+    display.innerHTML = vehicle.currGear;
+  }
+}
+
+function addHazard(ti, vi) {
+  const display = document.getElementById(`haz_${ti}_${vi}`);
+  const vehicle = state.teams[ti].vehicles[vi];
+  vehicle.currHazard++;
+  display.innerHTML = vehicle.currHazard;
+}
+
+function remHazard(ti, vi) {
+  const display = document.getElementById(`haz_${ti}_${vi}`);
+  const vehicle = state.teams[ti].vehicles[vi];
+  if (vehicle.currHazard > 0) {
+    vehicle.currHazard--;
+    display.innerHTML = vehicle.currHazard;
+  }
+}
+
+function createPrintPlayState(ti, vi) {
+  return el("div", { class: "playState" }, [
+    el("div", { class: "currentGear noprint" }, [
+      el("div", { class: "vehicleMaxGear" }, ["Current Gear"]),
+      el("button", {
+        class: "addGear",
+        text: "+",
+        onclick: () => addGear(ti, vi),
+      }),
+      el("div", {
+        id: `gear_${ti}_${vi}`,
+        class: "vehicleGear",
+        text: state.teams[ti].vehicles[vi].currGear,
+      }),
+      el("button", {
+        class: "remGear",
+        text: "-",
+        onclick: () => remGear(ti, vi),
+      }),
+    ]),
+    el("div", { class: "currentHazard noprint" }, [
+      el("div", { class: "vehicleMaxGear" }, ["Current Hazard"]),
+      el("button", {
+        class: "addGear",
+        text: "+",
+        onclick: () => addHazard(ti, vi),
+      }),
+      el("div", {
+        id: `haz_${ti}_${vi}`,
+        class: "vehicleGear",
+        text: state.teams[ti].vehicles[vi].currHazard,
+      }),
+      el("button", {
+        class: "remGear",
+        text: "-",
+        onclick: () => remHazard(ti, vi),
+      }),
+    ]),
+  ]);
+}
+
 async function createPrintVehicleCard(team, ti, v, vi) {
   const container = el("div", { class: "vehicleCard" });
 
   const stats = computeStats(v);
   const free = totalSlots(v) - usedSlots(v);
+
+  state.teams[ti].vehicles[vi].maxGear = stats.maxGear;
+
+  createPlayState(ti, vi, stats.hull);
 
   container.appendChild(
     el("div", { class: "vehicleHeader" }, [
@@ -227,10 +329,10 @@ async function createPrintVehicleCard(team, ti, v, vi) {
         el("div", { class: "hullPoints" }, [
           ...Array.from({ length: stats.hull }, (h, hi) =>
             el("div", {
-              class: "hullPoint",
-              id: `hp_${vi}_${hi}`,
+              class: `hullPoint ${getHullPoint(ti, vi, hi) ? "alive" : "dead"}`,
+              id: `hp_${ti}_${vi}_${hi}`,
               onclick: (e) => {
-                toogleHullPoint(`hp_${vi}_${hi}`);
+                toogleHullPoint(ti, vi, hi);
               },
             }),
           ),
@@ -312,6 +414,9 @@ async function createPrintVehicleCard(team, ti, v, vi) {
     container2 = createPrintVehicleCardContinued(secondChunk);
   }
 
+  const playState = createPrintPlayState(ti, vi);
+  container.appendChild(playState);
+
   if (container2) {
     return [container, container2];
   }
@@ -334,6 +439,8 @@ export async function renderPrint() {
 
   printContent.innerHTML = "";
   let team = state.teams[state.currentTeamIndex];
-  printContent.appendChild(await createPrintTeamCard(team));
+  printContent.appendChild(
+    await createPrintTeamCard(team, state.currentTeamIndex),
+  );
   printContent.appendChild(renderDice());
 }

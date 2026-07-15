@@ -683,6 +683,13 @@ export async function renderFull() {
     const cards = await Promise.all(
       (state.teams || []).map((team, ti) => createTeamCard(team, ti)),
     );
+    state.teams.forEach((t) => {
+      t.vehicles.forEach((v) => {
+        v.hullpoints = undefined;
+        v.currGear = undefined;
+        v.currHazard = undefined;
+      });
+    });
 
     edit.replaceChildren(...cards);
     const editPage = [edit, await loadReference()];

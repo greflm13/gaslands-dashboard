@@ -498,6 +498,7 @@ export function addVehicle(i) {
   v.perks = [];
   v.trailer = allTrailers[0];
   v.cargo = allCargos[0];
+  v.hullpoints = []
 
   state.teams[i].vehicles.push(v);
   update();

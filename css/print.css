@@ -85,10 +85,17 @@
 }
 
 #printDiv .hullPoint {
-  background-color: white;
   border: 0 solid black;
   display: inline-flex;
   cursor: pointer;
+}
+
+#printDiv .hullPoint.alive {
+  background-color: white;
+}
+
+#printDiv .hullPoint.dead {
+  background-color: black;
 }
 
 #printDiv .armoryContainer,
@@ -158,6 +165,18 @@
 #printDiv .armoryRow {
   line-height: 1;
   margin-bottom: 0.5ex;
+}
+
+#printDiv .playState {
+  position: absolute;
+  margin-top: -120mm;
+  margin-left: 180mm;
+}
+
+#printDiv .addGear,
+#printDiv .remGear {
+  width: 100%;
+  font-size: 20pt;
 }
 
 .noprint {

@@ -3,7 +3,7 @@
 }
 
 #printDiv .teamVehicles {
-  grid-template-columns: 184mm 184mm;
+  grid-template-columns: auto;
 }
 
 #printDiv .vehicleCard,
