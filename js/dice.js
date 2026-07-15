@@ -181,6 +181,7 @@ export function createDiceSet(title, type) {
       type: "number",
       min: "1",
       value: "1",
+      class: "diceSelect",
       oninput: (e) => {
         diceCount = Math.max(1, parseInt(e.target.value) || 1);
         renderDiceStatic();

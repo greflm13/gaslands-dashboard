@@ -17,6 +17,10 @@
   user-select: none;
 }
 
+.diceSelect {
+  width: 15mm;
+}
+
 .diceContainer {
   padding: 20px;
   text-align: center;
