@@ -177,16 +177,41 @@ export function createDiceSet(title, type) {
   return el("div", { class: "diceContainer" }, [
     el("h2", { text: title }),
     el("label", { text: "Number of Dice: " }),
+    el(
+      "button",
+      {
+        onclick: () => {
+          if (diceCount > 1) {
+            diceCount--;
+            document.getElementById(`ds_${type}`).value = diceCount;
+            renderDiceStatic();
+          }
+        },
+      },
+      ["-"],
+    ),
     el("input", {
       type: "number",
       min: "1",
       value: "1",
       class: "diceSelect",
+      id: `ds_${type}`,
       oninput: (e) => {
         diceCount = Math.max(1, parseInt(e.target.value) || 1);
         renderDiceStatic();
       },
     }),
+    el(
+      "button",
+      {
+        onclick: () => {
+          diceCount++;
+          document.getElementById(`ds_${type}`).value = diceCount;
+          renderDiceStatic();
+        },
+      },
+      ["+"],
+    ),
     el("button", { onclick: rollDice, text: "Roll Dice" }),
     resultsDiv,
   ]);
