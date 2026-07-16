@@ -178,6 +178,11 @@
   font-size: 20pt;
 }
 
+#printDiv .currentGear,
+#printDiv .currentHazard {
+  width: 22mm;
+}
+
 #printDiv .ammoState {
   margin-top: 7mm;
   margin-left: -178mm;
@@ -190,6 +195,7 @@
   display: grid;
   grid-template-columns: 7mm auto 7mm;
   font-size: 14pt;
+  min-width: 30mm;
 }
 
 #printDiv .weaponAmmoName {
