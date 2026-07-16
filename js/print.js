@@ -158,6 +158,14 @@ function createPlayState(ti, vi, hp) {
   if (state.teams[ti].vehicles[vi].currHazard === undefined) {
     state.teams[ti].vehicles[vi].currHazard = 0;
   }
+  state.teams[ti].vehicles[vi].weapons.forEach((w, wi) => {
+    if (
+      state.teams[ti].vehicles[vi].weapons[wi].weapon.currAmmo === undefined
+    ) {
+      state.teams[ti].vehicles[vi].weapons[wi].weapon.currAmmo =
+        state.teams[ti].vehicles[vi].weapons[wi].weapon.ammo;
+    }
+  });
 }
 
 function getMeasurementRoot() {
@@ -252,12 +260,37 @@ function remHazard(ti, vi) {
   }
 }
 
+function reduceAmmo(ti, vi, wi) {
+  if (state.teams[ti].vehicles[vi].weapons[wi].weapon.currAmmo > 0) {
+    state.teams[ti].vehicles[vi].weapons[wi].weapon.currAmmo--;
+  }
+  document.getElementById(`ammo_${ti}_${vi}_${wi}`).innerHTML =
+    state.teams[ti].vehicles[vi].weapons[wi].weapon.currAmmo;
+}
+
+function addAmmo(ti, vi, wi) {
+  if (
+    state.teams[ti].vehicles[vi].weapons[wi].weapon.currAmmo <
+    state.teams[ti].vehicles[vi].weapons[wi].weapon.ammo
+  ) {
+    state.teams[ti].vehicles[vi].weapons[wi].weapon.currAmmo++;
+  }
+  document.getElementById(`ammo_${ti}_${vi}_${wi}`).innerHTML =
+    state.teams[ti].vehicles[vi].weapons[wi].weapon.currAmmo;
+}
+
 function createPrintPlayState(ti, vi) {
+  let weaponsWithAmmo = [];
+  state.teams[ti].vehicles[vi].weapons.forEach((w, wi) => {
+    if (w.weapon.ammo > 0) {
+      weaponsWithAmmo.push(wi);
+    }
+  });
   return el("div", { class: "playState" }, [
     el("div", { class: "currentGear noprint" }, [
-      el("div", { class: "vehicleMaxGear" }, ["Current Gear"]),
+      el("div", { class: "vehicleMaxGear" }, ["Gear"]),
       el("button", {
-        class: "addGear",
+        class: "addRemBut",
         text: "+",
         onclick: () => addGear(ti, vi),
       }),
@@ -267,15 +300,15 @@ function createPrintPlayState(ti, vi) {
         text: state.teams[ti].vehicles[vi].currGear,
       }),
       el("button", {
-        class: "remGear",
+        class: "addRemBut",
         text: "-",
         onclick: () => remGear(ti, vi),
       }),
     ]),
     el("div", { class: "currentHazard noprint" }, [
-      el("div", { class: "vehicleMaxGear" }, ["Current Hazard"]),
+      el("div", { class: "vehicleMaxGear" }, ["Hazard"]),
       el("button", {
-        class: "addGear",
+        class: "addRemBut",
         text: "+",
         onclick: () => addHazard(ti, vi),
       }),
@@ -285,10 +318,39 @@ function createPrintPlayState(ti, vi) {
         text: state.teams[ti].vehicles[vi].currHazard,
       }),
       el("button", {
-        class: "remGear",
+        class: "addRemBut",
         text: "-",
         onclick: () => remHazard(ti, vi),
       }),
+    ]),
+    el("div", { class: "ammoState noprint" }, [
+      ...weaponsWithAmmo.map((wi) =>
+        el("div", { class: "weaponAmmoState" }, [
+          el("div", {
+            class: "weaponAmmoName",
+            text: state.teams[ti].vehicles[vi].weapons[wi].weapon.wtype,
+          }),
+          el("button", {
+            class: "ammoAddRemBut",
+            text: "-",
+            onclick: () => {
+              reduceAmmo(ti, vi, wi);
+            },
+          }),
+          el("div", {
+            class: "ammoLeft",
+            id: `ammo_${ti}_${vi}_${wi}`,
+            text: state.teams[ti].vehicles[vi].weapons[wi].weapon.currAmmo,
+          }),
+          el("button", {
+            class: "ammoAddRemBut",
+            text: "+",
+            onclick: () => {
+              addAmmo(ti, vi, wi);
+            },
+          }),
+        ]),
+      ),
     ]),
   ]);
 }

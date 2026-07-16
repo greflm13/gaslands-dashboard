@@ -688,8 +688,12 @@ export async function renderFull() {
         v.hullpoints = undefined;
         v.currGear = undefined;
         v.currHazard = undefined;
+        v.weapons.forEach((w) => {
+          w.weapon.currAmmo = undefined;
+        });
       });
     });
+    console.log(state.teams)
 
     edit.replaceChildren(...cards);
     const editPage = [edit, await loadReference()];

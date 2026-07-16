@@ -173,10 +173,32 @@
   margin-left: 180mm;
 }
 
-#printDiv .addGear,
-#printDiv .remGear {
+#printDiv .addRemBut {
   width: 100%;
   font-size: 20pt;
+}
+
+#printDiv .ammoState {
+  margin-top: 7mm;
+  margin-left: -178mm;
+  display: flex;
+  text-align: center;
+}
+
+#printDiv .weaponAmmoState {
+  padding: 1mm 3mm;
+  display: grid;
+  grid-template-columns: 7mm auto 7mm;
+  font-size: 14pt;
+}
+
+#printDiv .weaponAmmoName {
+  grid-column: 1/-1;
+}
+
+#printDiv .ammoAddRemBut {
+  font-size: 7pt;
+  text-align: center;
 }
 
 .noprint {
