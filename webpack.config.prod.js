@@ -20,6 +20,7 @@ module.exports = merge(common, {
         },
         { from: "css", to: "css" },
         { from: "font", to: "font" },
+        { from: "assets", to: "assets" },
         { from: "icon.svg", to: "icon.svg" },
         { from: "og-image.png", to: "og-image.png" },
         { from: "robots.txt", to: "robots.txt" },
