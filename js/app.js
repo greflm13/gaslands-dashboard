@@ -498,7 +498,7 @@ export function addVehicle(i) {
   v.perks = [];
   v.trailer = allTrailers[0];
   v.cargo = allCargos[0];
-  v.hullpoints = []
+  v.hullpoints = [];
 
   state.teams[i].vehicles.push(v);
   update();
@@ -814,6 +814,7 @@ async function loadFromText(text) {
         sponsor: t.sponsor || allSponsors[0]?.name || "",
         maxCost: t.maxCost || 50,
         vehicles: [],
+        folded: true,
       };
 
       const vehicles = await Promise.all(
