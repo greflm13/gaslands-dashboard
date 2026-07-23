@@ -693,7 +693,6 @@ export async function renderFull() {
         });
       });
     });
-    console.log(state.teams)
 
     edit.replaceChildren(...cards);
     const editPage = [edit, await loadReference()];
