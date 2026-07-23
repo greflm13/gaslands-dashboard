@@ -810,7 +810,7 @@ async function loadFromText(text) {
   const teams = await Promise.all(
     (data.teams || []).map(async (t, ti) => {
       const team = {
-        teamName: t.teamName || "Team",
+        teamName: t.teamName,
         sponsor: t.sponsor || allSponsors[0]?.name || "",
         maxCost: t.maxCost || 50,
         vehicles: [],
@@ -826,7 +826,7 @@ async function loadFromText(text) {
 
           const v = structuredClone(baseVehicle);
 
-          v.vehicleName = tv.vehicleName || "Vehicle";
+          v.vehicleName = tv.vehicleName;
 
           v.weapons = (tv.weapons || []).map((w) => {
             const baseW = allWeapons.find((x) => x.wtype === w.weaponType);
