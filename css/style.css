@@ -96,6 +96,14 @@ body {
   padding: 8px;
   background: #1a1a1a;
   border-bottom: 1px solid #333;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 100;
+}
+
+.content {
+  margin-top: 44px;
 }
 
 button {
