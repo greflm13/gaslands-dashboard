@@ -125,9 +125,9 @@ button:hover {
 }
 
 input {
-  appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
+  appearance: none;
 
   box-sizing: border-box;
   height: 25px;
