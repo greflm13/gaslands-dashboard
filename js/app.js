@@ -281,6 +281,26 @@ export function movePerk(ti, vi, from, to) {
   update();
 }
 
+export function moveVehicle(ti, from, to) {
+  if (from === to) return;
+
+  const vehicles = state.teams[ti].vehicles;
+
+  const [moved] = vehicles.splice(from, 1);
+  vehicles.splice(to, 0, moved);
+
+  update();
+}
+
+export function moveTeam(from, to) {
+  if (from === to) return;
+
+  const [moved] = state.teams.splice(from, 1);
+  state.teams.splice(to, 0, moved);
+
+  update();
+}
+
 export function weaponAttack(v, w) {
   if (
     w.wtype === "Mortar" &&

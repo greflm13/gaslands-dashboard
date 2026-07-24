@@ -18,7 +18,9 @@ import {
   computeStats,
   loadImageFromDB,
   movePerk,
+  moveTeam,
   moveUpgrade,
+  moveVehicle,
   moveWeapon,
   openPrintPreview,
   removePerk,
@@ -237,86 +239,107 @@ function setFold() {
 
 async function createTeamCard(team, ti) {
   const container = el("div", { class: "teamCard", id: `team-${ti}` }, [
-    el("div", { class: "teamHeader", onclick: () => toggleFold(ti) }, [
-      el("div", { class: "teamHeadFold" }, [
-        el("img", {
-          class: team.folded ? "folded" : "unfolded",
-          id: `folder-${ti}`,
-          onclick: (e) => {
-            toggleFold(ti);
-            e.stopPropagation();
-          },
-        }),
-      ]),
-      el("div", { class: "teamHeadName" }, [
-        el("input", {
-          value: team.teamName,
-          type: "text",
-          onchange: (e) => (team.teamName = e.target.value),
-          onclick: (e) => e.stopPropagation(),
-        }),
-      ]),
-
-      el("div", { class: "teamHeadSponsor" }, [
-        select(
-          allSponsors.map((s) => s.name),
-          team.sponsor,
-          (e) => setSponsor(ti, e.target.value),
-          (e) => e.stopPropagation(),
-        ),
-      ]),
-      el("div", { class: "teamHeadCostContainer" }, [
-        el("div", {}, [
-          el("div", {
-            text: teamCost(team),
-            id: `team-cost-${ti}`,
-            class:
-              "teamHeadCost " +
-              `${teamCost(team) <= team.maxCost ? "cheap" : "expensive"}`,
+    el(
+      "div",
+      {
+        class: "teamHeader",
+        onclick: () => toggleFold(ti),
+        draggable: true,
+        ondragstart: (e) => {
+          e.dataTransfer.effectAllowed = "move";
+          e.dataTransfer.setData("text/plain", ti);
+        },
+        ondragover: (e) => {
+          e.preventDefault();
+        },
+        ondrop: (e) => {
+          e.preventDefault();
+          const from = parseInt(e.dataTransfer.getData("text/plain"), 10);
+          const to = ti;
+          moveTeam(from, to);
+        },
+      },
+      [
+        el("div", { class: "teamHeadFold" }, [
+          el("img", {
+            class: team.folded ? "folded" : "unfolded",
+            id: `folder-${ti}`,
+            onclick: (e) => {
+              toggleFold(ti);
+              e.stopPropagation();
+            },
+          }),
+        ]),
+        el("div", { class: "teamHeadName" }, [
+          el("input", {
+            value: team.teamName,
+            type: "text",
+            onchange: (e) => (team.teamName = e.target.value),
             onclick: (e) => e.stopPropagation(),
           }),
+        ]),
 
-          el("div", { class: "teamHeadMaxCost" }, [
-            el("input", {
-              value: team.maxCost,
-              type: "text",
-              onchange: (e) => {
-                team.maxCost = e.target.value;
-                document.getElementById(`team-cost-${ti}`).classList =
-                  teamCost(team) <= team.maxCost
-                    ? "teamHeadCost cheap"
-                    : "teamHeadCost expensive";
-              },
+        el("div", { class: "teamHeadSponsor" }, [
+          select(
+            allSponsors.map((s) => s.name),
+            team.sponsor,
+            (e) => setSponsor(ti, e.target.value),
+            (e) => e.stopPropagation(),
+          ),
+        ]),
+        el("div", { class: "teamHeadCostContainer" }, [
+          el("div", {}, [
+            el("div", {
+              text: teamCost(team),
+              id: `team-cost-${ti}`,
+              class:
+                "teamHeadCost " +
+                `${teamCost(team) <= team.maxCost ? "cheap" : "expensive"}`,
               onclick: (e) => e.stopPropagation(),
             }),
+
+            el("div", { class: "teamHeadMaxCost" }, [
+              el("input", {
+                value: team.maxCost,
+                type: "text",
+                onchange: (e) => {
+                  team.maxCost = e.target.value;
+                  document.getElementById(`team-cost-${ti}`).classList =
+                    teamCost(team) <= team.maxCost
+                      ? "teamHeadCost cheap"
+                      : "teamHeadCost expensive";
+                },
+                onclick: (e) => e.stopPropagation(),
+              }),
+            ]),
+            el("div", { class: "teamHeadCans", text: "cans" }),
           ]),
-          el("div", { class: "teamHeadCans", text: "cans" }),
         ]),
-      ]),
-      el("div", { class: "teamHeadPrintPlay" }, [
-        el(
-          "button",
-          {
+        el("div", { class: "teamHeadPrintPlay" }, [
+          el(
+            "button",
+            {
+              onclick: (e) => {
+                e.stopPropagation();
+                openPrintPreview(ti);
+              },
+            },
+            ["Print/Play"],
+          ),
+        ]),
+
+        el("div", { class: "teamHeadRemove" }, [
+          el("img", {
             onclick: (e) => {
               e.stopPropagation();
-              openPrintPreview(ti);
+              removeTeam(ti);
             },
-          },
-          ["Print/Play"],
-        ),
-      ]),
-
-      el("div", { class: "teamHeadRemove" }, [
-        el("img", {
-          onclick: (e) => {
-            e.stopPropagation();
-            removeTeam(ti);
-          },
-          class: "removeButton",
-          class: "removeButton",
-        }),
-      ]),
-    ]),
+            class: "removeButton",
+            class: "removeButton",
+          }),
+        ]),
+      ],
+    ),
   ]);
 
   const cards = await Promise.all(
@@ -659,54 +682,74 @@ async function createVehicleCard(team, ti, v, vi) {
   const imageSrc = (await loadImageFromDB(v.imageID)) || "/img/placeholder.svg";
 
   container.appendChild(
-    el("div", { class: "vehicleHeader" }, [
-      el("div", { class: "vehicleHeadName" }, [
-        el("input", {
-          value: v.vehicleName,
-          type: "text",
-          onchange: (e) => (v.vehicleName = e.target.value),
-          maxlength: 24,
-        }),
-      ]),
+    el(
+      "div",
+      {
+        class: "vehicleHeader",
+        draggable: true,
+        ondragstart: (e) => {
+          e.dataTransfer.effectAllowed = "move";
+          e.dataTransfer.setData("text/plain", vi);
+        },
+        ondragover: (e) => {
+          e.preventDefault();
+        },
+        ondrop: (e) => {
+          e.preventDefault();
+          const from = parseInt(e.dataTransfer.getData("text/plain"), 10);
+          const to = vi;
+          moveVehicle(ti, from, to);
+        },
+      },
+      [
+        el("div", { class: "vehicleHeadName" }, [
+          el("input", {
+            value: v.vehicleName,
+            type: "text",
+            onchange: (e) => (v.vehicleName = e.target.value),
+            maxlength: 24,
+          }),
+        ]),
 
-      el("div", { class: "vehicleHeadType" }, [
-        select(
-          allVehicles.map((x) => x.vtype),
-          v.vtype,
-          (e) => changeVehicle(ti, vi, e.target.value),
-        ),
-      ]),
-      el("div", { class: "vehicleHeadImg", id: `img-${ti}-${vi}` }, [
-        el("label", { text: "Image: ", for: `imgi-${ti}-${vi}` }),
-        el("img", {
-          src: imageSrc,
-          class: "vehicleImg",
-          width: "25px",
-          height: "25px",
-          onmouseenter: (e) => showHoverImage(ti, v, vi, e),
-          onmouseleave: (e) => removeHoverImage(ti, vi, e),
-        }),
-        el("input", {
-          type: "File",
-          accept: "image/*",
-          id: `imgi-${ti}-${vi}`,
-          class: "imagePicker",
-          onchange: (e) => addImage(ti, vi, e),
-        }),
-      ]),
+        el("div", { class: "vehicleHeadType" }, [
+          select(
+            allVehicles.map((x) => x.vtype),
+            v.vtype,
+            (e) => changeVehicle(ti, vi, e.target.value),
+          ),
+        ]),
+        el("div", { class: "vehicleHeadImg", id: `img-${ti}-${vi}` }, [
+          el("label", { text: "Image: ", for: `imgi-${ti}-${vi}` }),
+          el("img", {
+            src: imageSrc,
+            class: "vehicleImg",
+            width: "25px",
+            height: "25px",
+            onmouseenter: (e) => showHoverImage(ti, v, vi, e),
+            onmouseleave: (e) => removeHoverImage(ti, vi, e),
+          }),
+          el("input", {
+            type: "File",
+            accept: "image/*",
+            id: `imgi-${ti}-${vi}`,
+            class: "imagePicker",
+            onchange: (e) => addImage(ti, vi, e),
+          }),
+        ]),
 
-      el("div", {
-        class: "vehicleHeadCost",
-        text: `${vehicleCost(v, team.sponsor)} cans`,
-      }),
-
-      el("div", { class: "vehicleHeadRemove" }, [
-        el("img", {
-          onclick: () => removeVehicle(ti, vi),
-          class: "removeButton",
+        el("div", {
+          class: "vehicleHeadCost",
+          text: `${vehicleCost(v, team.sponsor)} cans`,
         }),
-      ]),
-    ]),
+
+        el("div", { class: "vehicleHeadRemove" }, [
+          el("img", {
+            onclick: () => removeVehicle(ti, vi),
+            class: "removeButton",
+          }),
+        ]),
+      ],
+    ),
   );
 
   container.appendChild(
