@@ -17,6 +17,9 @@ import {
   changeWeapon,
   computeStats,
   loadImageFromDB,
+  movePerk,
+  moveUpgrade,
+  moveWeapon,
   openPrintPreview,
   removePerk,
   removeTeam,
@@ -406,7 +409,23 @@ function createWeaponRow(team, ti, v, vi, w, wi) {
 
   return el(
     "div",
-    { class: `weaponsRow ${locs.length > 1 ? "yesLocation" : "noLocation"}` },
+    {
+      class: `weaponsRow ${locs.length > 1 ? "yesLocation" : "noLocation"}`,
+      draggable: true,
+      ondragstart: (e) => {
+        e.dataTransfer.effectAllowed = "move";
+        e.dataTransfer.setData("text/plain", wi);
+      },
+      ondragover: (e) => {
+        e.preventDefault();
+      },
+      ondrop: (e) => {
+        e.preventDefault();
+        const from = parseInt(e.dataTransfer.getData("text/plain"), 10);
+        const to = wi;
+        moveWeapon(ti, vi, from, to);
+      },
+    },
     [
       el("div", { class: "weaponType" }, [
         weaponSelect(v, team, wi, w.weapon.wtype, (e) =>
@@ -471,23 +490,43 @@ function createUpgradesTable(team, ti, v, vi) {
 
   v.upgrades.forEach((u, ui) => {
     table.appendChild(
-      el("div", { class: "upgradesRow" }, [
-        el("div", { class: "upgradeType" }, [
-          upgradeSelect(v, team, ui, u.utype, (e) =>
-            changeUpgrade(ti, vi, ui, e.target.value),
-          ),
-        ]),
-        el("div", { class: "upgradeRules", text: u.specialRules || "" }),
-        el("div", { class: "upgradeAmmo", text: u.ammo || "-" }),
-        el("div", { class: "upgradeSlots", text: u.slots || "-" }),
-        el("div", { class: "upgradeCost", text: u.cost || 0 }),
-        el("div", { class: "upgradeRemove" }, [
-          el("img", {
-            onclick: () => removeUpgrade(ti, vi, ui),
-            class: "removeButton",
-          }),
-        ]),
-      ]),
+      el(
+        "div",
+        {
+          class: "upgradesRow",
+          draggable: true,
+          ondragstart: (e) => {
+            e.dataTransfer.effectAllowed = "move";
+            e.dataTransfer.setData("text/plain", ui);
+          },
+          ondragover: (e) => {
+            e.preventDefault();
+          },
+          ondrop: (e) => {
+            e.preventDefault();
+            const from = parseInt(e.dataTransfer.getData("text/plain"), 10);
+            const to = ui;
+            moveUpgrade(ti, vi, from, to);
+          },
+        },
+        [
+          el("div", { class: "upgradeType" }, [
+            upgradeSelect(v, team, ui, u.utype, (e) =>
+              changeUpgrade(ti, vi, ui, e.target.value),
+            ),
+          ]),
+          el("div", { class: "upgradeRules", text: u.specialRules || "" }),
+          el("div", { class: "upgradeAmmo", text: u.ammo || "-" }),
+          el("div", { class: "upgradeSlots", text: u.slots || "-" }),
+          el("div", { class: "upgradeCost", text: u.cost || 0 }),
+          el("div", { class: "upgradeRemove" }, [
+            el("img", {
+              onclick: () => removeUpgrade(ti, vi, ui),
+              class: "removeButton",
+            }),
+          ]),
+        ],
+      ),
     );
   });
 
@@ -513,21 +552,41 @@ function createPerksTable(team, ti, v, vi) {
 
   v.perks.forEach((p, pi) => {
     table.appendChild(
-      el("div", { class: "perksRow" }, [
-        el("div", { class: "perkType" }, [
-          perkSelect(team, v, pi, p.ptype, (e) =>
-            changePerk(ti, vi, pi, e.target.value),
-          ),
-        ]),
-        el("div", { class: "perkRules", text: p.rules || "" }),
-        el("div", { class: "perkCost", text: p.cost || 0 }),
-        el("div", { class: "perkRemove" }, [
-          el("img", {
-            onclick: () => removePerk(ti, vi, pi),
-            class: "removeButton",
-          }),
-        ]),
-      ]),
+      el(
+        "div",
+        {
+          class: "perksRow",
+          draggable: true,
+          ondragstart: (e) => {
+            e.dataTransfer.effectAllowed = "move";
+            e.dataTransfer.setData("text/plain", pi);
+          },
+          ondragover: (e) => {
+            e.preventDefault();
+          },
+          ondrop: (e) => {
+            e.preventDefault();
+            const from = parseInt(e.dataTransfer.getData("text/plain"), 10);
+            const to = pi;
+            movePerk(ti, vi, from, to);
+          },
+        },
+        [
+          el("div", { class: "perkType" }, [
+            perkSelect(team, v, pi, p.ptype, (e) =>
+              changePerk(ti, vi, pi, e.target.value),
+            ),
+          ]),
+          el("div", { class: "perkRules", text: p.rules || "" }),
+          el("div", { class: "perkCost", text: p.cost || 0 }),
+          el("div", { class: "perkRemove" }, [
+            el("img", {
+              onclick: () => removePerk(ti, vi, pi),
+              class: "removeButton",
+            }),
+          ]),
+        ],
+      ),
     );
   });
 

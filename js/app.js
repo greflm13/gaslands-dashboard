@@ -248,6 +248,39 @@ export function setCargo(ti, vi, type) {
   update();
 }
 
+export function moveWeapon(ti, vi, from, to) {
+  if (from === to) return;
+
+  const weapons = state.teams[ti].vehicles[vi].weapons;
+
+  const [moved] = weapons.splice(from, 1);
+  weapons.splice(to, 0, moved);
+
+  update();
+}
+
+export function moveUpgrade(ti, vi, from, to) {
+  if (from === to) return;
+
+  const upgrades = state.teams[ti].vehicles[vi].upgrades;
+
+  const [moved] = upgrades.splice(from, 1);
+  upgrades.splice(to, 0, moved);
+
+  update();
+}
+
+export function movePerk(ti, vi, from, to) {
+  if (from === to) return;
+
+  const perks = state.teams[ti].vehicles[vi].perks;
+
+  const [moved] = perks.splice(from, 1);
+  perks.splice(to, 0, moved);
+
+  update();
+}
+
 export function weaponAttack(v, w) {
   if (
     w.wtype === "Mortar" &&
