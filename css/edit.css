@@ -26,6 +26,8 @@
   background: linear-gradient(#222, #111);
   display: grid;
   grid-template-columns: 32px 194px auto 142px 87px 32px;
+  position: sticky;
+  top: 44px;
 }
 
 #editDiv .teamHeader div {
