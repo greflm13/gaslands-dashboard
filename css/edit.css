@@ -266,10 +266,12 @@
   padding: 10px;
   background-color: #1b1b1b;
   object-fit: cover;
+  z-index: 200;
 }
 
 #editDiv .vehicleImgHover img {
   object-fit: cover;
+  z-index: 201
 }
 
 #editDiv table {
