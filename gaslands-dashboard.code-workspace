@@ -13,6 +13,12 @@
         "editor.defaultFormatter": "esbenp.prettier-vscode",
         "[javascript]": {
             "editor.defaultFormatter": "esbenp.prettier-vscode"
-        }
+        },
+        "json.schemas": [{
+            "fileMatch": [
+                "gaslands_teams.json"
+            ],
+            "url": "https://raw.githubusercontent.com/greflm13/gaslands-dashboard/refs/heads/main/schema.json"
+        }]
     }
 }
