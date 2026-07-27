@@ -26,6 +26,7 @@ module.exports = merge(common, {
         { from: "robots.txt", to: "robots.txt" },
         { from: "404.html", to: "404.html" },
         { from: ".htaccess", to: ".htaccess", toType: "file" },
+        { from: "schema.json", to: "gaslands_teams.schema.json" },
       ],
     }),
     new GenerateSW({
