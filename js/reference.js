@@ -354,7 +354,7 @@ export function referenceUpgrades() {
         el("tr", {}, [
           el("td", { text: u.utype }),
           el("td", { text: u.slots }),
-          el("td", { text: u.ammo == 0 ? "∞" : u.ammo }),
+          el("td", { text: u.ammo == 0 ? "-" : u.ammo }),
           el("td", { text: u.specialRules }),
           el("td", { text: u.cost }),
           el("td", { text: u.allowedSponsors }),
