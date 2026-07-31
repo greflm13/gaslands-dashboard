@@ -316,7 +316,7 @@ export function referenceWeapons() {
           el("td", { text: w.attackType }),
           el("td", { text: w.attack }),
           el("td", { text: w.range }),
-          el("td", { text: w.ammo }),
+          el("td", { text: w.ammo == 0 ? "∞" : w.ammo }),
           el("td", { text: w.slots }),
           el("td", { text: w.crewFired ? "Yes" : "No" }),
           el("td", { text: w.specialRules }),
