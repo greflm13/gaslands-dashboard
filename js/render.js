@@ -48,6 +48,22 @@ import {
 
 let isRendering = false;
 
+const BOOLEAN_ATTRS = new Set([
+  "checked",
+  "disabled",
+  "selected",
+  "readonly",
+  "required",
+  "autofocus",
+  "multiple",
+  "hidden",
+  "open",
+  "controls",
+  "loop",
+  "muted",
+  "playsinline",
+]);
+
 async function loadReference() {
   const { createReference } = await import("./reference.js");
   return createReference();
@@ -87,8 +103,11 @@ export function el(tag, props = {}, children = []) {
     if (k === "class") e.className = v;
     else if (k.startsWith("on")) e.addEventListener(k.substring(2), v);
     else if (k === "text") e.textContent = v;
-    else if (k in e) e[k] = v;
-    else e.setAttribute(k, v);
+    else if (BOOLEAN_ATTRS.has(k)) {
+      if (v) e.setAttribute(k, "");
+    } else {
+      e.setAttribute(k, v);
+    }
   });
 
   children.forEach((c) => {
