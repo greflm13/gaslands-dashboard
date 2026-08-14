@@ -158,6 +158,9 @@ function createPlayState(ti, vi, hp) {
   if (state.teams[ti].vehicles[vi].currHazard === undefined) {
     state.teams[ti].vehicles[vi].currHazard = 0;
   }
+  if (state.teams[ti].vehicles[vi].onFire === undefined) {
+    state.teams[ti].vehicles[vi].onFire = false;
+  }
   state.teams[ti].vehicles[vi].weapons.forEach((w, wi) => {
     if (
       state.teams[ti].vehicles[vi].weapons[wi].weapon.currAmmo === undefined
@@ -258,6 +261,16 @@ function remHazard(ti, vi) {
   if (vehicle.currHazard < 6) {
     display.classList = "vehicleGear";
   }
+
+  if (vehicle.onFire && vehicle.currHazard == 0) {
+    toggleOnFire(ti, vi);
+  }
+}
+
+function toggleOnFire(ti, vi) {
+  const checkBox = document.getElementById(`${ti}-${vi}-onfire`);
+  state.teams[ti].vehicles[vi].onFire = !state.teams[ti].vehicles[vi].onFire;
+  checkBox.checked = state.teams[ti].vehicles[vi].onFire;
 }
 
 function reduceAmmo(ti, vi, wi) {
@@ -351,6 +364,15 @@ function createPrintPlayState(ti, vi) {
           }),
         ]),
       ),
+    ]),
+    el("div", { class: "vehicleEffects noprint" }, [
+      el("input", {
+        type: "checkbox",
+        id: `${ti}-${vi}-onfire`,
+        checked: state.teams[ti].vehicles[vi].onFire,
+        onchange: () => toggleOnFire(ti, vi),
+      }),
+      el("label", { for: `${ti}-${vi}-onfire`, text: "On Fire" }),
     ]),
   ]);
 }

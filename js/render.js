@@ -87,6 +87,7 @@ export function el(tag, props = {}, children = []) {
     if (k === "class") e.className = v;
     else if (k.startsWith("on")) e.addEventListener(k.substring(2), v);
     else if (k === "text") e.textContent = v;
+    else if (k in e) e[k] = v;
     else e.setAttribute(k, v);
   });
 
@@ -729,7 +730,7 @@ async function createVehicleCard(team, ti, v, vi) {
             onmouseleave: (e) => removeHoverImage(ti, vi, e),
           }),
           el("input", {
-            type: "File",
+            type: "file",
             accept: "image/*",
             id: `imgi-${ti}-${vi}`,
             class: "imagePicker",
@@ -790,6 +791,7 @@ export async function renderFull() {
         v.hullpoints = undefined;
         v.currGear = undefined;
         v.currHazard = undefined;
+        v.onFire = undefined;
         v.weapons.forEach((w) => {
           w.weapon.currAmmo = undefined;
         });

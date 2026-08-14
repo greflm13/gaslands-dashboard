@@ -124,7 +124,9 @@ button:hover {
   display: none;
 }
 
-input {
+input[type="text"],
+input[type="file"],
+input[type="number"] {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
